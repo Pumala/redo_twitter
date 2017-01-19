@@ -1,0 +1,20 @@
+{
+  "name": "redo_twitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "twitter_backend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Carolyn Lam",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bcrypt-promise": "^2.0.0",
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.16.0",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.7",
+    "uuid": "^3.0.1"
+  }
+}
