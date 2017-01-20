@@ -48,6 +48,23 @@ const User = mongoose.model('User', {
 });
 
 // ********************************
+//          WORLD TIMELINE
+// ********************************
+app.get('/api/worldtimeline', function(request, response) {
+  console.log('in the world timelines api');
+  Tweet.find().limit(20)
+    .then(function(tweets) {
+      return response.json({
+        tweets: tweets
+      });
+    })
+    .catch(function(err) {
+      console.log('err retrieving the world timeline tweets from the db...', err.message);
+    });
+
+});
+
+// ********************************
 //          USER SIGN UP
 // ********************************
 app.put('/api/signup', function(request, response) {

@@ -118,10 +118,32 @@ app.factory('TwitterFactory', function($http) {
     });
   };
 
+  service.getWorldTimeline = function() {
+    console.log('hmm hmm');
+    var url = '/api/worldtimeline';
+    return $http({
+      method: 'GET',
+      url: url
+    });
+  };
+
   return service;
 });
 
 app.controller('WorldTimelineController', function($rootScope, $state, $scope, TwitterFactory) {
+
+  $scope.loadWorldTimlinePage = function() {
+    TwitterFactory.getWorldTimeline()
+      .then(function(returnedInfo) {
+        $scope.tweets = returnedInfo.data.tweets;
+      })
+      .catch(function(err) {
+        console.log('err loading world timeline page..', err.message);
+      });
+  };
+
+  // load page once initially
+  $scope.loadWorldTimlinePage();
 
 });
 

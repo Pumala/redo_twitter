@@ -1,1 +1,11 @@
-<h1>World Timeline</h1>
+<div class="container">
+
+  <h1>World Timeline</h1>
+
+  <div class="worldTweets">
+    <div class="panel panel-default" ng-repeat="tweet in tweets">
+      <div class="panel-body">{{tweet.date | date : "MMM dd, yyyy"}}<br>
+      {{ tweet.author }} tweeted '{{tweet.content}}'</div>
+    </div>
+  </div>
+</div>
