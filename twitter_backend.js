@@ -185,6 +185,8 @@ app.put('/api/logout', function(request, response) {
 
 });
 
+
+
 // ********************************
 //      GET USER PROFILE INFO
 // ********************************
@@ -250,6 +252,34 @@ app.post('/api/profile/tweet/new', function(request, response) {
     })
     .catch(function(err) {
       console.log('err adding new tweet to db...', err.message);
+      response.status(500);
+      response.json({
+        error: err.message
+      });
+    });
+
+});
+
+// **************************************************************
+//                     UPDATE TWEET CONTENT
+// **************************************************************
+app.put('/api/tweet/edit/update', function(request, response) {
+
+  var tweetId = request.body.tweetId;
+  var content = request.body.content;
+
+  Tweet.update({
+      _id: tweetId
+    }, {
+      $set: { content: content }
+    })
+    .then(function(updatedTweet) {
+      return response.json({
+        message: 'success updating tweet content in the db!'
+      })
+    })
+    .catch(function(err) {
+      console.log('err updating tweet to db...', err.message);
       response.status(500);
       response.json({
         error: err.message

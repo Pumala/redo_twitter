@@ -127,6 +127,15 @@ app.factory('TwitterFactory', function($http) {
     });
   };
 
+  service.updateTweet = function(tweetInfo) {
+    var url = '/api/tweet/edit/update';
+    return $http({
+      method: 'PUT',
+      url: url,
+      data: tweetInfo
+    });
+  };
+
   return service;
 });
 
@@ -160,6 +169,19 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
       });
   };
 
+  $scope.saveTweet = function(tweetId, content) {
+    var tweetInfo = {
+      tweetId: tweetId,
+      content: content
+    };
+    TwitterFactory.updateTweet(tweetInfo)
+      .then(function() {
+        $scope.loadWorldTimlinePage();
+      })
+      .catch(function(err) {
+        console.log('err saving tweet in world timeline....', err.message);
+      });
+  };
 
 });
 
@@ -211,7 +233,7 @@ app.controller('SignUpController', function($cookies, $rootScope, $state, $scope
 app.controller('ProfileController', function($cookies, $state, $stateParams, $rootScope, $scope, TwitterFactory) {
   $scope.username = $stateParams.username;
 
-  $scope.loadProfile = function() {
+  $scope.loadProfilePage = function() {
     TwitterFactory.getUserProfile($scope.username)
       .then(function(returnedInfo) {
         $scope.userInfo = returnedInfo.data.userInfo;
@@ -224,7 +246,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
   };
 
   // load profile once user enters controller
-  $scope.loadProfile();
+  $scope.loadProfilePage();
 
   $scope.postTweet = function() {
     var newTweet = {
@@ -251,10 +273,25 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
     TwitterFactory.removeTweet(tweetInfo)
       .then(function(message) {
         console.log(message.data.message);
-        $scope.loadProfile();
+        $scope.loadProfilePage();
       })
       .catch(function(err) {
         console.log('err deleting tweet...', err.message);
+      });
+  };
+
+  $scope.saveTweet = function(tweetId, content) {
+    var tweetInfo = {
+      tweetId: tweetId,
+      content: content
+    };
+    console.log('tweet info:', tweetInfo);
+    TwitterFactory.updateTweet(tweetInfo)
+      .then(function() {
+        $scope.loadProfilePage();
+      })
+      .catch(function(err) {
+        console.log('err updating tweeter in profile controller...', err.message);
       });
   };
 
