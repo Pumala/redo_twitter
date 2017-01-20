@@ -47,6 +47,9 @@ const User = mongoose.model('User', {
   authToken: { token: String, expires: Date }
 });
 
+// ********************************
+//          USER SIGN UP
+// ********************************
 app.put('/api/signup', function(request, response) {
 
   var data = request.body;
@@ -94,6 +97,9 @@ app.put('/api/signup', function(request, response) {
 
 });
 
+// ********************************
+//            USER LOGIN
+// ********************************
 app.post('/api/login', function(request, response) {
 
   var data = request.body;
@@ -135,9 +141,11 @@ app.post('/api/login', function(request, response) {
 
 });
 
+// ********************************
+//           USER LOGOUT
+// ********************************
 app.put('/api/logout', function(request, response) {
 
-  console.log('username', request.body);
   var username = request.body.username;
 
   User.update({
@@ -160,13 +168,107 @@ app.put('/api/logout', function(request, response) {
 
 });
 
+// ********************************
+//      GET USER PROFILE INFO
+// ********************************
+app.get('/api/profile/:username', function(request, response) {
 
+  var username = request.params.username;
 
+  User.findOne({ _id: username })
+    .then(function(userInfo) {
+      var userTweets = userInfo.tweets;
+      console.log('bfore ', userTweets);
 
+      return [ Tweet.find({ _id: { $in: userTweets} }), userInfo ];
+    })
+    .spread(function(allTweets, userInfo) {
+      console.log('tweets:', allTweets);
+      return response.json({
+        userInfo: userInfo,
+        tweets: allTweets
+      });
+    })
+    .catch(function(err) {
+      console.log('err retrieving user info from db...', err.message);
+      response.status(500);
+      response.json({
+        error: err.message
+      });
+    });
 
+});
 
+// ********************************
+//      ADD NEW TWEET TO DB
+// ********************************
+app.post('/api/profile/tweet/new', function(request, response) {
 
+  var username = request.body.username;
+  var content = request.body.content;
 
+  var newTweet = new Tweet({
+    content: content,
+    date: new Date(),
+    author: username,
+    likes: [],
+    retweets: []
+  });
+
+  newTweet.save()
+    .then(function(savedTweet) {
+      var tweetId = savedTweet._id;
+
+      return User.update({
+        _id: username
+      }, {
+        $addToSet: { tweets: tweetId }
+      });
+    })
+    .then(function(updatedUser) {
+      console.log('before returning');
+      return response.json({
+        message: 'success adding tweet to db!'
+      });
+    })
+    .catch(function(err) {
+      console.log('err adding new tweet to db...', err.message);
+      response.status(500);
+      response.json({
+        error: err.message
+      });
+    });
+
+});
+
+// **************************************************************
+//      DELETE TWEET AND UPDATE USER TWEETS TO REFLECT CHANGES
+// **************************************************************
+app.put('/api/tweet/edit/delete', function(request, response) {
+
+  var username = request.body.username;
+  var tweetId = request.body.tweetId;
+
+  bluebird.all([
+      Tweet.remove({ _id: tweetId }),
+      User.update({
+        _id: username
+      }, { $pull: { tweets: tweetId } })
+    ])
+    .spread(function(removedTweet, updatedUser) {
+      return response.json({
+        message: "success deleting tweet from db!"
+      });
+    })
+    .catch(function(err) {
+      console.log('err deleting tweet from db...', err.message);
+      response.status(500);
+      response.json({
+        error: err.message
+      });
+    });
+
+});
 
 app.listen(3005, function() {
   console.log('The server is listening on port 3005....');

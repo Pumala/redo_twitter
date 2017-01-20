@@ -92,6 +92,32 @@ app.factory('TwitterFactory', function($http) {
     });
   };
 
+  service.getUserProfile = function(username) {
+    var url = '/api/profile/' + username;
+    return $http({
+      method: 'GET',
+      url: url
+    });
+  };
+
+  service.addNewTweet = function(newTweet) {
+    var url = '/api/profile/tweet/new';
+    return $http({
+      method: 'POST',
+      url: url,
+      data: newTweet
+    });
+  };
+
+  service.removeTweet = function(tweetInfo) {
+    var url = '/api/tweet/edit/delete';
+    return $http({
+      method: 'PUT',
+      url: url,
+      data: tweetInfo
+    });
+  };
+
   return service;
 });
 
@@ -144,6 +170,54 @@ app.controller('SignUpController', function($cookies, $rootScope, $state, $scope
 
 });
 
-app.controller('ProfileController', function($cookies, $state, $rootScope, $scope, TwitterFactory) {
+app.controller('ProfileController', function($cookies, $state, $stateParams, $rootScope, $scope, TwitterFactory) {
+  $scope.username = $stateParams.username;
+
+  $scope.loadProfile = function() {
+    TwitterFactory.getUserProfile($scope.username)
+      .then(function(returnedInfo) {
+        $scope.userInfo = returnedInfo.data.userInfo;
+        $scope.tweets = returnedInfo.data.tweets;
+        console.log(returnedInfo);
+      })
+      .catch(function(err) {
+        console.log('err retrieving user profile info...', err.message);
+      });
+  };
+
+  // load profile once user enters controller
+  $scope.loadProfile();
+
+  $scope.postTweet = function() {
+    var newTweet = {
+      username: $scope.username,
+      content: $scope.content
+    };
+    TwitterFactory.addNewTweet(newTweet)
+      .then(function(message) {
+        console.log('i returned');
+        console.log(message.data.message);
+        $scope.loadProfile();
+        $scope.content = "";
+      })
+      .catch(function(err) {
+        console.log('err posting new tweet...', err.message);
+      });
+  };
+
+  $scope.deleteTweet = function(tweetId) {
+    var tweetInfo = {
+      tweetId: tweetId,
+      username: $scope.username
+    };
+    TwitterFactory.removeTweet(tweetInfo)
+      .then(function(message) {
+        console.log(message.data.message);
+        $scope.loadProfile();
+      })
+      .catch(function(err) {
+        console.log('err deleting tweet...', err.message);
+      });
+  };
 
 });

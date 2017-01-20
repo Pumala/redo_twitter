@@ -1,1 +1,42 @@
-<h1>Profile {{rootUsername}}</h1>
+<div class="container">
+  <h1>{{userInfo._id}}'s Profile</h1>
+
+  <p>Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
+
+  <div class="">
+    <h3>Following: {{ userInfo.following.length }}</h3>
+    <h3>Followers: {{ userInfo.followers.length }}</h3>
+    <h3>Likes: {{ userInfo.likes.length }}</h3>
+    <h3>Tweets: {{ userInfo.tweets.length }}</h3>
+  </div>
+
+  <div class="">
+
+    <h2>User Tweets</h2>
+
+    <div>
+      <form ng-show="rootUsername === username" ng-submit="postTweet()">
+        <textarea ng-model="content" rows="8" cols="80"></textarea>
+        <button class="btn btn-success">Tweet</button>
+      </form>
+
+      <div class="">
+        <div ng-repeat="tweet in tweets" class="panel panel-default">
+          <div class="panel-body">
+            <h3>{{username}} tweeted:</h3>
+            <p>{{ tweet.date | date : 'MMM dd, yyyy'}}</p>
+            <p>{{tweet.content}}</p>
+            <div ng-show="rootUsername === username" class="editTweet">
+              <button class="btn-primary">Edit</button>
+              <button class="btn-success">Save</button>
+              <button class="btn-primary">Cancel</button>
+              <button ng-click="deleteTweet(tweet._id)" class="btn-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
