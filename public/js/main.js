@@ -145,6 +145,22 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
   // load page once initially
   $scope.loadWorldTimlinePage();
 
+  // delete Tweet (only tweet author has permission)
+  $scope.deleteTweet = function(tweetId, author) {
+    var tweetInfo = {
+      tweetId: tweetId,
+      author: author
+    };
+    TwitterFactory.removeTweet(tweetInfo)
+      .then(function() {
+        $scope.loadWorldTimlinePage();
+      })
+      .catch(function(err) {
+        console.log('err removing tweet in world timeline...', err.message);
+      });
+  };
+
+
 });
 
 app.controller('LoginController', function($rootScope, $state, $scope, $cookies, TwitterFactory) {

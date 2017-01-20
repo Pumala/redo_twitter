@@ -4,8 +4,16 @@
 
   <div class="worldTweets">
     <div class="panel panel-default" ng-repeat="tweet in tweets">
-      <div class="panel-body">{{tweet.date | date : "MMM dd, yyyy"}}<br>
-      {{ tweet.author }} tweeted '{{tweet.content}}'</div>
+      <div class="panel-body">
+        {{tweet.date | date : "MMM dd, yyyy"}}<br>
+        <a ui-sref="profile({ username: tweet.author })">{{ tweet.author }}</a> tweeted '{{tweet.content}}'
+        <div ng-show="rootUsername === tweet.author" class="editTweets">
+          <button class="btn btn-primary">Edit</button>
+          <button class="btn btn-success">Save</button>
+          <button class="btn btn-primary">Cancel</button>
+          <button class="btn btn-danger" ng-click="deleteTweet(tweet._id, tweet.author)">Delete</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
