@@ -154,6 +154,18 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     };
   };
 
+  service.checkIfUserExistsInArrObj = function(arrObj) {
+    var found = arrObj.filter(function(user) {
+      return user._id === $rootScope.rootUsername;
+    });
+    console.log('what did i find?', found);
+    if (found.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   service.toggleLikedStatus = function(isLiked) {
     if (isLiked) {
       return false;
@@ -169,6 +181,14 @@ app.factory('TwitterFactory', function($http, $rootScope) {
       url: url,
       data: tweetInfo
     });
+  };
+
+  service.getRetweetCount = function(arrObj) {
+    var count = arrObj.reduce(function(total, retweet) {
+      return total + retweet.count
+    }, 0);
+
+    return count;
   };
 
   return service;
@@ -249,10 +269,12 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
       });
   };
 
-  $scope.retweetTweet = function(tweetId) {
+  $scope.retweetTweet = function(tweetId, arrObj) {
+    var alreadyRetweeted = TwitterFactory.checkIfUserExistsInArrObj(arrObj);
     var tweetInfo = {
       tweetId: tweetId,
-      username: $rootScope.rootUsername
+      username: $rootScope.rootUsername,
+      alreadyRetweeted: alreadyRetweeted
     };
     TwitterFactory.retweetTweet(tweetInfo)
       .then(function() {
@@ -261,6 +283,10 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
       .catch(function(err) {
         console.log('err retweeting tweet in world timeline...', err.message);
       });
+  };
+
+  $scope.getRetweetCount = function(arrObj) {
+    return TwitterFactory.getRetweetCount(arrObj);
   };
 
 });
@@ -402,6 +428,26 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       .catch(function(err) {
         console.log('err updating tweet liked status in profile controller...', err.message);
       });
+  };
+
+  $scope.retweetTweet = function(tweetId, arrObj) {
+    var alreadyRetweeted = TwitterFactory.checkIfUserExistsInArrObj(arrObj);
+    var tweetInfo = {
+      tweetId: tweetId,
+      username: $rootScope.rootUsername,
+      alreadyRetweeted: alreadyRetweeted
+    };
+    TwitterFactory.retweetTweet(tweetInfo)
+      .then(function() {
+        $scope.loadProfilePage();
+      })
+      .catch(function(err) {
+        console.log('err adding new retweet from profile controller...', err.message );
+      });
+  };
+
+  $scope.getRetweetCount = function(arrObj) {
+    return TwitterFactory.getRetweetCount(arrObj);
   };
 
 });

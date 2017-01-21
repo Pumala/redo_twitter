@@ -28,7 +28,7 @@
               <p>{{ tweet.date | date : 'MMM dd, yyyy'}}</p>
               <p>{{tweet.content}}</p>
               <div>
-                <i ng-class="{ gray: (!checkIfUserExists(tweet.likes)), black: checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.retweets.length }}</span>
+                <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class="{ gray: (!checkIfUserExists(tweet.likes)), black: checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{ getRetweetCount(tweet.retweets) }}</span>
                 <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.likes.length }}</span>
               </div>
             </div>
