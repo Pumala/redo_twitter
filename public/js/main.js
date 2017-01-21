@@ -31,7 +31,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 });
 
-app.run(function($rootScope, $cookies, $http) {
+app.run(function($rootScope, $cookies, $http, $state) {
 
   // when page reloads, check if cookies exists
   // if so, that means a user is currently logged in
@@ -60,6 +60,7 @@ app.run(function($rootScope, $cookies, $http) {
       $rootScope.rootUsername = null;
       // clear cookies
       $cookies.remove('cookieData');
+      $state.go('home');
     })
     .catch(function(err) {
       console.log('err loggin out...', err.message);
@@ -68,7 +69,7 @@ app.run(function($rootScope, $cookies, $http) {
 
 });
 
-app.factory('TwitterFactory', function($http) {
+app.factory('TwitterFactory', function($http, $rootScope) {
   var service = {};
 
   service.login = function(loginInfo) {
@@ -136,6 +137,31 @@ app.factory('TwitterFactory', function($http) {
     });
   };
 
+  service.updateLikedTweetStatus = function(tweetInfo) {
+    var url = '/api/tweet/status/update';
+    return $http({
+      method: 'PUT',
+      url: url,
+      data: tweetInfo
+    });
+  };
+
+  service.checkIfUserExistsInArr = function(arr) {
+    if (arr.indexOf($rootScope.rootUsername) > -1) {
+      return true;
+    } else {
+      return false;
+    };
+  };
+
+  service.toggleLikedStatus = function(isLiked) {
+    if (isLiked) {
+      return false;
+    } else {
+      return true;
+    };
+  };
+
   return service;
 });
 
@@ -180,6 +206,37 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
       })
       .catch(function(err) {
         console.log('err saving tweet in world timeline....', err.message);
+      });
+  };
+
+  $scope.checkIfUserExists = function(arr) {
+    return TwitterFactory.checkIfUserExistsInArr(arr);
+  };
+
+  $scope.likeTweet = function(tweetId, arr, author) {
+
+    // check if user is logged in
+    // for now it's set up where users can like their own tweets
+    if ($rootScope.rootUsername) {
+      var isLiked = $scope.checkIfUserExists(arr);
+
+      isLiked = TwitterFactory.toggleLikedStatus(isLiked);
+
+      var tweetInfo = {
+        tweetId: tweetId,
+        likedStatus: isLiked,
+        username: $rootScope.rootUsername
+      };
+    } else {
+      var message = 'Sorry, you need to be signed in to like tweets!'
+      $state.go('login', message);
+    }
+    TwitterFactory.updateLikedTweetStatus(tweetInfo)
+      .then(function() {
+        $scope.loadWorldTimlinePage();
+      })
+      .catch(function(err) {
+        console.log('err updating liked status of tweet in timeline controller...', err.message);
       });
   };
 
@@ -257,7 +314,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       .then(function(message) {
         console.log('i returned');
         console.log(message.data.message);
-        $scope.loadProfile();
+        $scope.loadProfilePage();
         $scope.content = "";
       })
       .catch(function(err) {
@@ -292,6 +349,35 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       })
       .catch(function(err) {
         console.log('err updating tweeter in profile controller...', err.message);
+      });
+  };
+
+  $scope.checkIfUserExists = function(arr) {
+    return TwitterFactory.checkIfUserExistsInArr(arr);
+  };
+
+  $scope.updateTweetLikedStatus = function(tweetId, author, arr) {
+    if ($rootScope.rootUsername) {
+      console.log('arr?', arr);
+      var isLiked = TwitterFactory.checkIfUserExistsInArr(arr);
+      console.log('likes 1?', isLiked);
+
+      isLiked = TwitterFactory.toggleLikedStatus(isLiked);
+      console.log('likes?', isLiked);
+      var tweetInfo = {
+        tweetId: tweetId,
+        username: author,
+        likedStatus: isLiked
+      };
+    } else {
+      $state.go()
+    }
+    TwitterFactory.updateLikedTweetStatus(tweetInfo)
+      .then(function() {
+        $scope.loadProfilePage();
+      })
+      .catch(function(err) {
+        console.log('err updating tweet liked status in profile controller...', err.message);
       });
   };
 

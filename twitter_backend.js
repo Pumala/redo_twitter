@@ -317,6 +317,60 @@ app.put('/api/tweet/edit/delete', function(request, response) {
 
 });
 
+// **************************************************************
+//            UPDATE USER LIKE TWEET STATUS
+// **************************************************************
+app.put('/api/tweet/status/update', function(request, response) {
+  console.log('hello there', request.body);
+  var tweetId = request.body.tweetId;
+  var username = request.body.username;
+  var likedStatus = request.body.likedStatus;
+
+  if (likedStatus) {
+    console.log('it is true');
+    bluebird.all([
+      Tweet.update({
+            _id: tweetId
+          }, {
+            $addToSet: { likes: username }
+          }), User.update({
+            _id: username
+          }, {
+            $addToSet: { likes: tweetId }
+          })
+      ])
+      .spread(function(updatedTweet, updatedUser) {
+        return response.json({
+          message: 'success updating user likes!'
+        });
+      })
+      .catch(function(err) {
+        console.log('err updating tweet and user tweet likes array...', err.message);
+      });
+  } else {
+    bluebird.all([
+      Tweet.update({
+            _id: tweetId
+          }, {
+            $pull: { likes: username }
+          }), User.update({
+            _id: username
+          }, {
+            $pull: { likes: tweetId }
+          })
+      ])
+      .spread(function(updatedTweet, updatedUser) {
+        return response.json({
+          message: 'success updating user likes!'
+        })
+      })
+      .catch(function(err) {
+        console.log('err updating tweet and user tweet likes array...', err.message);
+      });
+  };
+
+});
+
 app.listen(3005, function() {
   console.log('The server is listening on port 3005....');
 });

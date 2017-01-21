@@ -23,11 +23,17 @@
       <div class="">
         <div ng-repeat="tweet in tweets" class="panel panel-default">
           <div class="panel-body">
+            <div ng-show="!editMode">
+              <h3>{{username}} tweeted:</h3>
+              <p>{{ tweet.date | date : 'MMM dd, yyyy'}}</p>
+              <p>{{tweet.content}}</p>
+              <div>
+                <i ng-class="{ gray: (!checkIfUserExists(tweet.likes)), black: checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.retweets.length }}</span>
+                <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.likes.length }}</span>
+              </div>
+            </div>
             <div ng-show="rootUsername === username" class="editTweet">
               <div ng-show="!editMode">
-                <h3>{{username}} tweeted:</h3>
-                <p>{{ tweet.date | date : 'MMM dd, yyyy'}}</p>
-                <p>{{tweet.content}}</p>
                 <button ng-click="editMode = true; originalContent = tweet.content" class="btn btn-primary">Edit</button>
                 <button ng-click="deleteTweet(tweet._id)" class="btn btn-danger">Delete</button>
               </div>
