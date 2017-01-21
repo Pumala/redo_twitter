@@ -191,6 +191,15 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     return count;
   };
 
+  service.updateFollowingStatus = function(followingObj) {
+    var url = '/api/user/following/status/update';
+    return $http({
+      method: 'PUT',
+      url: url,
+      data: followingObj
+    });
+  };
+
   return service;
 });
 
@@ -434,6 +443,22 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       })
       .catch(function(err) {
         console.log('err updating tweet liked status in profile controller...', err.message);
+      });
+  };
+
+  $scope.followUser = function(user, currFollowing) {
+    // var currFollowing = TwitterFactory.checkIfUserExistsInArr(followersArr);
+    var followObj = {
+      currUser: $rootScope.rootUsername,
+      following: user,
+      status: !currFollowing
+    };
+    TwitterFactory.updateFollowingStatus(followObj)
+      .then(function() {
+        $scope.loadProfilePage();
+      })
+      .catch(function(err) {
+        console.log('err updating following user status in profile...', err.message);
       });
   };
 

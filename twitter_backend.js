@@ -17,24 +17,6 @@ const ObjectId      = mongoose.Schema.ObjectId;
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// const childTweetSchema = new Schema
-//
-// const subSchema = mongoose.Schema({
-//     //your subschema content
-//     content: { type: String, required: true },
-//     date: Date,
-//     author: String,
-//     likes: [String], // username
-//     retweets: [{ username: String, count: Number }] // username
-// },{ _id : false });
-//
-// var schema = mongoose.Schema({
-//     // schema content
-//     subSchemaCollection : [subSchema]
-// });
-//
-// const Tweet = mongoose.model('Tweet', schema);
-
 // NEW DB
 mongoose.connect('mongodb://localhost/redo_twitter_db');
 
@@ -49,6 +31,12 @@ const Tweet = mongoose.model('Tweet', {
   retweets: [{ _id: String, count: Number }] // username
 });
 
+// const Retweet = mongoose.model('Retweet', {
+//   retweeter: String,
+//   date: Date,
+//   tweet: ObjectId
+// });
+
 const User = mongoose.model('User', {
   _id: { type: String, required: true, unique: true },
   firstName: String,
@@ -58,7 +46,7 @@ const User = mongoose.model('User', {
   following: [String],
   likes: [ObjectId],
   tweets: [ObjectId], // tweet _id
-  retweets: [{ _id: ObjectId, count: Number }], // tweetid
+  retweets: [{ _id: ObjectId, count: Number }], // retweetid
   avatar: String,
   joined: Date,
   authToken: { token: String, expires: Date }
@@ -484,6 +472,69 @@ app.put('/api/retweet/new/add', function(request, response) {
         console.log('err updating adding retweet to db...', err.message);
       });
   }
+
+});
+
+app.put('/api/user/following/status/update', function(request, response) {
+  console.log('hmmm .... j', request.body);
+
+  var currUser = request.body.currUser;
+  var following = request.body.following;
+  var followingStatus = request.body.status;
+
+  if (followingStatus) {
+    // add currUser to following's followers array
+    // add following to currUser's following array
+    bluebird.all([
+        User.update({
+          _id: following
+        }, {
+          $addToSet: { followers: currUser }
+        }), User.update({
+          _id: currUser
+        }, {
+          $addToSet: { following: following }
+        })
+      ])
+      .spread(function(updatedFollowingUser, updatedCurrUser) {
+        return response.json({
+          message: "success updating following status!"
+        })
+      })
+      .catch(function(err) {
+        console.log('err updating following status to db...', err.message);
+        response.status(500);
+        response.json({
+          error: err.message
+        });
+      });
+  } else {
+    // remove currUser from following's followers array
+    // remove following from currUser's following array
+    bluebird.all([
+        User.update({
+          _id: following
+        }, {
+          $pull: { followers: currUser }
+        }), User.update({
+          _id: currUser
+        }, {
+          $pull: { following: following }
+        })
+      ])
+      .spread(function(updatedFollowingUser, updatedCurrUser) {
+        return response.json({
+          message: "success updating following status!"
+        })
+      })
+      .catch(function(err) {
+        console.log('err updating following status to db...', err.message);
+        response.status(500);
+        response.json({
+          error: err.message
+        });
+      });
+  };
 
 });
 
