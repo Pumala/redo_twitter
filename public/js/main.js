@@ -162,6 +162,15 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     };
   };
 
+  service.retweetTweet = function(tweetInfo) {
+    var url = '/api/retweet/new/add';
+    return $http({
+      method: 'PUT',
+      url: url,
+      data: tweetInfo
+    });
+  };
+
   return service;
 });
 
@@ -237,6 +246,20 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
       })
       .catch(function(err) {
         console.log('err updating liked status of tweet in timeline controller...', err.message);
+      });
+  };
+
+  $scope.retweetTweet = function(tweetId) {
+    var tweetInfo = {
+      tweetId: tweetId,
+      username: $rootScope.rootUsername
+    };
+    TwitterFactory.retweetTweet(tweetInfo)
+      .then(function() {
+        $scope.loadWorldTimlinePage();
+      })
+      .catch(function(err) {
+        console.log('err retweeting tweet in world timeline...', err.message);
       });
   };
 

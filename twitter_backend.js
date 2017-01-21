@@ -29,7 +29,7 @@ const Tweet = mongoose.model('Tweet', {
   date: Date,
   author: String,
   likes: [String], // username
-  retweets: [String] // username
+  retweets: { retweetId: ObjectId, count: Number }
 });
 
 const User = mongoose.model('User', {
@@ -231,7 +231,7 @@ app.post('/api/profile/tweet/new', function(request, response) {
     date: new Date(),
     author: username,
     likes: [],
-    retweets: []
+    retweets: {}
   });
 
   newTweet.save()
@@ -365,11 +365,50 @@ app.put('/api/tweet/status/update', function(request, response) {
         })
       })
       .catch(function(err) {
+        response.status(500);
+        response.json({
+          error: err.message
+        });
         console.log('err updating tweet and user tweet likes array...', err.message);
       });
   };
 
 });
+
+// **************************************************************
+//            UPDATE USER RETWEET
+// **************************************************************
+app.put('/api/retweet/new/add', function(request, response) {
+
+  var tweetId = request.body.tweetId;
+  var username = request.body.username;
+
+  bluebird.all([
+      Tweet.update({
+        _id: tweetId
+      }, {
+        $addToSet: { retweets: username }
+      }), User.update({
+        _id: username,
+      }, {
+        $addToSet: { retweets: tweetId }
+      })
+    ])
+    .spread(function(updatedTweet, updatedUser) {
+      return response.json({
+        message: 'success updating adding retweet!'
+      });
+    })
+    .catch(function(err) {
+      response.status(500);
+      response.json({
+        error: err.message
+      });
+      console.log('err updating adding retweet to db...', err.message);
+    });
+
+});
+
 
 app.listen(3005, function() {
   console.log('The server is listening on port 3005....');
