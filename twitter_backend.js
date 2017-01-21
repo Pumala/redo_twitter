@@ -475,8 +475,10 @@ app.put('/api/retweet/new/add', function(request, response) {
 
 });
 
+// **************************************************************
+//                    UPDATE FOLLOWING STATUS
+// **************************************************************
 app.put('/api/user/following/status/update', function(request, response) {
-  console.log('hmmm .... j', request.body);
 
   var currUser = request.body.currUser;
   var following = request.body.following;

@@ -447,19 +447,24 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
   };
 
   $scope.followUser = function(user, currFollowing) {
-    // var currFollowing = TwitterFactory.checkIfUserExistsInArr(followersArr);
-    var followObj = {
-      currUser: $rootScope.rootUsername,
-      following: user,
-      status: !currFollowing
-    };
-    TwitterFactory.updateFollowingStatus(followObj)
-      .then(function() {
-        $scope.loadProfilePage();
-      })
-      .catch(function(err) {
-        console.log('err updating following user status in profile...', err.message);
-      });
+    // check if user is logged in
+    if ($rootScope.rootUsername) {
+      var followObj = {
+        currUser: $rootScope.rootUsername,
+        following: user,
+        status: !currFollowing
+      };
+      TwitterFactory.updateFollowingStatus(followObj)
+        .then(function() {
+          $scope.loadProfilePage();
+        })
+        .catch(function(err) {
+          console.log('err updating following user status in profile...', err.message);
+        });
+    } else {
+      $state.go("login");
+    }
+
   };
 
   $scope.retweetTweet = function(tweetId, arrObj) {
