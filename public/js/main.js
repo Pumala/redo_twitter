@@ -454,7 +454,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
         });
     } else {
       $state.go("login");
-    }
+    };
 
   };
 

@@ -214,7 +214,7 @@ app.get('/api/profile/:username', function(request, response) {
   User.findOne({ _id: username })
     .then(function(userInfo) {
       var userTweets = userInfo.tweets;
-      console.log('bfore ', userTweets);
+      console.log('user retweets ', userInfo.retweets);
 
       return [ Tweet.find({ _id: { $in: userTweets} }), userInfo ];
     })
@@ -232,6 +232,28 @@ app.get('/api/profile/:username', function(request, response) {
         error: err.message
       });
     });
+
+  // User.findOne({ _id: username })
+  //   .then(function(userInfo) {
+  //     var userTweets = userInfo.tweets;
+  //     console.log('bfore ', userTweets);
+  //
+  //     return [ Tweet.find({ _id: { $in: userTweets} }), userInfo ];
+  //   })
+  //   .spread(function(allTweets, userInfo) {
+  //     console.log('tweets:', allTweets);
+  //     return response.json({
+  //       userInfo: userInfo,
+  //       tweets: allTweets
+  //     });
+  //   })
+  //   .catch(function(err) {
+  //     console.log('err retrieving user info from db...', err.message);
+  //     response.status(500);
+  //     response.json({
+  //       error: err.message
+  //     });
+  //   });
 
 });
 
@@ -404,9 +426,6 @@ app.put('/api/retweet/new/add', function(request, response) {
   var alreadyRetweeted = request.body.alreadyRetweeted;
 
   if (alreadyRetweeted) {
-    // 1. increment count in Tweet
-    // 2. increment count in User
-    // if field doesn't exist, $inc create the field and sets the field to the value
     console.log('already retweeted');
     bluebird.all([
         Tweet.update({
@@ -434,33 +453,6 @@ app.put('/api/retweet/new/add', function(request, response) {
         });
         console.log('err updating adding retweet to db...', err.message);
       });
-
-    // bluebird.all([
-    //     Tweet.update({
-    //       _id: tweetId,
-    //       "retweets._id": username
-    //     }, {
-    //       $inc: { "retweets.count": 1 }
-    //     }), User.update({
-    //       _id: username,
-    //       "retweets._id": tweetId
-    //     }, {
-    //       $inc: { "retweets.count": 1 }
-    //     })
-    //   ])
-    //   .spread(function(updatedTweet, updatedUser) {
-    //     console.log('after incrementing?');
-    //     return response.json({
-    //       message: 'success updating adding retweet!'
-    //     });
-    //   })
-    //   .catch(function(err) {
-    //     response.status(500);
-    //     response.json({
-    //       error: err.message
-    //     });
-    //     console.log('err updating adding retweet to db...', err.message);
-    //   });
 
   } else {
 
@@ -491,82 +483,7 @@ app.put('/api/retweet/new/add', function(request, response) {
         });
         console.log('err updating adding retweet to db...', err.message);
       });
-
-    // bluebird.all([
-    //     Tweet.update({
-    //       _id: tweetId
-    //     }, {
-    //       $addToSet: { retweets: { _id: username, count: 1 } }
-    //     }), User.update({
-    //       _id: username,
-    //     }, {
-    //       $addToSet: { retweets: { _id: tweetId, count: 1 } }
-    //     })
-    //   ])
-    //   .spread(function(updatedTweet, updatedUser) {
-    //     return response.json({
-    //       message: 'success updating adding retweet!'
-    //     });
-    //   })
-    //   .catch(function(err) {
-    //     response.status(500);
-    //     response.json({
-    //       error: err.message
-    //     });
-    //     console.log('err updating adding retweet to db...', err.message);
-    //   });
-
   }
-
-  //   bluebird.all([
-  //       Tweet.update({
-  //         _id: tweetId
-  //       }, {
-  //         $addToSet: { retweets: { username: 1 } }
-  //       }), User.update({
-  //         _id: username,
-  //       }, {
-  //         $inc: { retweets: { tweetId: 1 } }
-  //       })
-  //     ])
-  //     .spread(function(updatedTweet, updatedUser) {
-  //       return response.json({
-  //         message: 'success updating adding retweet!'
-  //       });
-  //     })
-  //     .catch(function(err) {
-  //       response.status(500);
-  //       response.json({
-  //         error: err.message
-  //       });
-  //       console.log('err updating adding retweet to db...', err.message);
-  //     });
-  //
-  // }
-
-  // bluebird.all([
-  //     Tweet.update({
-  //       _id: tweetId
-  //     }, {
-  //       $addToSet: { retweets: username }
-  //     }), User.update({
-  //       _id: username,
-  //     }, {
-  //       $addToSet: { retweets: tweetId }
-  //     })
-  //   ])
-  //   .spread(function(updatedTweet, updatedUser) {
-  //     return response.json({
-  //       message: 'success updating adding retweet!'
-  //     });
-  //   })
-  //   .catch(function(err) {
-  //     response.status(500);
-  //     response.json({
-  //       error: err.message
-  //     });
-  //     console.log('err updating adding retweet to db...', err.message);
-  //   });
 
 });
 
