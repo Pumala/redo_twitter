@@ -344,6 +344,9 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       .then(function(returnedInfo) {
         $scope.userInfo = returnedInfo.data.userInfo;
         $scope.tweets = returnedInfo.data.tweets;
+
+        $scope.retweetCount = TwitterFactory.getRetweetCount($scope.userInfo.retweets);
+
         console.log(returnedInfo);
       })
       .catch(function(err) {
