@@ -357,10 +357,25 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       .then(function(returnedInfo) {
         $scope.userInfo = returnedInfo.data.userInfo;
         $scope.tweets = returnedInfo.data.tweets;
+        $scope.allRetweets = returnedInfo.data.allRetweets;
+        $scope.origTweets = returnedInfo.data.origTweets;
 
-        $scope.retweetCount = TwitterFactory.getRetweetCount($scope.userInfo.retweets);
-
+        // $scope.retweetCount = TwitterFactory.getRetweetCount($scope.userInfo.retweets);
+        //
         console.log(returnedInfo);
+
+        $scope.allRetweets.forEach(function(retweet, index) {
+          $scope.origTweets.forEach(function(origTweet) {
+            if (retweet.tweet.toString() === origTweet._id.toString()) {
+              $scope.allRetweets[index].tweet = origTweet;
+            }
+          });
+        });
+
+        $scope.allTweets = $scope.allRetweets.concat($scope.tweets);
+
+        console.log('combo Retweets ARR:', $scope.allRetweets.concat($scope.tweets));
+
       })
       .catch(function(err) {
         console.log('err retrieving user profile info...', err.message);
@@ -469,11 +484,11 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
 
   $scope.retweetTweet = function(tweetId, arrObj) {
     if ($rootScope.rootUsername) {
-      var alreadyRetweeted = TwitterFactory.checkIfUserExistsInArrObj(arrObj);
+      // var alreadyRetweeted = TwitterFactory.checkIfUserExistsInArrObj(arrObj);
       var tweetInfo = {
         tweetId: tweetId,
-        username: $rootScope.rootUsername,
-        alreadyRetweeted: alreadyRetweeted
+        username: $rootScope.rootUsername
+        // alreadyRetweeted: alreadyRetweeted
       };
       TwitterFactory.retweetTweet(tweetInfo)
         .then(function() {

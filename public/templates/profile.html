@@ -12,7 +12,7 @@
     <h3>Following: {{ userInfo.following.length }}</h3>
     <h3>Followers: {{ userInfo.followers.length }}</h3>
     <h3>Likes: {{ userInfo.likes.length }}</h3>
-    <h3>Tweets: {{ userInfo.tweets.length + retweetCount }}</h3>
+    <h3>Tweets: {{ allTweets.length }}</h3>
   </div>
 
   <div class="">
@@ -26,6 +26,49 @@
       </form>
 
       <div class="">
+        <div ng-repeat="tweet in allTweets | orderBy: 'tweet.date' : reverse" class="panel panel-default">
+          <div class="panel-body">
+            <div ng-show="!editMode">
+              <div ng-if="tweet.retweeter">
+                <div class="panel-heading">
+                  <h2>{{username}} retweeted:</h2>
+                  <p>{{tweet.date | date : 'MMM dd, yyyy'}}</p>
+                </div>
+                <h3>{{tweet.tweet.author}} tweeted:</h3>
+                <p>{{ tweet.tweet.date | date : 'MMM dd, yyyy'}}</p>
+                <p>{{tweet.tweet.content}}</p>
+                <div>
+                  <i ng-click="retweetTweet(tweet.tweet._id, tweet.tweet.retweets)" ng-class="{ gray: (!checkIfUserExists(tweet.tweet.likes)), black: checkIfUserExists(tweet.tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.tweet.retweetCount }}</span>
+                  <i ng-click="updateTweetLikedStatus(tweet.tweet._id, tweet.tweet.author, tweet.tweet.likes)" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.tweet.likes.length }}</span>
+                </div>
+              </div>
+              <div ng-if="!tweet.retweeter">
+                <h3>{{username}} tweeted:</h3>
+                <p>{{ tweet.date | date : 'MMM dd, yyyy'}}</p>
+                <p>{{tweet.content}}</p>
+                <div>
+                  <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class="{ gray: (!checkIfUserExists(tweet.likes)), black: checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.retweetCount }}</span>
+                  <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.likes.length }}</span>
+                </div>
+              </div>
+            </div>
+            <div ng-show="rootUsername === username" class="editTweet">
+              <div ng-show="!editMode">
+                <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-primary">Edit</button>
+                <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger">Delete</button>
+                <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id)" class="btn btn-danger">Delete</button>
+              </div>
+              <div ng-show="editMode">
+                <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>
+                <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success">Save</button>
+                <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-primary">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="">
         <div ng-repeat="tweet in tweets" class="panel panel-default">
           <div class="panel-body">
             <div ng-show="!editMode">
@@ -33,7 +76,7 @@
               <p>{{ tweet.date | date : 'MMM dd, yyyy'}}</p>
               <p>{{tweet.content}}</p>
               <div>
-                <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class="{ gray: (!checkIfUserExists(tweet.likes)), black: checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{ getRetweetCount(tweet.retweets) }}</span>
+                <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class="{ gray: (!checkIfUserExists(tweet.likes)), black: checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.retweetCount }}</span>
                 <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.likes.length }}</span>
               </div>
             </div>
@@ -50,7 +93,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
 

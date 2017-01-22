@@ -9,7 +9,7 @@
           {{tweet.date | date : "MMM dd, yyyy"}}<br>
           <a ui-sref="profile({ username: tweet.author })">{{ tweet.author }}</a> tweeted '{{tweet.content}}'
           <div class="">
-            <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class="{ 'grey' : (!(checkIfUserExists(tweet.likes)) || !rootUsername ), 'black' : checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{getRetweetCount(tweet.retweets)}}</span>
+            <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class="{ 'grey' : (!(checkIfUserExists(tweet.likes)) || !rootUsername ), 'black' : checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.retweetCount}}</span>
             <i ng-click="likeTweet(tweet._id, tweet.likes)" ng-class="{ 'grey' : ((tweet.likes.indexOf(rootUsername) < 0) || !rootUsername), 'black' : (tweet.likes.indexOf(rootUsername) > -1) }" class="fa fa-heart" aria-hidden="true"></i><span>{{tweet.likes.length}}</span>
             <!-- <i ng-class="{ 'grey' : ((tweet.retweets.indexOf(rootUsername) < 0) || !rootUsername ), 'black' : (tweet.likes.indexOf(rootUsername) > -1) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.retweets.length}}</span>
             <i ng-click="likeTweet(tweet._id)" ng-class="{ 'grey' : ((tweet.likes.indexOf(rootUsername) < 0) || !rootUsername), 'black' : (tweet.likes.indexOf(rootUsername) > -1) }" class="fa fa-heart" aria-hidden="true"></i><span>{{tweet.likes.length}}</span> -->
