@@ -119,6 +119,15 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     });
   };
 
+  service.deleteRetweet = function(retweetInfo) {
+    var url = '/api/retweet/edit/delete';
+    return $http({
+      method: 'PUT',
+      url: url,
+      data: retweetInfo
+    });
+  };
+
   service.getWorldTimeline = function() {
     console.log('hmm hmm');
     var url = '/api/worldtimeline';
@@ -417,8 +426,18 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       });
   };
 
-  $scope.deleteretweet = function() {
-    
+  $scope.deleteRetweet = function(retweetId) {
+    var retweetInfo = {
+      retweetId: retweetId,
+      username: $rootScope.rootUsername
+    };
+    TwitterFactory.deleteRetweet(retweetInfo)
+      .then(function() {
+        $scope.loadProfilePage();
+      })
+      .catch(function(err) {
+        console.log('err deleting retweet id in profile controller...', err.message);
+      });
   };
 
   $scope.saveTweet = function(tweetId, content) {

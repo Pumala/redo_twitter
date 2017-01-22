@@ -463,21 +463,22 @@ app.put('/api/tweet/status/update', function(request, response) {
 app.put('/api/retweet/edit/delete', function(request, response) {
 
   var username = request.body.username;
-  var tweetId = request.body.tweetId;
+  var retweetId = request.body.retweetId;
+  console.log('delete retweet i think', request.body);
 
   bluebird.all([
-      Tweet.remove({ _id: tweetId }),
+      Retweet.remove({ _id: retweetId }),
       User.update({
         _id: username
-      }, { $pull: { tweets: tweetId } })
+      }, { $pull: { retweets: retweetId } })
     ])
     .spread(function(removedTweet, updatedUser) {
       return response.json({
-        message: "success deleting tweet from db!"
+        message: "success deleting retweet from db!"
       });
     })
     .catch(function(err) {
-      console.log('err deleting tweet from db...', err.message);
+      console.log('err deleting retweet from db...', err.message);
       response.status(500);
       response.json({
         error: err.message
