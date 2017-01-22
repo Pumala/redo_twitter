@@ -417,6 +417,10 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       });
   };
 
+  $scope.deleteretweet = function() {
+    
+  };
+
   $scope.saveTweet = function(tweetId, content) {
     var tweetInfo = {
       tweetId: tweetId,

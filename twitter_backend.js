@@ -57,7 +57,7 @@ const User = mongoose.model('User', {
   following: [String],
   likes: [ObjectId],
   tweets: [ObjectId], // tweet _id
-  retweets: [ObjectId], // tweet _id
+  retweets: [ObjectId], // retweet _id
   avatar: String,
   joined: Date,
   authToken: { token: String, expires: Date }
@@ -217,15 +217,26 @@ app.get('/api/profile/:username', function(request, response) {
 
       return [ Tweet.find({ _id: { $in: userTweets} }),
         Retweet.find({ retweeter: username }),
-        Tweet.find({ _id: { $in: userRetweets} }),
         userInfo
       ];
     })
-    .spread(function(allTweets, allRetweets, origTweets, userInfo) {
+    .spread(function(allTweets, allRetweets, userInfo) {
       console.log('tweets:', allTweets);
       console.log('REtweets:', allRetweets);
-      console.log('original:', origTweets);
 
+      var origTweets = allRetweets.map(function(retweet) {
+        return retweet.tweet;
+      });
+
+      return [ Tweet.find({
+          _id: {
+            $in: origTweets
+          }
+        }), allTweets, allRetweets, userInfo
+      ];
+
+    })
+    .spread(function(origTweets, allTweets, allRetweets, userInfo) {
       return response.json({
         userInfo: userInfo,
         tweets: allTweets,
@@ -447,6 +458,35 @@ app.put('/api/tweet/status/update', function(request, response) {
 });
 
 // **************************************************************
+//                      DELETE RETWEET
+// **************************************************************
+app.put('/api/retweet/edit/delete', function(request, response) {
+
+  var username = request.body.username;
+  var tweetId = request.body.tweetId;
+
+  bluebird.all([
+      Tweet.remove({ _id: tweetId }),
+      User.update({
+        _id: username
+      }, { $pull: { tweets: tweetId } })
+    ])
+    .spread(function(removedTweet, updatedUser) {
+      return response.json({
+        message: "success deleting tweet from db!"
+      });
+    })
+    .catch(function(err) {
+      console.log('err deleting tweet from db...', err.message);
+      response.status(500);
+      response.json({
+        error: err.message
+      });
+    });
+
+});
+
+// **************************************************************
 //            UPDATE USER RETWEET
 // **************************************************************
 app.put('/api/retweet/new/add', function(request, response) {
@@ -462,11 +502,13 @@ app.put('/api/retweet/new/add', function(request, response) {
     retweeter: username,
     date: new Date(),
     tweet: tweetId
-  })
+  });
 
-  bluebird.all([
-      newRetweet.save(),
-      Tweet.update({
+  newRetweet.save()
+  .then(function(savedRetweet) {
+    var retweetId = savedRetweet._id;
+
+    return [ Tweet.update({
         _id: tweetId
       }, {
         $inc: { retweetCount: 1 }
@@ -474,17 +516,40 @@ app.put('/api/retweet/new/add', function(request, response) {
       User.update({
         _id: username
       }, {
-        $addToSet: { retweets: tweetId }
+        $addToSet: { retweets: retweetId }
       })
-    ])
-    .spread(function(savedRetweet, updatedUser) {
-      return response.json({
-        message: "success saving new retweet to db!"
-      });
-    })
-    .catch(function(err) {
-      console.log('err saving new retweet to db..', err.message);
+    ];
+  })
+  .spread(function(updatedTweet, updatedUser) {
+    return response.json({
+      message: "success saving new retweet to db!"
     });
+  })
+  .catch(function(err) {
+    console.log('err saving new retweet to db..', err.message);
+  });
+
+  // bluebird.all([
+  //     newRetweet.save(),
+  //     Tweet.update({
+  //       _id: tweetId
+  //     }, {
+  //       $inc: { retweetCount: 1 }
+  //     }),
+  //     User.update({
+  //       _id: username
+  //     }, {
+  //       $addToSet: { retweets: retweetId }
+  //     })
+  //   ])
+  //   .spread(function(savedRetweet, updatedUser) {
+  //     return response.json({
+  //       message: "success saving new retweet to db!"
+  //     });
+  //   })
+  //   .catch(function(err) {
+  //     console.log('err saving new retweet to db..', err.message);
+  //   });
   //
   // newRetweet.save()
   //   .then(function(newRetweet) {
