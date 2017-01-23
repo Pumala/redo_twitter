@@ -228,6 +228,14 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     return allRetweets.concat(tweets);
   };
 
+  service.getUserInfo = function() {
+    var url = '/api/profile/edit/user/' + $rootScope.rootUsername;
+    return $http({
+      method: 'GET',
+      url: url
+    });
+  };
+
   return service;
 });
 
@@ -382,6 +390,23 @@ app.controller('SignUpController', function($cookies, $rootScope, $state, $scope
         console.log('err signing up...', err.message);
       });
   };
+
+});
+
+app.controller('EditProfileController', function($cookies, $state, $stateParams, $rootScope, $scope, TwitterFactory) {
+
+  $scope.loadEditProfilePage = function() {
+    TwitterFactory.getUserInfo()
+      .then(function(results) {
+        $scope.userInfo = results.data.userInfo;
+      })
+      .catch(function(err) {
+        console.log('err retrieving user info in edit profile controller...', err.message);
+      });
+  };
+
+  $scope.loadEditProfilePage();
+
 
 });
 

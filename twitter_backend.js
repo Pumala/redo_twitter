@@ -725,6 +725,24 @@ app.put('/api/retweet/new/add', function(request, response) {
 });
 
 // **************************************************************
+//                GET USER INFO TO EDIT PROFILE
+// **************************************************************
+app.get('/api/profile/edit/user/:username', function(request, response) {
+
+  var username = request.params.username;
+
+  User.findOne({ _id: username })
+    .then(function(userInfo) {
+      return response.json({
+        userInfo: userInfo
+      });
+    })
+    .catch(function(err) {
+      console.log('err retrieving user info to edit profile...', err.message);
+    });
+});
+
+// **************************************************************
 //                    UPDATE FOLLOWING STATUS
 // **************************************************************
 app.put('/api/user/following/status/update', function(request, response) {
