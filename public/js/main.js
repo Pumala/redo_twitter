@@ -1,4 +1,4 @@
-var app = angular.module('twitterApp', ['ui.router', 'ngCookies']);
+var app = angular.module('twitterApp', ['ui.router', 'ngCookies', 'angularFileUpload']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -25,6 +25,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: '/profile/{username}',
     templateUrl: '/templates/profile.html',
     controller: 'ProfileController'
+  })
+  .state({
+    name: 'editProfile',
+    url: '/profile/edit/{username}',
+    templateUrl: '/templates/editprofile.html',
+    controller: 'EditProfileController'
   })
 
   $urlRouterProvider.otherwise('/');

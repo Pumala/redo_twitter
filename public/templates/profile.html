@@ -1,6 +1,11 @@
 <div class="container">
   <h1>{{userInfo._id}}'s Profile</h1>
 
+  <a ng-show="(rootUsername === userInfo._id) && (!userInfo.avatar)" ui-sref="editProfile({ username: userInfo._id })" title="buzz hover text">
+    <img src="images/default_user_avatar.png" alt="default user image">
+  </a>
+  <img ng-if="!userInfo.avatar" ng-show="rootUsername !== userInfo._id" src="images/default_user_avatar.png" alt="default user image">
+
   <p>Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
 
   <div ng-show="rootUsername !== userInfo._id">
