@@ -68,15 +68,45 @@ const User = mongoose.model('User', {
 // ********************************
 app.get('/api/worldtimeline', function(request, response) {
   console.log('in the world timelines api');
-  Tweet.find().limit(20)
-    .then(function(tweets) {
+
+  bluebird.all([
+      Retweet.find().limit(10),
+      Tweet.find().limit(10)
+    ])
+    .spread(function(retweets, tweets) {
+      console.log('retweets:', retweets);
+
+      var origTweets = retweets.map(function(tweet) {
+        return tweet.tweet;
+      });
+      console.log('originals!!', origTweets);
+      return [ Tweet.find({
+          _id: {
+            $in: origTweets
+          }
+        }), retweets, tweets
+      ];
+    })
+    .spread(function(origTweets, retweets, tweets) {
       return response.json({
+        origTweets: origTweets,
+        retweets: retweets,
         tweets: tweets
       });
     })
     .catch(function(err) {
       console.log('err retrieving the world timeline tweets from the db...', err.message);
     });
+
+  // Tweet.find().limit(10)
+  //   .then(function(tweets) {
+  //     return response.json({
+  //       tweets: tweets
+  //     });
+  //   })
+  //   .catch(function(err) {
+  //     console.log('err retrieving the world timeline tweets from the db...', err.message);
+  //   });
 
 });
 

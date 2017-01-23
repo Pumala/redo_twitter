@@ -156,6 +156,7 @@ app.factory('TwitterFactory', function($http, $rootScope) {
   };
 
   service.checkIfUserExistsInArr = function(arr) {
+    console.log('arr?', arr);
     if (arr.indexOf($rootScope.rootUsername) > -1) {
       return true;
     } else {
@@ -209,6 +210,18 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     });
   };
 
+  service.returnAllTweets = function(allRetweets, origTweets, tweets) {
+    allRetweets.forEach(function(retweet, index) {
+      origTweets.forEach(function(origTweet) {
+        if (retweet.tweet.toString() === origTweet._id.toString()) {
+          allRetweets[index].tweet = origTweet;
+        }
+      });
+    });
+
+    return allRetweets.concat(tweets);
+  };
+
   return service;
 });
 
@@ -217,7 +230,14 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
   $scope.loadWorldTimlinePage = function() {
     TwitterFactory.getWorldTimeline()
       .then(function(returnedInfo) {
+
+        $scope.origTweets = returnedInfo.data.origTweets;
+        $scope.retweets = returnedInfo.data.retweets;
         $scope.tweets = returnedInfo.data.tweets;
+
+        console.log('returning:', returnedInfo);
+        $scope.allTweets = TwitterFactory.returnAllTweets($scope.retweets, $scope.origTweets, $scope.tweets);
+        console.log('everything!!', $scope.allTweets);
       })
       .catch(function(err) {
         console.log('err loading world timeline page..', err.message);
@@ -257,6 +277,7 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
   };
 
   $scope.checkIfUserExists = function(arr) {
+    console.log('sent in array', arr);
     return TwitterFactory.checkIfUserExistsInArr(arr);
   };
 
@@ -369,22 +390,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
         $scope.allRetweets = returnedInfo.data.allRetweets;
         $scope.origTweets = returnedInfo.data.origTweets;
 
-        // $scope.retweetCount = TwitterFactory.getRetweetCount($scope.userInfo.retweets);
-        //
-        console.log(returnedInfo);
-
-        $scope.allRetweets.forEach(function(retweet, index) {
-          $scope.origTweets.forEach(function(origTweet) {
-            if (retweet.tweet.toString() === origTweet._id.toString()) {
-              $scope.allRetweets[index].tweet = origTweet;
-            }
-          });
-        });
-
-        $scope.allTweets = $scope.allRetweets.concat($scope.tweets);
-
-        console.log('combo Retweets ARR:', $scope.allRetweets.concat($scope.tweets));
-
+        $scope.allTweets = TwitterFactory.returnAllTweets($scope.allRetweets, $scope.origTweets, $scope.tweets);
       })
       .catch(function(err) {
         console.log('err retrieving user profile info...', err.message);
