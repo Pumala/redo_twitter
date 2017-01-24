@@ -58,7 +58,8 @@ const Tweet = mongoose.model('Tweet', {
   date: Date,
   author: String,
   likes: [String], // username
-  retweetCount: Number
+  retweetCount: Number,
+  avatar: String
   // isRetweet: Boolean,
   // retweet: { _id: ObjectId, retweeter: String, date: Date }
 });
@@ -77,7 +78,8 @@ const File = mongoose.model('File', {
 const Retweet = mongoose.model('Retweet', {
   retweeter: String,
   date: Date,
-  tweet: ObjectId // tweet _id
+  tweet: ObjectId, // tweet _id
+  avatar: String
 });
 
 const User = mongoose.model('User', {
@@ -280,16 +282,26 @@ app.get('/api/profile/:username', function(request, response) {
         return retweet.tweet;
       });
 
+      // var origAuthors = allRetweets.map(function(retweet) {
+      //   return retweet.tweet;
+      // });
+      // find all the users who has original tweet id in their tweets
+      // User.find({ tweets: { $in: origTweets}})
+
       return [ Tweet.find({
           _id: {
             $in: origTweets
           }
-        }), allTweets, allRetweets, userInfo
+        }), allTweets, allRetweets, userInfo, User.find({ tweets: { $in: origTweets }})
       ];
 
     })
-    .spread(function(origTweets, allTweets, allRetweets, userInfo) {
+    .spread(function(origTweets, allTweets, allRetweets, userInfo, allTheUsers) {
+
+      console.log('THE USERS::', allTheUsers);
+
       return response.json({
+        allTheUsers: allTheUsers,
         userInfo: userInfo,
         tweets: allTweets,
         origTweets: origTweets,
@@ -363,7 +375,8 @@ app.post('/api/profile/tweet/new', function(request, response) {
     date: new Date(),
     author: username,
     likes: [],
-    retweetCount: 0
+    retweetCount: 0,
+    avatar: ""
     // isRetweet: false,
     // retweet: { _id: "", retweeter: "", date: "" }
   });
@@ -554,7 +567,8 @@ app.put('/api/retweet/new/add', function(request, response) {
   var newRetweet = new Retweet({
     retweeter: username,
     date: new Date(),
-    tweet: tweetId
+    tweet: tweetId,
+    avatar: ""
   });
 
   newRetweet.save()

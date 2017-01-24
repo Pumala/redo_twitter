@@ -13,3 +13,6 @@ img {
 .avatarDiv {
   max-width: 300px;
 }
+.tweets img {
+  width: 50px;
+}

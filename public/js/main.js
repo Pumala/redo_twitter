@@ -217,10 +217,15 @@ app.factory('TwitterFactory', function($http, $rootScope) {
   };
 
   service.returnAllTweets = function(allRetweets, origTweets, tweets) {
+    console.log('retweets:', allRetweets);
+    console.log('originals:', origTweets);
+    console.log('just tweets', tweets);
     allRetweets.forEach(function(retweet, index) {
       origTweets.forEach(function(origTweet) {
-        if (retweet.tweet.toString() === origTweet._id.toString()) {
-          allRetweets[index].tweet = origTweet;
+        if (retweet.tweet && origTweet._id) {
+          if (retweet.tweet.toString() === origTweet._id.toString()) {
+            allRetweets[index].tweet = origTweet;
+          }
         }
       });
     });
@@ -495,8 +500,39 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
         $scope.tweets = returnedInfo.data.tweets;
         $scope.allRetweets = returnedInfo.data.allRetweets;
         $scope.origTweets = returnedInfo.data.origTweets;
+        $scope.allTheUsers = returnedInfo.data.allTheUsers;
+        console.log('tweeting!', $scope.tweets);
+
+
+
+        // if ($scope.userInfo.avatar) {
+        //   $scope.updatedTweets = [];
+        //   $scope.tweets.forEach(function(tweet) {
+        //     tweet.avatar = $scope.userInfo.avatar;
+        //     $scope.updatedTweets.push(tweet);
+        //   });
+        //   console.log('tweeting!', $scope.updatedTweets);
+        // }
 
         $scope.allTweets = TwitterFactory.returnAllTweets($scope.allRetweets, $scope.origTweets, $scope.tweets);
+        console.log('all them tweets:', $scope.allTweets);
+
+        $scope.allTweets.forEach(function(tweet) {
+          $scope.allTheUsers.forEach(function(user) {
+            if ((tweet.author === user._id) || (tweet.retweeter === user._id) ) {
+              tweet.avatar = user.avatar;
+            }
+            if (tweet.retweeter) {
+              console.log('tweet', tweet);
+              if (tweet.tweet.author === user._id) {
+                tweet.tweet.avatar = user.avatar;
+              }
+            }
+          });
+        });
+
+        console.log('updated alll...', $scope.allTweets);
+
       })
       .catch(function(err) {
         console.log('err retrieving user profile info...', err.message);
