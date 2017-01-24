@@ -270,10 +270,31 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
         $scope.origTweets = returnedInfo.data.origTweets;
         $scope.retweets = returnedInfo.data.retweets;
         $scope.tweets = returnedInfo.data.tweets;
+        $scope.allTheUsers = returnedInfo.data.allNames;
 
         console.log('returning:', returnedInfo);
         $scope.allTweets = TwitterFactory.returnAllTweets($scope.retweets, $scope.origTweets, $scope.tweets);
         console.log('everything!!', $scope.allTweets);
+
+        $scope.allTweets.forEach(function(tweet) {
+          $scope.allTheUsers.forEach(function(user) {
+            if ((tweet.author === user._id) || (tweet.retweeter === user._id) ) {
+              tweet.avatar = user.avatar;
+            }
+            if (tweet.retweeter) {
+              console.log('tweet', tweet);
+              if (tweet.tweet.author === user._id) {
+                tweet.tweet.avatar = user.avatar;
+              }
+            }
+          });
+        });
+
+        console.log('updated alll...', $scope.allTweets);
+
+
+
+
       })
       .catch(function(err) {
         console.log('err loading world timeline page..', err.message);

@@ -9,6 +9,8 @@
           {{ tweet.date | date : "MMM dd, yyyy"}}<br>
           <a ui-sref="profile({ username: tweet.retweeter })">{{ tweet.retweeter }}</a> retweeted:
           <div class="">
+            <img ng-show="tweet.tweet.avatar" src="upload/{{tweet.tweet.avatar}}" alt="">
+            <img ng-show="!tweet.tweet.avatar" src="upload/default_user_avatar.png" alt="">
             {{ tweet.tweet.date | date : "MMM dd, yyyy"}}<br>
             <a ui-sref="profile({ username: tweet.tweet.author })">{{ tweet.tweet.author }}</a> tweeted '{{tweet.tweet.content}}'
           </div>
@@ -18,6 +20,8 @@
           </div>
         </div>
         <div ng-show="!editMode && !tweet.retweeter">
+          <img ng-show="!tweet.avatar" ng-src="upload/default_user_avatar.png" alt="">
+          <img ng-show="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
           {{tweet.date | date : "MMM dd, yyyy"}}<br>
           <a ui-sref="profile({ username: tweet.author })">{{ tweet.author }}</a> tweeted '{{tweet.content}}'
           <div class="">

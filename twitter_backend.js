@@ -109,6 +109,21 @@ app.get('/api/worldtimeline', function(request, response) {
     ])
     .spread(function(retweets, tweets) {
       console.log('retweets:', retweets);
+      console.log('tweets', tweets);
+
+      var retweetNames = retweets.map(function(retweet) {
+        return retweet.retweeter;
+      });
+
+      var tweetNames = tweets.map(function(tweet) {
+        return tweet.author;
+      });
+
+      var allNames = retweetNames.concat(tweetNames);
+
+      allNames = allNames.filter(function(name, pos) {
+        return allNames.indexOf(name) == pos;
+      })
 
       var origTweets = retweets.map(function(tweet) {
         return tweet.tweet;
@@ -118,14 +133,15 @@ app.get('/api/worldtimeline', function(request, response) {
           _id: {
             $in: origTweets
           }
-        }), retweets, tweets
+        }), retweets, tweets, User.find({ _id: { $in: allNames }})
       ];
     })
-    .spread(function(origTweets, retweets, tweets) {
+    .spread(function(origTweets, retweets, tweets, allNames) {
       return response.json({
         origTweets: origTweets,
         retweets: retweets,
-        tweets: tweets
+        tweets: tweets,
+        allNames: allNames
       });
     })
     .catch(function(err) {
