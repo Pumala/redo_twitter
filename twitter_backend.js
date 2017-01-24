@@ -298,10 +298,8 @@ app.get('/api/profile/:username', function(request, response) {
     })
     .spread(function(origTweets, allTweets, allRetweets, userInfo, allTheUsers) {
 
-      console.log('THE USERS::', allTheUsers);
-
       return response.json({
-        allTheUsers: allTheUsers,
+        allTheUsers: allTheUsers.concat([userInfo]),
         userInfo: userInfo,
         tweets: allTweets,
         origTweets: origTweets,
@@ -468,7 +466,7 @@ app.put('/api/tweet/edit/delete', function(request, response) {
 //            UPDATE USER LIKE TWEET STATUS
 // **************************************************************
 app.put('/api/tweet/status/update', function(request, response) {
-  console.log('hello there', request.body);
+  console.log('hello there UPDATE TWEET STATUS', request.body);
   var tweetId = request.body.tweetId;
   var username = request.body.username;
   var likedStatus = request.body.likedStatus;
@@ -495,6 +493,7 @@ app.put('/api/tweet/status/update', function(request, response) {
         console.log('err updating tweet and user tweet likes array...', err.message);
       });
   } else {
+    console.log('FALSE YES');
     bluebird.all([
       Tweet.update({
             _id: tweetId

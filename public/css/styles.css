@@ -11,8 +11,9 @@ img {
   color: #000;
 }
 .avatarDiv {
-  max-width: 300px;
+  max-width: 200px;
 }
 .tweets img {
+  border-radius: 50%;
   width: 50px;
 }

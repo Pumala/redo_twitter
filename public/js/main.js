@@ -263,7 +263,7 @@ app.factory('TwitterFactory', function($http, $rootScope) {
 
 app.controller('WorldTimelineController', function($rootScope, $state, $scope, TwitterFactory) {
 
-  $scope.loadWorldTimlinePage = function() {
+  $scope.loadWorldTimelinePage = function() {
     TwitterFactory.getWorldTimeline()
       .then(function(returnedInfo) {
 
@@ -281,7 +281,7 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
   };
 
   // load page once initially
-  $scope.loadWorldTimlinePage();
+  $scope.loadWorldTimelinePage();
 
   // delete Tweet (only tweet author has permission)
   $scope.deleteTweet = function(tweetId, author) {
@@ -291,7 +291,7 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
     };
     TwitterFactory.removeTweet(tweetInfo)
       .then(function() {
-        $scope.loadWorldTimlinePage();
+        $scope.loadWorldTimelinePage();
       })
       .catch(function(err) {
         console.log('err removing tweet in world timeline...', err.message);
@@ -305,7 +305,7 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
     };
     TwitterFactory.updateTweet(tweetInfo)
       .then(function() {
-        $scope.loadWorldTimlinePage();
+        $scope.loadWorldTimelinePage();
       })
       .catch(function(err) {
         console.log('err saving tweet in world timeline....', err.message);
@@ -337,24 +337,26 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
     }
     TwitterFactory.updateLikedTweetStatus(tweetInfo)
       .then(function() {
-        $scope.loadWorldTimlinePage();
+        $scope.loadWorldTimelinePage();
       })
       .catch(function(err) {
         console.log('err updating liked status of tweet in timeline controller...', err.message);
       });
   };
 
-  $scope.retweetTweet = function(tweetId, arrObj) {
+  $scope.retweetTweet = function(tweetId) {
     if ($rootScope.rootUsername) {
-      var alreadyRetweeted = TwitterFactory.checkIfUserExistsInArrObj(arrObj);
+      // console.log('who am i', arrObj);
+      // var alreadyRetweeted = TwitterFactory.checkIfUserExistsInArrObj(arrObj);
       var tweetInfo = {
         tweetId: tweetId,
-        username: $rootScope.rootUsername,
-        alreadyRetweeted: alreadyRetweeted
+        username: $rootScope.rootUsername
+        // alreadyRetweeted: alreadyRetweeted
       };
+      console.log('tweet info cluck:', tweetInfo);
       TwitterFactory.retweetTweet(tweetInfo)
         .then(function() {
-          $scope.loadWorldTimlinePage();
+          $scope.loadWorldTimelinePage();
         })
         .catch(function(err) {
           console.log('err retweeting tweet in world timeline...', err.message);
@@ -613,23 +615,25 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       var isLiked = TwitterFactory.checkIfUserExistsInArr(arr);
       console.log('likes 1?', isLiked);
 
-      isLiked = TwitterFactory.toggleLikedStatus(isLiked);
-      console.log('likes?', isLiked);
+      // isLiked = TwitterFactory.toggleLikedStatus(isLiked);
+      console.log('likes?', !isLiked);
       var tweetInfo = {
         tweetId: tweetId,
-        username: author,
-        likedStatus: isLiked
+        username: $rootScope.rootUsername,
+        likedStatus: !isLiked
       };
+      TwitterFactory.updateLikedTweetStatus(tweetInfo)
+        .then(function() {
+          console.log('are you here??');
+          $scope.loadProfilePage();
+          console.log('YOOO');
+        })
+        .catch(function(err) {
+          console.log('err updating tweet liked status in profile controller...', err.message);
+        });
     } else {
       $state.go("login");
     }
-    TwitterFactory.updateLikedTweetStatus(tweetInfo)
-      .then(function() {
-        $scope.loadProfilePage();
-      })
-      .catch(function(err) {
-        console.log('err updating tweet liked status in profile controller...', err.message);
-      });
   };
 
   $scope.followUser = function(user, currFollowing) {

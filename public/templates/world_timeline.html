@@ -13,7 +13,7 @@
             <a ui-sref="profile({ username: tweet.tweet.author })">{{ tweet.tweet.author }}</a> tweeted '{{tweet.tweet.content}}'
           </div>
           <div class="">
-            <i ng-click="retweetTweet(tweet.tweet._id, tweet.tweet.retweets)" ng-class="{ 'grey' : (!(checkIfUserExists(tweet.tweet.likes)) || !rootUsername ), 'black' : checkIfUserExists(tweet.tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.tweet.retweetCount}}</span>
+            <i ng-click="retweetTweet(tweet.tweet._id)" ng-class="{ 'grey' : (!(checkIfUserExists(tweet.tweet.likes)) || !rootUsername ), 'black' : checkIfUserExists(tweet.tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.tweet.retweetCount}}</span>
             <i ng-click="likeTweet(tweet.tweet._id, tweet.tweet.likes)" ng-class="{ 'grey' : ((tweet.tweet.likes.indexOf(rootUsername) < 0) || !rootUsername), 'black' : (tweet.tweet.likes.indexOf(rootUsername) > -1) }" class="fa fa-heart" aria-hidden="true"></i><span>{{tweet.tweet.likes.length}}</span>
           </div>
         </div>
@@ -21,7 +21,7 @@
           {{tweet.date | date : "MMM dd, yyyy"}}<br>
           <a ui-sref="profile({ username: tweet.author })">{{ tweet.author }}</a> tweeted '{{tweet.content}}'
           <div class="">
-            <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class="{ 'grey' : (!(checkIfUserExists(tweet.likes)) || !rootUsername ), 'black' : checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.retweetCount}}</span>
+            <i ng-click="retweetTweet(tweet._id)" ng-class="{ 'grey' : (!(checkIfUserExists(tweet.likes)) || !rootUsername ), 'black' : checkIfUserExists(tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.retweetCount}}</span>
             <i ng-click="likeTweet(tweet._id, tweet.likes)" ng-class="{ 'grey' : ((tweet.likes.indexOf(rootUsername) < 0) || !rootUsername), 'black' : (tweet.likes.indexOf(rootUsername) > -1) }" class="fa fa-heart" aria-hidden="true"></i><span>{{tweet.likes.length}}</span>
           </div>
         </div>
