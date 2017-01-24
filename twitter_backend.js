@@ -884,6 +884,22 @@ app.put('/api/user/following/status/update', function(request, response) {
 
 });
 
+// **************************************************************
+//                    UPDATE FOLLOWING STATUS
+// **************************************************************
+app.delete('/api/profile/edit/delete/file/:fileid', function(request, response) {
+  var fileId = request.params.fileId;
+
+  File.remove({ _id: fileId })
+    .then(function(removedFile) {
+      return response.json({
+        message: 'success deleting file from db!'
+      });
+    })
+    .catch(function(err) {
+      console.log('err deleting file from db...', err.message);
+    });
+});
 
 app.listen(3005, function() {
   console.log('The server is listening on port 3005....');

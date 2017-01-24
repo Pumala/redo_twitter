@@ -245,6 +245,14 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     });
   };
 
+  service.deleteTempFile = function(fileId) {
+    var url = '/api/profile/edit/delete/file/' + fileId;
+    return $http({
+      method: 'DELETE',
+      url: url
+    });
+  };
+
   return service;
 });
 
@@ -430,6 +438,20 @@ app.controller('EditProfileController', function($cookies, $state, $stateParams,
     $scope.userInfo.avatar = file.filename;
     console.log($scope.userInfo.avatar);
   });
+
+  $scope.deleteTempFile = function() {
+    if ($scope.tempFileInfo) {
+      TwitterFactory.deleteTempFile($scope.tempFileInfo.fileId)
+      .then(function() {
+        // $state.go('profile', { username: $rootScope.rootUsername });
+      })
+      .catch(function(err) {
+        console.log('err deleting temp file...', err.message);
+      });
+    }
+    $state.go('profile', { username: $rootScope.rootUsername });
+
+  };
 
   $scope.saveProfileEdits = function() {
     var editProfileObj = {
