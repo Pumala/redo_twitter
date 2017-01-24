@@ -751,18 +751,24 @@ app.put('/api/profile/edit/save', function(request, response) {
 
   var username = request.body.username;
   var filename = request.body.filename;
+  var origFileName = request.body.origFileName;
 
+  // delete old user avatar
   // update user's avatar
-  User.update({
-      _id: username
-    }, {
-      $set: {
-        avatar: filename
-      }
-    })
-    .then(function(updatedUser) {
-      return response.json({
 
+  bluebird.all([
+    File.remove({ filename: origFileName }),
+    User.update({
+        _id: username
+      }, {
+        $set: {
+          avatar: filename
+        }
+      })
+    ])
+    .spread(function(removedFile, updatedUser) {
+      return response.json({
+        message: "success removing file and updating user edits!"
       });
     })
     .catch(function(err) {

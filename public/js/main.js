@@ -433,7 +433,8 @@ app.controller('FileController', function($timeout, $scope, TwitterFactory, $roo
 app.controller('EditProfileController', function($cookies, $state, $stateParams, $rootScope, $scope, TwitterFactory) {
 
   $scope.$on('profileEditMode', function(event, file) {
-    // console.log('arrived!', file);
+    // save the original file in case user chooses to cancel changes
+    $scope.origFile = $scope.userInfo.avatar;
     $scope.tempFileInfo = file;
     $scope.userInfo.avatar = file.filename;
     console.log($scope.userInfo.avatar);
@@ -456,7 +457,8 @@ app.controller('EditProfileController', function($cookies, $state, $stateParams,
   $scope.saveProfileEdits = function() {
     var editProfileObj = {
       username: $rootScope.rootUsername,
-      filename: $scope.tempFileInfo.filename
+      filename: $scope.tempFileInfo.filename,
+      origFilename: $scope.origFile
     };
     TwitterFactory.saveProfileEdits(editProfileObj)
       .then(function() {
