@@ -746,6 +746,31 @@ app.put('/api/retweet/new/add', function(request, response) {
 
 });
 
+app.put('/api/profile/edit/save', function(request, response) {
+  console.log('saved', request.body);
+
+  var username = request.body.username;
+  var filename = request.body.filename;
+
+  // update user's avatar
+  User.update({
+      _id: username
+    }, {
+      $set: {
+        avatar: filename
+      }
+    })
+    .then(function(updatedUser) {
+      return response.json({
+
+      });
+    })
+    .catch(function(err) {
+      console.log('err saving new profile edits...', err.message);
+    });
+
+});
+
 // **************************************************************
 //                GET USER INFO TO EDIT PROFILE
 // **************************************************************

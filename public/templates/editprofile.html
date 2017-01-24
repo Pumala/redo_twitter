@@ -1,11 +1,13 @@
 <div class="container">
 
-  <h1>Edit Profile</h1>
+  <h1>Edit {{rootUsername}}'s Profile</h1>
 
   <h3>Profile Picture</h3>
 
-  <img ng-if="userInfo.avatar" ng-src="{{userInfo.avatar}}" alt="">
-  <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="">
+  <div class="avatarDiv">
+    <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="">
+    <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="">
+  </div>
 
   <form ng-controller="FileController">
     <div class="">
@@ -16,7 +18,7 @@
     </div>
   </form>
 
-  <button class="btn btn-default" ng-click="userInfo.avatar = origPic">Cancel</button>
-  <button class="btn btn-success">Save</button>
+  <a ui-sref="profile({ username: $rootScope.rootUsername })" class="btn btn-default">Cancel</a>
+  <button ng-click="saveProfileEdits()" class="btn btn-success">Save</button>
 
 </div>

@@ -236,6 +236,15 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     });
   };
 
+  service.saveProfileEdits = function(editProfileObj) {
+    var url = '/api/profile/edit/save';
+    return $http({
+      method: 'PUT',
+      url: url,
+      data: editProfileObj
+    });
+  };
+
   return service;
 });
 
@@ -417,14 +426,29 @@ app.controller('EditProfileController', function($cookies, $state, $stateParams,
 
   $scope.$on('profileEditMode', function(event, file) {
     // console.log('arrived!', file);
-    $scope.userInfo.avatar = "upload/" + file.filename;
+    $scope.tempFileInfo = file;
+    $scope.userInfo.avatar = file.filename;
     console.log($scope.userInfo.avatar);
   });
+
+  $scope.saveProfileEdits = function() {
+    var editProfileObj = {
+      username: $rootScope.rootUsername,
+      filename: $scope.tempFileInfo.filename
+    };
+    TwitterFactory.saveProfileEdits(editProfileObj)
+      .then(function() {
+        $state.go('profile', { username: $rootScope.rootUsername });
+      })
+      .catch(function(err) {
+        console.log('err saving profile edits...', err.message);
+      });
+  };
 
   $scope.loadEditProfilePage = function() {
     TwitterFactory.getUserInfo()
       .then(function(results) {
-        console.log('1, 2, 3, 4');
+        console.log('1, 2, 3, 4', results.data.userInfo);
         $scope.userInfo = results.data.userInfo;
       })
       .catch(function(err) {

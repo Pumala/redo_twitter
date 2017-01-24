@@ -1,9 +1,15 @@
 /*************************************************
       Modify Existing Bootstrap/Fontawesome
 *************************************************/
+img {
+  width: 100%;
+}
 .grey {
   color: grey;
 }
 .black {
   color: #000;
+}
+.avatarDiv {
+  max-width: 300px;
 }
