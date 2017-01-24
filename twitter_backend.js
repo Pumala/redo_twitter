@@ -2,7 +2,9 @@ const   express       =       require('express'),
         mongoose      =       require("mongoose"),
         bodyParser    =       require('body-parser'),
         bluebird      =       require("bluebird"),
-        uuidV4        =       require("uuid/v4");
+        uuidV4        =       require("uuid/v4"),
+        path          =       require('path');
+
 
 // BCRYPT
 const bcrypt        = require('bcrypt-promise');
@@ -13,6 +15,25 @@ const someOtherPlaintextPassword = 'not_bacon';
 const app           = express();
 mongoose.Promise    = bluebird;
 const ObjectId      = mongoose.Schema.ObjectId;
+
+// module.exports        = function (app) {
+const multer        = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/upload');
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    const id = uuidV4();
+    cb(null, id + ext);
+  }
+});
+
+// where to store the files => upload
+const upload        = multer({
+  storage
+});
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -40,6 +61,17 @@ const Tweet = mongoose.model('Tweet', {
   retweetCount: Number
   // isRetweet: Boolean,
   // retweet: { _id: ObjectId, retweeter: String, date: Date }
+});
+
+const File = mongoose.model('File', {
+  fieldname: String,
+  originalname: String,
+  encoding: String,
+  mimetype: String,
+  destination: String,
+  filename: String,
+  path: String,
+  size: Number
 });
 
 const Retweet = mongoose.model('Retweet', {
@@ -97,16 +129,6 @@ app.get('/api/worldtimeline', function(request, response) {
     .catch(function(err) {
       console.log('err retrieving the world timeline tweets from the db...', err.message);
     });
-
-  // Tweet.find().limit(10)
-  //   .then(function(tweets) {
-  //     return response.json({
-  //       tweets: tweets
-  //     });
-  //   })
-  //   .catch(function(err) {
-  //     console.log('err retrieving the world timeline tweets from the db...', err.message);
-  //   });
 
 });
 
@@ -740,6 +762,36 @@ app.get('/api/profile/edit/user/:username', function(request, response) {
     .catch(function(err) {
       console.log('err retrieving user info to edit profile...', err.message);
     });
+});
+
+// **************************************************************
+//                        FILE UPLOAD API
+// **************************************************************
+app.post('/api/profile/files/upload/user/:username', upload.single('file'), function(request, response) {
+
+  console.log('upload me!');
+  var username = request.params.username;
+
+  var file = request.file;
+
+  var newFile = new File(file);
+
+  newFile.save()
+    .then(function(newFile) {
+      console.log('new file made..', newFile);
+      // var fileId = newFile._id;
+
+      return response.json({
+        originalname: newFile.originalname,
+        filename: newFile.filename,
+        fileId: newFile._id
+      });
+
+    })
+    .catch(function(err) {
+      console.log('err saving new file...', err.message);
+    });
+
 });
 
 // **************************************************************

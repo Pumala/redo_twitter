@@ -393,11 +393,38 @@ app.controller('SignUpController', function($cookies, $rootScope, $state, $scope
 
 });
 
+
+app.controller('FileController', function($timeout, $scope, TwitterFactory, $rootScope, $state, FileUploader) {
+
+  var uploader = $scope.uploader = new FileUploader({
+    url: '/api/profile/files/upload/user/' + $rootScope.rootUsername
+  });
+
+  uploader.onCompleteAll = function(file) {
+    // console.log('is this it?', file);
+    // $scope.$emit('newEditMode', false);
+  };
+
+  uploader.onSuccessItem = function(fileItem, response, status, headers) {
+    // so far, do nothing
+    console.log('hahaha2', response);
+    $scope.$emit('profileEditMode', response);
+
+  };
+});
+
 app.controller('EditProfileController', function($cookies, $state, $stateParams, $rootScope, $scope, TwitterFactory) {
+
+  $scope.$on('profileEditMode', function(event, file) {
+    // console.log('arrived!', file);
+    $scope.userInfo.avatar = "upload/" + file.filename;
+    console.log($scope.userInfo.avatar);
+  });
 
   $scope.loadEditProfilePage = function() {
     TwitterFactory.getUserInfo()
       .then(function(results) {
+        console.log('1, 2, 3, 4');
         $scope.userInfo = results.data.userInfo;
       })
       .catch(function(err) {

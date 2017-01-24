@@ -4,11 +4,19 @@
 
   <h3>Profile Picture</h3>
 
-  <img ng-if="userInfo.avatar" src="upload/" alt="">
+  <img ng-if="userInfo.avatar" ng-src="{{userInfo.avatar}}" alt="">
   <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="">
 
-  <form class="" action="index.html" method="post">
-
+  <form ng-controller="FileController">
+    <div class="">
+      <input type="file" nv-file-select=""uploader="uploader">
+      <button class="upload btn btn-primary" ng-disabled="!uploader.getNotUploadedItems().length" ng-click="uploader.uploadAll()">
+        Upload new picture
+      </button>
+    </div>
   </form>
+
+  <button class="btn btn-default" ng-click="userInfo.avatar = origPic">Cancel</button>
+  <button class="btn btn-success">Save</button>
 
 </div>
