@@ -315,6 +315,20 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
       });
   };
 
+  $scope.deleteRetweet = function(retweetId) {
+    var tweetInfo = {
+      username: $rootScope.rootUsername,
+      retweetId: retweetId
+    };
+    TwitterFactory.deleteRetweet(tweetInfo)
+      .then(function() {
+
+      })
+      .catch(function() {
+
+      });
+  };
+
   $scope.saveTweet = function(tweetId, content) {
     var tweetInfo = {
       tweetId: tweetId,

@@ -6,11 +6,13 @@
     <div class="panel panel-default" ng-repeat="tweet in allTweets">
       <div class="panel-body">
         <div ng-show="tweet.retweeter">
+            <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
+            <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
           {{ tweet.date | date : "MMM dd, yyyy"}}<br>
           <a ui-sref="profile({ username: tweet.retweeter })">{{ tweet.retweeter }}</a> retweeted:
           <div class="">
-            <img ng-show="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
-            <img ng-show="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
+            <img ng-if="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
+            <img ng-if="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
             {{ tweet.tweet.date | date : "MMM dd, yyyy"}}<br>
             <a ui-sref="profile({ username: tweet.tweet.author })">{{ tweet.tweet.author }}</a> tweeted '{{tweet.tweet.content}}'
           </div>
@@ -18,10 +20,13 @@
             <i ng-click="retweetTweet(tweet.tweet._id)" ng-class=" ((tweet.tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername ) ? 'grey' : 'black'" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.tweet.retweetCount}}</span>
             <i ng-click="likeTweet(tweet.tweet._id, tweet.tweet.likes)" ng-class=" ((tweet.tweet.likes.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : 'black'" class="fa fa-heart" aria-hidden="true"></i><span>{{tweet.tweet.likes.length}}</span>
           </div>
+          <div ng-show="rootUsername === tweet.retweeter">
+            <button ng-click="deleteRetweet(tweet._id)" class="btn btn-danger">Delete</button>
+          </div>
         </div>
         <div ng-show="!editMode && !tweet.retweeter">
-          <img ng-show="!tweet.avatar" src="images/default_user_avatar.png" alt="">
-          <img ng-show="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
+          <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
+          <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
           {{tweet.date | date : "MMM dd, yyyy"}}<br>
           <a ui-sref="profile({ username: tweet.author })">{{ tweet.author }}</a> tweeted '{{tweet.content}}'
           <div class="">
