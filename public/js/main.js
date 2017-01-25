@@ -330,7 +330,7 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
   };
 
   $scope.checkIfUserExists = function(arr) {
-    console.log('sent in array', arr);
+    // console.log('sent in array', arr);
     if (arr.indexOf($rootScope.rootUsername) > -1) {
       return true;
     } else {
