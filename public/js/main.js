@@ -648,12 +648,8 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
 
   $scope.updateTweetLikedStatus = function(tweetId, author, arr) {
     if ($rootScope.rootUsername) {
-      console.log('arr?', arr);
       var isLiked = TwitterFactory.checkIfUserExistsInArr(arr);
-      console.log('likes 1?', isLiked);
 
-      // isLiked = TwitterFactory.toggleLikedStatus(isLiked);
-      console.log('likes?', !isLiked);
       var tweetInfo = {
         tweetId: tweetId,
         username: $rootScope.rootUsername,
@@ -696,11 +692,9 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
 
   $scope.retweetTweet = function(tweetId, arrObj) {
     if ($rootScope.rootUsername) {
-      // var alreadyRetweeted = TwitterFactory.checkIfUserExistsInArrObj(arrObj);
       var tweetInfo = {
         tweetId: tweetId,
         username: $rootScope.rootUsername
-        // alreadyRetweeted: alreadyRetweeted
       };
       TwitterFactory.retweetTweet(tweetInfo)
         .then(function() {
