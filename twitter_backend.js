@@ -44,14 +44,6 @@ mongoose.connect('mongodb://localhost/redo_twitter_db');
 // ********************************
 //              SCHEMAS
 // ********************************
-// const Tweet = mongoose.model('Tweet', {
-//   content: { type: String, required: true },
-//   date: Date,
-//   author: String,
-//   likes: [String], // username
-//   isRetweet: Boolean,
-//   retweet: { _id: ObjectId, retweeter: String, date: Date }
-// });
 
 const Tweet = mongoose.model('Tweet', {
   content: { type: String, required: true },
@@ -59,11 +51,8 @@ const Tweet = mongoose.model('Tweet', {
   author: String,
   likes: [String], // username,
   retweetIds: [ObjectId],
-  // retweetCount: Number,
   retweeters: [String], // username
   avatar: String
-  // isRetweet: Boolean,
-  // retweet: { _id: ObjectId, retweeter: String, date: Date }
 });
 
 const File = mongoose.model('File', {
@@ -461,13 +450,36 @@ app.put('/api/tweet/edit/delete', function(request, response) {
   var username = request.body.username;
   var tweetId = request.body.tweetId;
 
-  bluebird.all([
-      Tweet.findOne({ _id: tweetId }),
-      User.update({
-        _id: username
-      }, { $pull: { tweets: tweetId } })
-    ])
-    .spread(function(origTweet, updatedUser) {
+  // 1. make a query to find the tweet info for later queries
+  // 1A. from the tweet info, we want 2 things: retweetIds and retweeters
+  // 2. remove all retweets whose ids match any of the ids found in retweetIds
+  // 3. remove the original tweet
+  // 4. update all users who are found in retweeters by removing any of their retweetIds
+  // that match any of the retweetIds
+  // 5. update the original tweet owner and remove tweet id from tweets array
+
+  Tweet.findOne({ _id: tweetId })
+    .then(function(tweetInfo) {
+      var retweetIds = tweetInfo.retweetIds;
+      var retweeters = tweetInfo.retweeters;
+
+      return[ Retweet.remove({ _id: { $in: retweetIds }}),
+        Tweet.remove({ _id: tweetId }),
+        User.update({ _id: { $in: retweeters }},
+          {
+            $pullAll: { retweets: retweetIds }
+          },
+          {
+            multi: true
+          }
+        ), User.update({
+          _id: username
+        }, {
+          $pull: { tweets: tweetId }
+        })
+      ]
+    })
+    .spread(function(removeAllRetweets, removeOrigTweet, updatedUsers, updateOrigTweetUser) {
       return response.json({
         message: "success deleting tweet from db!"
       });
@@ -479,26 +491,6 @@ app.put('/api/tweet/edit/delete', function(request, response) {
         error: err.message
       });
     });
-
-
-  // bluebird.all([
-  //     Tweet.remove({ _id: tweetId }),
-  //     User.update({
-  //       _id: username
-  //     }, { $pull: { tweets: tweetId } })
-  //   ])
-  //   .spread(function(removedTweet, updatedUser) {
-  //     return response.json({
-  //       message: "success deleting tweet from db!"
-  //     });
-  //   })
-  //   .catch(function(err) {
-  //     console.log('err deleting tweet from db...', err.message);
-  //     response.status(500);
-  //     response.json({
-  //       error: err.message
-  //     });
-  //   });
 
 });
 
@@ -569,7 +561,7 @@ app.put('/api/retweet/edit/delete', function(request, response) {
   var username = request.body.username;
   var retweetId = request.body.retweetId;
   var origTweetId = request.body.origTweetId;
-  // console.log('delete retweet i think', request.body);
+
   // 1. remove the retweet Id
   // 2. remove the retweet Id from the user retweets array
   // 3. remove the retweet Id from the original tweet retweetIds array

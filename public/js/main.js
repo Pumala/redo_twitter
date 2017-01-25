@@ -315,17 +315,18 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
       });
   };
 
-  $scope.deleteRetweet = function(retweetId) {
+  $scope.deleteRetweet = function(retweetId, origTweetId) {
     var tweetInfo = {
       username: $rootScope.rootUsername,
-      retweetId: retweetId
+      retweetId: retweetId,
+      origTweetId: origTweetId
     };
     TwitterFactory.deleteRetweet(tweetInfo)
       .then(function() {
-
+        $scope.loadWorldTimelinePage();
       })
-      .catch(function() {
-
+      .catch(function(err) {
+        console.log('err deleting retweet in profile controller...', err.message);
       });
   };
 
@@ -612,7 +613,6 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
   };
 
   $scope.deleteRetweet = function(retweetId, origTweetId) {
-    console.log('original tweet id', origTweetId);
     var retweetInfo = {
       retweetId: retweetId,
       username: $rootScope.rootUsername,
