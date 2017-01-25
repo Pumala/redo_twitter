@@ -611,10 +611,12 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       });
   };
 
-  $scope.deleteRetweet = function(retweetId) {
+  $scope.deleteRetweet = function(retweetId, origTweetId) {
+    console.log('original tweet id', origTweetId);
     var retweetInfo = {
       retweetId: retweetId,
-      username: $rootScope.rootUsername
+      username: $rootScope.rootUsername,
+      origTweetId: origTweetId
     };
     TwitterFactory.deleteRetweet(retweetInfo)
       .then(function() {

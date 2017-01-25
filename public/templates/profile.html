@@ -70,7 +70,7 @@
               <div ng-show="!editMode">
                 <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-primary">Edit</button>
                 <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger">Delete</button>
-                <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id)" class="btn btn-danger">Delete</button>
+                <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id, tweet.tweet._id)" class="btn btn-danger">Delete</button>
               </div>
               <div ng-show="editMode">
                 <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>

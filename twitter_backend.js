@@ -462,12 +462,12 @@ app.put('/api/tweet/edit/delete', function(request, response) {
   var tweetId = request.body.tweetId;
 
   bluebird.all([
-      Tweet.remove({ _id: tweetId }),
+      Tweet.findOne({ _id: tweetId }),
       User.update({
         _id: username
       }, { $pull: { tweets: tweetId } })
     ])
-    .spread(function(removedTweet, updatedUser) {
+    .spread(function(origTweet, updatedUser) {
       return response.json({
         message: "success deleting tweet from db!"
       });
@@ -479,6 +479,26 @@ app.put('/api/tweet/edit/delete', function(request, response) {
         error: err.message
       });
     });
+
+
+  // bluebird.all([
+  //     Tweet.remove({ _id: tweetId }),
+  //     User.update({
+  //       _id: username
+  //     }, { $pull: { tweets: tweetId } })
+  //   ])
+  //   .spread(function(removedTweet, updatedUser) {
+  //     return response.json({
+  //       message: "success deleting tweet from db!"
+  //     });
+  //   })
+  //   .catch(function(err) {
+  //     console.log('err deleting tweet from db...', err.message);
+  //     response.status(500);
+  //     response.json({
+  //       error: err.message
+  //     });
+  //   });
 
 });
 
@@ -548,15 +568,22 @@ app.put('/api/retweet/edit/delete', function(request, response) {
 
   var username = request.body.username;
   var retweetId = request.body.retweetId;
-  console.log('delete retweet i think', request.body);
+  var origTweetId = request.body.origTweetId;
+  // console.log('delete retweet i think', request.body);
+  // 1. remove the retweet Id
+  // 2. remove the retweet Id from the user retweets array
+  // 3. remove the retweet Id from the original tweet retweetIds array
 
   bluebird.all([
       Retweet.remove({ _id: retweetId }),
       User.update({
         _id: username
-      }, { $pull: { retweets: retweetId } })
+      }, { $pull: { retweets: retweetId } }),
+      Tweet.update({
+        _id: origTweetId
+      }, { $pull: { retweetIds: retweetId } })
     ])
-    .spread(function(removedTweet, updatedUser) {
+    .spread(function(removedTweet, updatedUser, updatedTweet) {
       return response.json({
         message: "success deleting retweet from db!"
       });
