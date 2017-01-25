@@ -57,8 +57,9 @@ const Tweet = mongoose.model('Tweet', {
   content: { type: String, required: true },
   date: Date,
   author: String,
-  likes: [String], // username
-  retweetCount: Number,
+  likes: [String], // username,
+  retweetIds: [ObjectId],
+  // retweetCount: Number,
   retweeters: [String], // username
   avatar: String
   // isRetweet: Boolean,
@@ -390,7 +391,8 @@ app.post('/api/profile/tweet/new', function(request, response) {
     date: new Date(),
     author: username,
     likes: [],
-    retweetCount: 0,
+    retweetIds: [],
+    // retweetCount: 0,
     retweeters: [],
     avatar: ""
     // isRetweet: false,
@@ -598,8 +600,8 @@ app.put('/api/retweet/new/add', function(request, response) {
     return [ Tweet.update({
         _id: tweetId
       }, {
-        $addToSet: { retweeters: username },
-        $inc: { retweetCount: 1 }
+        $addToSet: { retweeters: username, retweetIds: retweetId }
+        // $inc: { retweetCount: 1 }
       }),
       User.update({
         _id: username

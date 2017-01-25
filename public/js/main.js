@@ -561,7 +561,6 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
               tweet.avatar = user.avatar;
             }
             if (tweet.retweeter) {
-              console.log('tweet', tweet);
               if (tweet.tweet.author === user._id) {
                 tweet.tweet.avatar = user.avatar;
               }
