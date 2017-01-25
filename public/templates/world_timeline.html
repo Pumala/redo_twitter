@@ -9,18 +9,18 @@
           {{ tweet.date | date : "MMM dd, yyyy"}}<br>
           <a ui-sref="profile({ username: tweet.retweeter })">{{ tweet.retweeter }}</a> retweeted:
           <div class="">
-            <img ng-show="tweet.tweet.avatar" src="upload/{{tweet.tweet.avatar}}" alt="">
-            <img ng-show="!tweet.tweet.avatar" src="upload/default_user_avatar.png" alt="">
+            <img ng-show="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
+            <img ng-show="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
             {{ tweet.tweet.date | date : "MMM dd, yyyy"}}<br>
             <a ui-sref="profile({ username: tweet.tweet.author })">{{ tweet.tweet.author }}</a> tweeted '{{tweet.tweet.content}}'
           </div>
           <div class="">
-            <i ng-click="retweetTweet(tweet.tweet._id)" ng-class="{ 'grey' : (!(checkIfUserExists(tweet.tweet.likes)) || !rootUsername ), 'black' : checkIfUserExists(tweet.tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.tweet.retweetCount}}</span>
+            <i ng-click="retweetTweet(tweet.tweet._id)" ng-class="{ 'grey' : (indexOf($rootScope.rootUsername) > -1) || !rootUsername ), 'black' : checkIfUserExists(tweet.tweet.likes) }" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.tweet.retweetCount}}</span>
             <i ng-click="likeTweet(tweet.tweet._id, tweet.tweet.likes)" ng-class="{ 'grey' : ((tweet.tweet.likes.indexOf(rootUsername) < 0) || !rootUsername), 'black' : (tweet.tweet.likes.indexOf(rootUsername) > -1) }" class="fa fa-heart" aria-hidden="true"></i><span>{{tweet.tweet.likes.length}}</span>
           </div>
         </div>
         <div ng-show="!editMode && !tweet.retweeter">
-          <img ng-show="!tweet.avatar" ng-src="upload/default_user_avatar.png" alt="">
+          <img ng-show="!tweet.avatar" src="images/default_user_avatar.png" alt="">
           <img ng-show="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
           {{tweet.date | date : "MMM dd, yyyy"}}<br>
           <a ui-sref="profile({ username: tweet.author })">{{ tweet.author }}</a> tweeted '{{tweet.content}}'

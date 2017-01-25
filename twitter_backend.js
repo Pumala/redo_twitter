@@ -59,6 +59,7 @@ const Tweet = mongoose.model('Tweet', {
   author: String,
   likes: [String], // username
   retweetCount: Number,
+  retweeters: [String], // username
   avatar: String
   // isRetweet: Boolean,
   // retweet: { _id: ObjectId, retweeter: String, date: Date }
@@ -390,6 +391,7 @@ app.post('/api/profile/tweet/new', function(request, response) {
     author: username,
     likes: [],
     retweetCount: 0,
+    retweeters: [],
     avatar: ""
     // isRetweet: false,
     // retweet: { _id: "", retweeter: "", date: "" }
@@ -576,7 +578,6 @@ app.put('/api/retweet/new/add', function(request, response) {
 
   var tweetId = request.body.tweetId;
   var username = request.body.username;
-  // var alreadyRetweeted = request.body.alreadyRetweeted;
 
   // create a new retweet
   var newRetweet = new Retweet({
@@ -590,9 +591,14 @@ app.put('/api/retweet/new/add', function(request, response) {
   .then(function(savedRetweet) {
     var retweetId = savedRetweet._id;
 
+    // add retweeters name to retweeter array in original tweet
+    // if it's already there, it does nothing
+    // increment retweetCount by 1
+    // also, add retweet Id to user's array of retweets
     return [ Tweet.update({
         _id: tweetId
       }, {
+        $addToSet: { retweeters: username },
         $inc: { retweetCount: 1 }
       }),
       User.update({

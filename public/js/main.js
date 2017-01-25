@@ -282,7 +282,6 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
               tweet.avatar = user.avatar;
             }
             if (tweet.retweeter) {
-              console.log('tweet', tweet);
               if (tweet.tweet.author === user._id) {
                 tweet.tweet.avatar = user.avatar;
               }
@@ -291,9 +290,6 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
         });
 
         console.log('updated alll...', $scope.allTweets);
-
-
-
 
       })
       .catch(function(err) {
@@ -335,7 +331,12 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
 
   $scope.checkIfUserExists = function(arr) {
     console.log('sent in array', arr);
-    return TwitterFactory.checkIfUserExistsInArr(arr);
+    if (arr.indexOf($rootScope.rootUsername) > -1) {
+      return true;
+    } else {
+      return false;
+    };
+    // return TwitterFactory.checkIfUserExistsInArr(arr);
   };
 
   $scope.likeTweet = function(tweetId, arr, author) {

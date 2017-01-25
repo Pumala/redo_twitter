@@ -39,12 +39,12 @@
             <div ng-show="!editMode">
               <div ng-if="tweet.retweeter">
                 <div class="panel-heading">
-                  <img ng-show="!tweet.avatar" src="upload/default_user_avatar.png" alt="">
+                  <img ng-show="!tweet.avatar" src="images/default_user_avatar.png" alt="">
                   <img ng-show="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
                   <h2>{{username}} retweeted:</h2>
                   <p>{{tweet.date | date : 'MMM dd, yyyy'}}</p>
                 </div>
-                <img ng-show="!tweet.tweet.avatar" src="upload/default_user_avatar.png" alt="">
+                <img ng-show="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
                 <img ng-show="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
                 <h3>{{tweet.tweet.author}} tweeted:</h3>
                 <p>{{ tweet.tweet.date | date : 'MMM dd, yyyy'}}</p>
