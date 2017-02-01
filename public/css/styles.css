@@ -1,3 +1,5 @@
+
+
 /*************************************************
       Modify Existing Bootstrap/Fontawesome
 *************************************************/
@@ -17,4 +19,15 @@ img {
   border-radius: 50%;
   width: 40px;
   height: 40px;
+}
+.navbar-default {
+  background-color: #628cac;
+}
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav>li>a,
+.fa.fa-bars {
+  color: #e8dbdb;
+}
+body {
+  background-color: #dde6e7;
 }
