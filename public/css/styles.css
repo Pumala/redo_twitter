@@ -1,4 +1,7 @@
-
+body {
+  font-family: 'Roboto Slab', serif;
+  background-color: #dde6e7;
+}
 
 /*************************************************
       Modify Existing Bootstrap/Fontawesome
@@ -27,7 +30,4 @@ img {
 .navbar-default .navbar-nav>li>a,
 .fa.fa-bars {
   color: #e8dbdb;
-}
-body {
-  background-color: #dde6e7;
 }
