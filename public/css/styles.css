@@ -2,7 +2,23 @@ body {
   font-family: 'Roboto Slab', serif;
   background-color: #dde6e7;
 }
-
+.retweeted {
+  color: #f7f4fc;
+  background-color: #8862cc;
+  border-radius: 3px;
+  padding: 2px;
+}
+.bold {
+  font-weight: 700;
+}
+.worldTweets .retweetedPic {
+  height: 23px;
+  width: 23px;
+}
+.worldTweets .retweeter {
+  color: #a7a7a7;
+  font-weight: 300;
+}
 /*************************************************
       Modify Existing Bootstrap/Fontawesome
 *************************************************/
