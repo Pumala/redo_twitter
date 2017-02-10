@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Redo Twitter</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -31,7 +32,7 @@
 
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                      <li ng-show="rootUsername">Welcome!</li>
+                      <!-- <li ng-show="rootUsername">Welcome!</li> -->
                       <li ng-show="rootUsername"><a ui-sref="profile({ username: rootUsername })">Profile</a></li>
                       <li ng-show="rootUsername"><a ng-click="rootLogout()">Logout</a></li>
                       <li ng-show="!rootUsername"><a ui-sref="signup">Sign Up</a></li>
