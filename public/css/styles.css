@@ -12,6 +12,9 @@ html, body {
   /*color: teal;*/
   color: #2196F3;
 }
+.inlineDiv {
+  display: inline-block;
+}
 .what {
   /*color: gold;*/
   color: #FFC107;
@@ -75,6 +78,9 @@ img {
 .btn-primary:hover {
   background-color: #1583da;
 }
+.btn-default {
+  background-color: #FFC107;
+}
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
   background-color: whitesmoke;
 }
@@ -91,8 +97,7 @@ img {
 }
 .fa-ellipsis-h {
   position: absolute;
-  margin-left: 1em;
-  margin-top: .5em;
+  margin-top: -.5em;
 }
 /*************************************************
                     LOGIN / SIGN UP
@@ -132,4 +137,7 @@ img {
 textarea {
   width: 100%;
   padding: .5em;
+}
+.worldTweets .leftRightMargin {
+  margin: 0 2em;
 }
