@@ -158,8 +158,8 @@ img {
 #profile .tweets p {
   margin-left: 3em;
 }
-.worldTweets .retweeter img,
-#profile .retweeter img {
+.worldTweets .panel-body .retweeter img,
+#profile .panel-body .retweeter img {
   height: 23px;
   width: 23px;
 }
@@ -283,5 +283,12 @@ textarea {
   }
   .editProfile .avatarDiv {
     margin: 4em auto;
+  }
+  .container.signForm {
+    width: 600px;
+  }
+  .container.signForm label,
+  .container.signForm button {
+    font-size: 1.25em;
   }
 }

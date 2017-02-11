@@ -56,14 +56,14 @@
         </div>
         <div ng-show="(tweet.author) && (rootUsername === tweet.author) && (showBtns)" class="editTweets">
           <div ng-show="!editMode">
-            <button ng-click="editMode = true; originalContent = tweet.content" class="btn btn-primary btn-block">Edit</button>
+            <button ng-click="editMode = true; originalContent = tweet.content" class="btn btn-success btn-block">Edit</button>
             <button class="btn btn-danger btn-block" ng-click="deleteTweet(tweet._id, tweet.author)">Delete</button>
             <button class="btn btn-default btn-block" ng-click="showBtns = false" name="button">Cancel</button>
           </div>
           <div ng-show="editMode" class="editButtons">
             <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>
-            <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success">Save</button>
-            <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-primary">Cancel</button>
+            <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success btn-block">Save</button>
+            <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
           </div>
         </div>
       </div>
