@@ -34,7 +34,7 @@
   <div class="">
 
     <div>
-      <form ng-show="rootUsername === username" ng-submit="postTweet()">
+      <form class="sayItForm" ng-show="rootUsername === username" ng-submit="postTweet()">
         <textarea ng-model="content" rows="8" cols="80"></textarea>
         <button class="btn btn-success btn-block">Say it!</button>
       </form>
@@ -46,11 +46,11 @@
           <div class="panel-body">
             <div ng-show="!editMode">
               <div ng-if="tweet.retweeter">
-                <div class="panel-heading">
+                <div class="panel-heading retweeter">
+                  <i class="fa fa-retweet retweeted" aria-hidden="true"></i>
                   <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
                   <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
-                  <h2>{{username}} retweeted:</h2>
-                  <p>{{tweet.date | date : 'MMM dd, yyyy'}}</p>
+                  @{{username}} retweeted · {{tweet.date | date : 'MMM dd, yyyy'}}
                 </div>
                 <img ng-if="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
                 <img ng-if="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
