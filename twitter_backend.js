@@ -318,31 +318,62 @@ app.get('/api/profile/:username', function(request, response) {
 // ********************************
 //      ADD NEW TWEET TO DB
 // ********************************
-app.get('/api/profile/following/:username', function(request, response) {
+app.get('/api/profile/following/:username/:rootuser', function(request, response) {
 
+  console.log(request.params);
   var username = request.params.username;
+  var rootuser = request.params.rootuser;
 
-  User.findOne({ _id: username })
-    .then(function(userInfo) {
-      var following = userInfo.following;
-      return User.find({
-        _id: {
-          $in: following
-        }
+  if (rootuser) {
+
+    User.findOne({ _id: username })
+      .then(function(userInfo) {
+        var following = userInfo.following;
+        return [ User.find({
+          _id: {
+            $in: following
+          }
+        }), User.findOne({ _id: rootuser })]
       })
-    })
-    .then(function(following) {
-      response.json({
-        following: following
+      .spread(function(following, rootFollowing) {
+        response.json({
+          following: following,
+          rootFollowing: rootFollowing.following
+        })
       })
-    })
-    .catch(function(err) {
-      console.log('err retrieving user following info from db...', err.message);
-      response.status(500);
-      response.json({
-        error: err.message
+      .catch(function(err) {
+        console.log('err retrieving user following info from db...', err.message);
+        response.status(500);
+        response.json({
+          error: err.message
+        });
       });
-    });
+
+  } else {
+
+    User.findOne({ _id: username })
+      .then(function(userInfo) {
+        var following = userInfo.following;
+        return User.find({
+          _id: {
+            $in: following
+          }
+        })
+      })
+      .then(function(following) {
+        response.json({
+          following: following,
+          rootFollowing: null
+        })
+      })
+      .catch(function(err) {
+        console.log('err retrieving user following info from db...', err.message);
+        response.status(500);
+        response.json({
+          error: err.message
+        });
+      });
+  }
 
 });
 

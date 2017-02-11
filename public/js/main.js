@@ -149,7 +149,11 @@ app.factory('TwitterFactory', function($http, $rootScope) {
   };
 
   service.getFollowingUsers = function(user) {
-    var url = '/api/profile/following/' + user;
+    var rootUsername = null;
+    if ($rootScope.rootUsername) {
+      rootUsername = $rootScope.rootUsername;
+    }
+    var url = '/api/profile/following/' + user + '/' + rootUsername;
     return $http({
       method: 'GET',
       url: url
@@ -733,7 +737,7 @@ app.controller('FollowingController', function($timeout, $scope, TwitterFactory,
   TwitterFactory.getFollowingUsers($scope.currProfileUser)
     .then(function(results) {
       $scope.following = results.data.following;
-      console.log('results...', $scope.following)
+      console.log('results...', results.data)
     })
     .catch(function(err) {
       console.log('err retrieving the user followings from following controller...', err.message );
