@@ -7,17 +7,37 @@ body {
 html, body {
   height: 100%;
 }
+.clear::before, .clear::after {
+  content: "";
+  display: table;
+}
+.clear::after {
+  clear: both;
+}
+.muted {
+  margin-top: .5em;
+  font-size: .9em;
+  color: grey;
+  font-weight: 300;
+  text-align: center;
+}
 .logo-words {
   font-family: 'Irish Grover', cursive;
   /*color: teal;*/
   color: #2196F3;
 }
+.blue {
+  background-color: #2196F3;
+}
 .inlineDiv {
   display: inline-block;
 }
 .what {
-  /*color: gold;*/
   color: #FFC107;
+}
+.yellow {
+  /*color: gold;*/
+  background-color: #FFC107;
 }
 .retweeted {
   color: #f7f4fc;
@@ -47,6 +67,7 @@ img {
 }
 .avatarDiv {
   max-width: 200px;
+  margin: auto;
 }
 .tweets img, .worldTweets img {
   border-radius: 50%;
@@ -140,4 +161,22 @@ textarea {
 }
 .worldTweets .leftRightMargin {
   margin: 0 2em;
+}
+/*************************************************
+                    PROFILE
+*************************************************/
+#profile h1 {
+  color: #9e9e9e;
+}
+.profileData {
+  margin: 2em 0;
+}
+.profileData h3 {
+  font-size: 1.25em;
+  color: #fff;
+}
+.profileData div {
+  width: 50%;
+  float: left;
+  text-align: center;
 }
