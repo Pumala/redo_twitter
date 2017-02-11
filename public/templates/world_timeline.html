@@ -10,7 +10,7 @@
               <i class="fa fa-retweet retweeted" aria-hidden="true"></i>
               <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
               <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
-              <a ui-sref="profile({ username: tweet.retweeter })">@{{ tweet.retweeter }}</a> retweeted ·
+              <a ui-sref="profile({ username: tweet.retweeter })">@{{ tweet.retweeter }}</a> resaid ·
               {{ tweet.date | date : "MMM dd, yyyy"}}<br>
             </div>
           <div class="">
@@ -26,7 +26,7 @@
             <div class="inlineDiv leftRightMargin">
               <i ng-click="likeTweet(tweet.tweet._id, tweet.tweet.likes)" ng-class=" ((tweet.tweet.likes.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : 'black'" class="fa fa-heart" aria-hidden="true"></i><span> {{tweet.tweet.likes.length}}</span>
             </div>
-            <div class="inlineDiv">
+            <div ng-show="rootUsername === tweet.tweet.author" class="inlineDiv">
               <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
             </div>
           </div>
@@ -47,7 +47,7 @@
             <div class="inlineDiv leftRightMargin">
               <i ng-click="likeTweet(tweet._id, tweet.likes)" ng-class=" ((tweet.likes.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : 'black'" class="fa fa-heart" aria-hidden="true"></i><span>{{tweet.likes.length}}</span>
             </div>
-            <div class="inlineDiv">
+            <div ng-show="rootUsername === tweet.author" class="inlineDiv">
               <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
             </div>
           </div>

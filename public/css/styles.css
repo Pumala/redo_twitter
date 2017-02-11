@@ -26,6 +26,9 @@ html, body {
   /*color: teal;*/
   color: #2196F3;
 }
+.grey {
+  color: #918080;
+}
 .blue {
   background-color: #2196F3;
 }
@@ -138,6 +141,7 @@ img {
   height: 100%;
   background-color: whitesmoke;
   margin-top: 2em;
+  padding: 1em;
 }
 /*************************************************
                     WORLD TIMELINE
@@ -187,9 +191,15 @@ textarea {
 *************************************************/
 #profile h1,
 .editProfile h1 {
-  color: #9e9e9e;
+  color: #918080;
   font-size: 2em;
   line-height: 1.5em;
+}
+.followingDiv {
+  text-align: center;
+}
+.followingDiv button {
+  padding: .75em 1em;
 }
 .profileData {
   margin: 2em 0;
