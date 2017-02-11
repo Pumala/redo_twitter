@@ -141,7 +141,6 @@ app.factory('TwitterFactory', function($http, $rootScope) {
   };
 
   service.getWorldTimeline = function() {
-    console.log('hmm hmm');
     var url = '/api/worldtimeline';
     return $http({
       method: 'GET',
@@ -732,11 +731,12 @@ app.controller('FollowingController', function($timeout, $scope, TwitterFactory,
   $scope.currProfileUser = $stateParams.username;
 
   TwitterFactory.getFollowingUsers($scope.currProfileUser)
-    .then(function() {
-
+    .then(function(results) {
+      $scope.following = results.data.following;
+      console.log('results...', $scope.following)
     })
-    .catch(function() {
-
+    .catch(function(err) {
+      console.log('err retrieving the user followings from following controller...', err.message );
     });
 
 });

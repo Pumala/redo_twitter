@@ -322,9 +322,27 @@ app.get('/api/profile/following/:username', function(request, response) {
 
   var username = request.params.username;
 
-  console.log('eh?', username);
-
-
+  User.findOne({ _id: username })
+    .then(function(userInfo) {
+      var following = userInfo.following;
+      return User.find({
+        _id: {
+          $in: following
+        }
+      })
+    })
+    .then(function(following) {
+      response.json({
+        following: following
+      })
+    })
+    .catch(function(err) {
+      console.log('err retrieving user following info from db...', err.message);
+      response.status(500);
+      response.json({
+        error: err.message
+      });
+    });
 
 });
 

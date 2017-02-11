@@ -1,3 +1,16 @@
 <div class="container">
   <i class="fa fa-arrow-left" aria-hidden="true"></i><span>Following</span>
+
+  <div class="">
+    <div ng-repeat="user in following" class="panel-body">
+      <a ui-sref="profile({ username: user._id })">
+        <img ng-if="user.avatar" ng-src="upload/{{user.avatar}}" alt="">
+        <img ng-if="!user.avatar" ng-src="images/default_user_avatar.png" alt="">
+      </a>
+      <a ui-sref="profile({ username: user._id })">
+        @{{ user._id }}
+      </a>
+    </div>
+  </div>
+
 </div>
