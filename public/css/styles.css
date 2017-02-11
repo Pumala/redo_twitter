@@ -125,10 +125,16 @@ img {
 .panel {
   margin-bottom: 0;
   border-radius: 0;
-  border-top: 0;
+  /*border-top: 0;*/
+  border: 0;
 }
 .panel-body {
   padding: .75em;
+}
+.worldTweets .panel-body {
+  max-width: 400px;
+  margin: auto;
+  border-bottom: 1px solid #ddd;
 }
 .fa-ellipsis-h {
   position: absolute;
@@ -186,6 +192,9 @@ textarea {
 #profile .leftRightMargin {
   margin: 0 2em;
 }
+.worldTweets .tweetDate {
+  margin-top: .7em;
+}
 /*************************************************
                     PROFILE
 *************************************************/
@@ -236,4 +245,26 @@ textarea {
 .inputfile:focus + .fileLabel,
 .inputfile + .fileLabel:hover {
     background-color: red;
+}
+/*************************************************
+                    MEDIA QUERIES
+*************************************************/
+@media screen and (min-width: 600px) {
+  .worldTweets .panel-body {
+    max-width: 650px;
+    margin: auto;
+  }
+  .worldTweets img {
+    width: 70px;
+    height: 70px;
+  }
+  .worldTweets .tweetDate {
+    margin-top: 1.35em;
+  }
+  .worldTweets .retweeter {
+    font-size: 1em;
+  }
+  .origAuthor, .worldTweets .tweetDate, .worldTweets p, .tweetLeft, #profile .tweets p {
+    font-size: 1.25em;
+  }
 }

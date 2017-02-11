@@ -11,12 +11,13 @@
               <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
               <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
               <a ui-sref="profile({ username: tweet.retweeter })">@{{ tweet.retweeter }}</a> resaid ·
-              {{ tweet.date | date : "MMM dd, yyyy"}}<br>
+              <span>{{ tweet.date | date : "MMM dd, yyyy"}}</span><br>
             </div>
           <div class="">
             <img ng-if="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
             <img ng-if="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
-            <a ui-sref="profile({ username: tweet.tweet.author })" class="bold">@{{ tweet.tweet.author }}</a> · {{ tweet.tweet.date | date : "MMM dd, yyyy"}}
+            <a ui-sref="profile({ username: tweet.tweet.author })" class="origAuthor bold">@{{ tweet.tweet.author }}</a> ·
+            <span class="tweetDate pull-right">{{ tweet.tweet.date | date : "MMM dd, yyyy"}}</span>
             <p>{{tweet.tweet.content}}</p>
           </div>
           <div class="tweetLeft">
@@ -38,14 +39,15 @@
         <div ng-show="!editMode && !tweet.retweeter">
           <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
           <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
-          <a ui-sref="profile({ username: tweet.author })">@{{ tweet.author }}</a> · {{tweet.date | date : "MMM dd, yyyy"}}
+          <a class="origAuthor" ui-sref="profile({ username: tweet.author })">@{{ tweet.author }}</a> ·
+          <span class="tweetDate pull-right">{{tweet.date | date : "MMM dd, yyyy"}}</span>
           <p>{{tweet.content}}</p>
           <div class="tweetLeft">
             <div class="inlineDiv">
-              <i ng-click="retweetTweet(tweet._id)" ng-class=" ((tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername ) ? 'grey' : 'black'" class="fa fa-retweet" aria-hidden="true"></i><span>{{tweet.retweetIds.length}}</span>
+              <i ng-click="retweetTweet(tweet._id)" ng-class=" ((tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername ) ? 'grey' : 'black'" class="fa fa-retweet" aria-hidden="true"></i><span> {{tweet.retweetIds.length}}</span>
             </div>
             <div class="inlineDiv leftRightMargin">
-              <i ng-click="likeTweet(tweet._id, tweet.likes)" ng-class=" ((tweet.likes.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : 'black'" class="fa fa-heart" aria-hidden="true"></i><span>{{tweet.likes.length}}</span>
+              <i ng-click="likeTweet(tweet._id, tweet.likes)" ng-class=" ((tweet.likes.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : 'black'" class="fa fa-heart" aria-hidden="true"></i><span> {{tweet.likes.length}}</span>
             </div>
             <div ng-show="rootUsername === tweet.author" class="inlineDiv">
               <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
