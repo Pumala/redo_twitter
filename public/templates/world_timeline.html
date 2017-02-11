@@ -8,8 +8,8 @@
         <div ng-show="tweet.retweeter">
             <div class="retweeter">
               <i class="fa fa-retweet retweeted" aria-hidden="true"></i>
-              <img ng-if="tweet.avatar" class="retweetedPic" ng-src="upload/{{tweet.avatar}}" alt="">
-              <img ng-if="!tweet.avatar" class="retweetedPic" src="images/default_user_avatar.png" alt="">
+              <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
+              <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
               <a ui-sref="profile({ username: tweet.retweeter })">@{{ tweet.retweeter }}</a> retweeted ·
               {{ tweet.date | date : "MMM dd, yyyy"}}<br>
             </div>

@@ -456,21 +456,20 @@ app.controller('SignUpController', function($cookies, $rootScope, $state, $scope
 
 
 app.controller('FileController', function($timeout, $scope, TwitterFactory, $rootScope, $state, FileUploader) {
-
+  $scope.fileChosen = 'Choose a file';
+  console.log($scope.fileChosen);
   var uploader = $scope.uploader = new FileUploader({
     url: '/api/profile/files/upload/user/' + $rootScope.rootUsername
   });
 
+  $scope.updateFileChosen = function() {
+    $scope.fileChosen = 'File has been chosen';
+  }
   uploader.onCompleteAll = function(file) {
-    // console.log('is this it?', file);
-    // $scope.$emit('newEditMode', false);
   };
 
   uploader.onSuccessItem = function(fileItem, response, status, headers) {
-    // so far, do nothing
-    console.log('hahaha2', response);
     $scope.$emit('profileEditMode', response);
-
   };
 });
 

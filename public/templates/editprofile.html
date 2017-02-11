@@ -1,8 +1,6 @@
-<div class="container">
+<div class="editProfile container">
 
-  <h1>Edit {{rootUsername}}'s Profile</h1>
-
-  <h3>Profile Picture</h3>
+  <h1 class="text-center">Change {{rootUsername}}'s Profile Picture</h1>
 
   <div class="avatarDiv">
     <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="">
@@ -11,14 +9,20 @@
 
   <form ng-controller="FileController">
     <div class="">
-      <input type="file" nv-file-select=""uploader="uploader">
-      <button class="upload btn btn-primary" ng-disabled="!uploader.getNotUploadedItems().length" ng-click="uploader.uploadAll()">
-        Upload new picture
+      <button type="button" class="btn btn-light btn-block">
+        <span class="white">Step 1: </span>
+        <!-- <input class="inputFile" type="file" nv-file-select="" uploader="uploader"> -->
+        <input type="file" name="file" id="file" nv-file-select="" ng-model="fileChosen" onchange="angular.element(this).scope().updateFileChosen(this)" uploader="uploader" class="inputFile" />
+        <label for="file" ng-model="fileChosen"><span class="white">{{ fileChosen }}</span></label>
+      </button>
+      <!-- <label class="fileLabel" for="file">Choose a file</label> -->
+      <button class="upload btn btn-primary btn-block" ng-disabled="!uploader.getNotUploadedItems().length" ng-click="uploader.uploadAll()">
+        Step 2: Upload new picture
       </button>
     </div>
   </form>
 
-  <button ng-click="deleteTempFile()" class="btn btn-default">Cancel</button>
-  <button ng-click="saveProfileEdits()" class="btn btn-success">Save</button>
+  <button ng-click="deleteTempFile()" class="btn btn-default white btn-block">Cancel</button>
+  <button ng-click="saveProfileEdits()" class="btn btn-success btn-block">Save</button>
 
 </div>

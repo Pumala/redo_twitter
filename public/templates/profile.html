@@ -5,6 +5,7 @@
     <a ng-show="rootUsername === userInfo._id" ui-sref="editProfile({ username: userInfo._id })" title="Change your avatar">
       <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="default user image">
       <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="default user image">
+      <button ui-sref="editProfile({ username: userInfo._id })" class="btn btn-success btn-block">Change your avatar</button>
     </a>
     <img ng-if="!userInfo.avatar" ng-show="rootUsername !== userInfo._id" src="images/default_user_avatar.png" alt="default user image">
   </div>
@@ -54,22 +55,21 @@
                 </div>
                 <img ng-if="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
                 <img ng-if="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
-                <h3>{{tweet.tweet.author}} tweeted:</h3>
-                <p>{{ tweet.tweet.date | date : 'MMM dd, yyyy'}}</p>
+                <a class="bold">@{{tweet.tweet.author}}</a> ·
+                {{ tweet.tweet.date | date : 'MMM dd, yyyy'}}
                 <p>{{tweet.tweet.content}}</p>
-                <div>
+                <div class="tweetLeft">
                   <div class="inlineDiv">
-                    <i ng-click="retweetTweet(tweet.tweet._id, tweet.tweet.retweets)" ng-class=" ((tweet.tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : black" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.tweet.retweetIds.length }}</span>
+                    <i ng-click="retweetTweet(tweet.tweet._id, tweet.tweet.retweets)" ng-class=" ((tweet.tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : black" class="fa fa-retweet" aria-hidden="true"></i><span> {{ tweet.tweet.retweetIds.length }}</span>
                   </div>
                   <div class="inlineDiv leftRightMargin">
-                    <i ng-click="updateTweetLikedStatus(tweet.tweet._id, tweet.tweet.author, tweet.tweet.likes)" ng-class="(tweet.tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.tweet.likes.length }}</span>
+                    <i ng-click="updateTweetLikedStatus(tweet.tweet._id, tweet.tweet.author, tweet.tweet.likes)" ng-class="(tweet.tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.tweet.likes.length }}</span>
                   </div>
                   <div class="inlineDiv">
                     <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
                   </div>
                 </div>
                 <div ng-show="(rootUsername === username) && (showBtns)" class="editTweet">
-                  <p>{{username}} ??</p>
                   <div ng-show="!editMode" class="editTweets">
                     <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id, tweet.tweet._id)" class="btn btn-danger btn-block">Delete</button>
                     <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-primary btn-block">Cancel</button>
@@ -79,15 +79,14 @@
               <div ng-if="!tweet.retweeter">
                 <img ng-if="tweet.avatar" ng-src="upload/{{ tweet.avatar }}" alt="">
                 <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
-                <h3>{{username}} tweeted:</h3>
-                <p>{{ tweet.date | date : 'MMM dd, yyyy'}}</p>
+                <a class="bold">@{{username}}</a> · {{ tweet.date | date : 'MMM dd, yyyy'}}
                 <p>{{tweet.content}}</p>
-                <div>
+                <div class="tweetLeft">
                   <div class="inlineDiv">
-                    <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class=" (tweet.retweeters.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.retweetIds.length }}</span>
+                    <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class=" (tweet.retweeters.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-retweet" aria-hidden="true"></i><span> {{ tweet.retweetIds.length }}</span>
                   </div>
                   <div class="inlineDiv leftRightMargin">
-                    <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" ng-class="(tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.likes.length }}</span>
+                    <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" ng-class="(tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.likes.length }}</span>
                   </div>
                   <div class="inlineDiv">
                     <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
@@ -107,19 +106,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div ng-show="(rootUsername === username) && (showBtns)" class="editTweet">
-              <p>{{username}} ??</p>
-              <div ng-show="!editMode">
-                <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-primary">Edit</button>
-                <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger">Delete</button>
-                <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id, tweet.tweet._id)" class="btn btn-danger">Delete</button>
-              </div>
-              <div ng-show="editMode">
-                <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>
-                <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success">Save</button>
-                <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-primary">Cancel</button>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
