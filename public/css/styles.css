@@ -71,7 +71,8 @@ img {
 .black {
   color: #000;
 }
-.avatarDiv {
+#profile .avatarDiv,
+.editProfile .avatarDiv {
   max-width: 200px;
   margin: auto;
 }
@@ -131,7 +132,8 @@ img {
 .panel-body {
   padding: .75em;
 }
-.worldTweets .panel-body {
+.worldTweets .panel-body,
+#profile .panel-body {
   max-width: 400px;
   margin: auto;
   border-bottom: 1px solid #ddd;
@@ -250,21 +252,36 @@ textarea {
                     MEDIA QUERIES
 *************************************************/
 @media screen and (min-width: 600px) {
-  .worldTweets .panel-body {
+  .worldTweets .panel-body,
+  #profile .panel-body {
     max-width: 650px;
     margin: auto;
   }
-  .worldTweets img {
+  .worldTweets .panel-body img, #profile .panel-body img {
     width: 70px;
     height: 70px;
   }
-  .worldTweets .tweetDate {
-    margin-top: 1.35em;
+  .worldTweets .tweetDate,
+  #profile .tweetDate {
+    margin-top: 1.25em;
   }
-  .worldTweets .retweeter {
+  .worldTweets .retweeter
+  #profile .retweeter {
     font-size: 1em;
   }
   .origAuthor, .worldTweets .tweetDate, .worldTweets p, .tweetLeft, #profile .tweets p {
     font-size: 1.25em;
+  }
+  #profile.container {
+    padding: 1em;
+  }
+  #profile .avatarDiv {
+    margin: 0;
+  }
+  .editProfile {
+    width: 600px;
+  }
+  .editProfile .avatarDiv {
+    margin: 4em auto;
   }
 }

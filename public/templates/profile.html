@@ -5,12 +5,11 @@
     <a ui-sref="editProfile({ username: userInfo._id })" title="Change your avatar">
       <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="default user image">
       <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="default user image">
-      <button ng-show="rootUsername === userInfo._id" ui-sref="editProfile({ username: userInfo._id })" class="btn btn-success btn-block">Change your avatar</button>
+      <a ng-show="rootUsername === userInfo._id" ui-sref="editProfile({ username: userInfo._id })" class="btn btn-success btn-block">Change your avatar</a>
     </a>
     <img ng-if="!userInfo.avatar" ng-show="rootUsername !== userInfo._id" src="images/default_user_avatar.png" alt="default user image">
+    <p class="muted">Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
   </div>
-
-  <p class="muted">Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
 
   <div class="followingDiv" ng-show="rootUsername !== userInfo._id">
     <button ng-show="userInfo.followers.indexOf(rootUsername) < 0" ng-click="followUser(userInfo._id, false)" class=" btn-primary">Follow</button>
@@ -55,8 +54,8 @@
                 </div>
                 <img ng-if="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
                 <img ng-if="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
-                <a class="bold">@{{tweet.tweet.author}}</a> ·
-                {{ tweet.tweet.date | date : 'MMM dd, yyyy'}}
+                <a class="origAuthor bold">@{{tweet.tweet.author}}</a> ·
+                <span class="tweetDate pull-right">{{ tweet.tweet.date | date : 'MMM dd, yyyy'}}</span>
                 <p>{{tweet.tweet.content}}</p>
                 <div class="tweetLeft">
                   <div class="inlineDiv">
@@ -79,7 +78,8 @@
               <div ng-if="!tweet.retweeter">
                 <img ng-if="tweet.avatar" ng-src="upload/{{ tweet.avatar }}" alt="">
                 <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
-                <a class="bold">@{{username}}</a> · {{ tweet.date | date : 'MMM dd, yyyy'}}
+                <a class="origAuthor bold">@{{username}}</a> ·
+                <span class="tweetDate pull-right">{{ tweet.date | date : 'MMM dd, yyyy'}}</span>
                 <p>{{tweet.content}}</p>
                 <div class="tweetLeft">
                   <div class="inlineDiv">
