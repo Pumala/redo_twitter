@@ -27,7 +27,7 @@
       <h3><strong>{{ userInfo.likes.length }}</strong> Likes</h3>
     </div>
     <div class="inlineDiv blue">
-      <h3><strong>{{ allTweets.length }}</strong> Tweets</h3>
+      <h3><strong>{{ allTweets.length }}</strong> Sayings</h3>
     </div>
   </div>
 
@@ -36,8 +36,10 @@
     <div>
       <form ng-show="rootUsername === username" ng-submit="postTweet()">
         <textarea ng-model="content" rows="8" cols="80"></textarea>
-        <button class="btn btn-success">Tweet</button>
+        <button class="btn btn-success btn-block">Say it!</button>
       </form>
+
+      <h2 class="text-center">{{userInfo._id}}'s sayings</h2>
 
       <div class="tweets">
         <div ng-repeat="tweet in allTweets | orderBy: 'tweet.date' : reverse" class="panel panel-default">
@@ -56,8 +58,22 @@
                 <p>{{ tweet.tweet.date | date : 'MMM dd, yyyy'}}</p>
                 <p>{{tweet.tweet.content}}</p>
                 <div>
-                  <i ng-click="retweetTweet(tweet.tweet._id, tweet.tweet.retweets)" ng-class=" ((tweet.tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : black" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.tweet.retweetIds.length }}</span>
-                  <i ng-click="updateTweetLikedStatus(tweet.tweet._id, tweet.tweet.author, tweet.tweet.likes)" ng-class="(tweet.tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.tweet.likes.length }}</span>
+                  <div class="inlineDiv">
+                    <i ng-click="retweetTweet(tweet.tweet._id, tweet.tweet.retweets)" ng-class=" ((tweet.tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : black" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.tweet.retweetIds.length }}</span>
+                  </div>
+                  <div class="inlineDiv leftRightMargin">
+                    <i ng-click="updateTweetLikedStatus(tweet.tweet._id, tweet.tweet.author, tweet.tweet.likes)" ng-class="(tweet.tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.tweet.likes.length }}</span>
+                  </div>
+                  <div class="inlineDiv">
+                    <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <div ng-show="(rootUsername === username) && (showBtns)" class="editTweet">
+                  <p>{{username}} ??</p>
+                  <div ng-show="!editMode" class="editTweets">
+                    <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id, tweet.tweet._id)" class="btn btn-danger btn-block">Delete</button>
+                    <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-primary btn-block">Cancel</button>
+                  </div>
                 </div>
               </div>
               <div ng-if="!tweet.retweeter">
@@ -67,12 +83,32 @@
                 <p>{{ tweet.date | date : 'MMM dd, yyyy'}}</p>
                 <p>{{tweet.content}}</p>
                 <div>
-                  <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class=" (tweet.retweeters.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.retweetIds.length }}</span>
-                  <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" ng-class="(tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.likes.length }}</span>
+                  <div class="inlineDiv">
+                    <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class=" (tweet.retweeters.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-retweet" aria-hidden="true"></i><span>{{ tweet.retweetIds.length }}</span>
+                  </div>
+                  <div class="inlineDiv leftRightMargin">
+                    <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" ng-class="(tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span>{{ tweet.likes.length }}</span>
+                  </div>
+                  <div class="inlineDiv">
+                    <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <div ng-show="(rootUsername === username) && (showBtns)" class="editTweets editTweet">
+                  <div ng-show="!editMode">
+                    <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-primary btn-block">Edit</button>
+                    <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger btn-block">Delete</button>
+                    <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
+                  </div>
+                  <div ng-show="editMode">
+                    <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>
+                    <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success">Save</button>
+                    <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-primary">Cancel</button>
+                  </div>
                 </div>
               </div>
             </div>
-            <div ng-show="rootUsername === username" class="editTweet">
+            <!-- <div ng-show="(rootUsername === username) && (showBtns)" class="editTweet">
+              <p>{{username}} ??</p>
               <div ng-show="!editMode">
                 <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-primary">Edit</button>
                 <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger">Delete</button>
@@ -83,7 +119,7 @@
                 <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success">Save</button>
                 <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-primary">Cancel</button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
