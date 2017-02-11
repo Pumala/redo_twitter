@@ -318,6 +318,19 @@ app.get('/api/profile/:username', function(request, response) {
 // ********************************
 //      ADD NEW TWEET TO DB
 // ********************************
+app.get('/api/profile/following/:username', function(request, response) {
+
+  var username = request.params.username;
+
+  console.log('eh?', username);
+
+
+
+});
+
+// ********************************
+//      ADD NEW TWEET TO DB
+// ********************************
 app.post('/api/profile/tweet/new', function(request, response) {
 
   var username = request.body.username;

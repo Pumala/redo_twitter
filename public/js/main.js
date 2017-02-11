@@ -149,6 +149,14 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     });
   };
 
+  service.getFollowingUsers = function(user) {
+    var url = '/api/profile/following/' + user;
+    return $http({
+      method: 'GET',
+      url: url
+    });
+  };
+
   service.updateTweet = function(tweetInfo) {
     var url = '/api/tweet/edit/update';
     return $http({
@@ -720,6 +728,15 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
 
 });
 
-app.controller('FollowingController', function($timeout, $scope, TwitterFactory, $rootScope, $state, FileUploader) {
+app.controller('FollowingController', function($timeout, $scope, TwitterFactory, $rootScope, $state, $stateParams) {
+  $scope.currProfileUser = $stateParams.username;
+
+  TwitterFactory.getFollowingUsers($scope.currProfileUser)
+    .then(function() {
+
+    })
+    .catch(function() {
+
+    });
 
 });
