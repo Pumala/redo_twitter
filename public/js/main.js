@@ -27,6 +27,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
     controller: 'ProfileController'
   })
   .state({
+    name: 'following',
+    url: '/profile/{username}/following',
+    templateUrl: '/templates/following.html',
+    controller: 'FollowingController'
+  })
+  .state({
     name: 'editProfile',
     url: '/profile/edit/{username}',
     templateUrl: '/templates/editprofile.html',
@@ -711,5 +717,9 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
   $scope.getRetweetCount = function(arrObj) {
     return TwitterFactory.getRetweetCount(arrObj);
   };
+
+});
+
+app.controller('FollowingController', function($timeout, $scope, TwitterFactory, $rootScope, $state, FileUploader) {
 
 });

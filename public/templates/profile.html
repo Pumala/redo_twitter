@@ -22,7 +22,7 @@
 
   <div class="profileData clear">
     <div class="inlineDiv blue">
-      <h3><strong>{{ userInfo.following.length }}</strong> Following</h3>
+      <h3><strong>{{ userInfo.following.length }}</strong> <a ui-sref="following({ username: userInfo._id })">Following</a></h3>
     </div>
     <div class="inlineDiv yellow">
       <h3><strong>{{ userInfo.followers.length }}</strong> Followers</h3>

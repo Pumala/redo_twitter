@@ -220,6 +220,9 @@ textarea {
   color: #fff;
   margin: 1em 0;
 }
+.profileData h3 a {
+  color: #fff;
+}
 .profileData div {
   width: 50%;
   float: left;
