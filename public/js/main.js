@@ -737,7 +737,8 @@ app.controller('FollowingController', function($timeout, $scope, TwitterFactory,
   TwitterFactory.getFollowingUsers($scope.currProfileUser)
     .then(function(results) {
       $scope.following = results.data.following;
-      console.log('results...', results.data)
+      $scope.rootFollowing = results.data.rootFollowing;
+      // console.log('results...', results.data)
     })
     .catch(function(err) {
       console.log('err retrieving the user followings from following controller...', err.message );

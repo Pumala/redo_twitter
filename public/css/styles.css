@@ -181,7 +181,8 @@ img {
 }
 .worldTweets .editTweets .btn,
 #profile .btn,
-.editProfile .btn {
+.editProfile .btn,
+.following .btn {
   border-radius: 0;
   margin-top: 0;
   padding: .75em 0;
@@ -250,6 +251,20 @@ textarea {
 .inputfile:focus + .fileLabel,
 .inputfile + .fileLabel:hover {
     background-color: red;
+}
+/*************************************************
+                     FOLLOWING
+*************************************************/
+.following .userIcon {
+  width: 55px;
+  height: 55px;
+  display: inline-block;
+}
+.following .userIcon img {
+  width: 100%;
+}
+.following .panel-body {
+  border-bottom: 1px solid lightgrey;
 }
 /*************************************************
                     MEDIA QUERIES
