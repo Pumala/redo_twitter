@@ -278,6 +278,23 @@ textarea {
   height: 55px;
   display: inline-block;
 }
+.following .backBtn,
+.followers .backBtn {
+  text-align: left;
+}
+.following .backBtn,
+.followers .backBtn {
+  text-align: left;
+}
+.following .backBtn a,
+.followers .backBtn a {
+  margin: 0 3em 0 2em;
+}
+.following .backBtn span,
+.followers .backBtn span {
+  font-weight: 700;
+}
+
 .following .userIcon img,
 .followers .userIcon img {
   width: 100%;
@@ -292,7 +309,10 @@ textarea {
 }
 .following .followingDiv button,
 .followers .followingDiv button {
-  padding: .65em .75em;
+  padding: .65em 0;
+  width: 80px;
+  color: #fff;
+  border-radius: 4px;
 }
 /*************************************************
                     MEDIA QUERIES
