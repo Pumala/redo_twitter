@@ -15,8 +15,10 @@
       <a ui-sref="profile({ username: user._id })">
         @{{ user._id }}
       </a>
-      <button ng-show="rootFollowing.indexOf(user._id) < 0" ng-click="updateFollowingStatus(user._id, true)" class="btn btn-default">Follow</button>
-      <button ng-show="rootFollowing.indexOf(user._id) > -1" ng-click="updateFollowingStatus(user._id, false)" class="btn btn-success">Following</button>
+      <div ng-show="rootUsername !== user._id">
+        <button ng-show="rootFollowing.indexOf(user._id) < 0" ng-click="updateFollowingStatus(user._id, true)" class="btn btn-default">Follow</button>
+        <button ng-show="rootFollowing.indexOf(user._id) > -1" ng-click="updateFollowingStatus(user._id, false)" class="btn btn-success">Following</button>
+      </div>
     </div>
   </div>
 

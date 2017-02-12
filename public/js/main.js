@@ -752,15 +752,39 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
 app.controller('FollowingController', function($timeout, $scope, TwitterFactory, $rootScope, $state, $stateParams) {
   $scope.currProfileUser = $stateParams.username;
 
-  TwitterFactory.getFollowingUsers($scope.currProfileUser)
-    .then(function(results) {
-      $scope.following = results.data.following;
-      $scope.rootFollowing = results.data.rootFollowing;
-      // console.log('results...', results.data)
-    })
-    .catch(function(err) {
-      console.log('err retrieving the user followings from following controller...', err.message );
-    });
+  $scope.loadFollowing = function() {
+    TwitterFactory.getFollowingUsers($scope.currProfileUser)
+      .then(function(results) {
+        $scope.following = results.data.following;
+        $scope.rootFollowing = results.data.rootFollowing;
+        // console.log('results...', results.data)
+      })
+      .catch(function(err) {
+        console.log('err retrieving the user followings from following controller...', err.message );
+      });
+  };
+
+  // load page once initially
+  $scope.loadFollowing();
+
+  $scope.updateFollowingStatus = function(username, status) {
+    if (!$rootScope.rootUsername) {
+      $state.go('login');
+    }
+    var followingObj = {
+      currUser: $rootScope.rootUsername,
+      following: username,
+      status: status
+    }
+    console.log('hmm..', followingObj);
+    TwitterFactory.updateFollowingStatus(followingObj)
+      .then(function() {
+        $scope.loadFollowing();
+      })
+      .catch(function(err) {
+        console.log('err updating the user following status from following controller...', err.message );
+      });
+  };
 
 });
 
@@ -794,11 +818,10 @@ app.controller('FollowersController', function($timeout, $scope, TwitterFactory,
     console.log('hmm..', followingObj);
     TwitterFactory.updateFollowingStatus(followingObj)
       .then(function() {
-        console.log('yoooo');
         $scope.loadFollowers();
       })
       .catch(function(err) {
-        console.log('err updating the user followers status from followers controller...', err.message );
+        console.log('err updating the user following status from followers controller...', err.message );
       });
   };
 
