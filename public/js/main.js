@@ -33,6 +33,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
     controller: 'FollowingController'
   })
   .state({
+    name: 'followers',
+    url: '/profile/{username}/followers',
+    templateUrl: '/templates/followers.html',
+    controller: 'FollowersController'
+  })
+  .state({
     name: 'editProfile',
     url: '/profile/edit/{username}',
     templateUrl: '/templates/editprofile.html',
@@ -154,6 +160,18 @@ app.factory('TwitterFactory', function($http, $rootScope) {
       rootUsername = $rootScope.rootUsername;
     }
     var url = '/api/profile/following/' + user + '/' + rootUsername;
+    return $http({
+      method: 'GET',
+      url: url
+    });
+  };
+
+  service.getFollowersUsers = function(user) {
+    var rootUsername = null;
+    if ($rootScope.rootUsername) {
+      rootUsername = $rootScope.rootUsername;
+    }
+    var url = '/api/profile/followers/' + user + '/' + rootUsername;
     return $http({
       method: 'GET',
       url: url
@@ -742,6 +760,21 @@ app.controller('FollowingController', function($timeout, $scope, TwitterFactory,
     })
     .catch(function(err) {
       console.log('err retrieving the user followings from following controller...', err.message );
+    });
+
+});
+
+app.controller('FollowersController', function($timeout, $scope, TwitterFactory, $rootScope, $state, $stateParams) {
+  $scope.currProfileUser = $stateParams.username;
+
+  TwitterFactory.getFollowersUsers($scope.currProfileUser)
+    .then(function(results) {
+      $scope.followers = results.data.followers;
+      $scope.rootFollowing = results.data.rootFollowing;
+      console.log('results...', results.data)
+    })
+    .catch(function(err) {
+      console.log('err retrieving the user followers from followers controller...', err.message );
     });
 
 });

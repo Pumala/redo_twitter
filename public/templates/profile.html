@@ -25,7 +25,7 @@
       <h3><strong>{{ userInfo.following.length }}</strong> <a ui-sref="following({ username: userInfo._id })">Following</a></h3>
     </div>
     <div class="inlineDiv yellow">
-      <h3><strong>{{ userInfo.followers.length }}</strong> Followers</h3>
+      <h3><strong>{{ userInfo.followers.length }}</strong> <a ui-sref="followers({ username: userInfo._id })">Followers</a></h3>
     </div>
     <div class="inlineDiv yellow">
       <h3><strong>{{ userInfo.likes.length }}</strong> Likes</h3>

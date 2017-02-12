@@ -316,7 +316,7 @@ app.get('/api/profile/:username', function(request, response) {
 });
 
 // ********************************
-//      ADD NEW TWEET TO DB
+//      GET FOLLOWING INFO
 // ********************************
 app.get('/api/profile/following/:username/:rootuser', function(request, response) {
 
@@ -324,7 +324,7 @@ app.get('/api/profile/following/:username/:rootuser', function(request, response
   var username = request.params.username;
   var rootuser = request.params.rootuser;
 
-  if (rootuser) {
+  if (rootuser !== 'null') {
 
     User.findOne({ _id: username })
       .then(function(userInfo) {
@@ -335,10 +335,10 @@ app.get('/api/profile/following/:username/:rootuser', function(request, response
           }
         }), User.findOne({ _id: rootuser })]
       })
-      .spread(function(following, rootFollowing) {
+      .spread(function(following, rootInfo) {
         response.json({
           following: following,
-          rootFollowing: rootFollowing.following
+          rootFollowing: rootInfo.following
         })
       })
       .catch(function(err) {
@@ -363,6 +363,68 @@ app.get('/api/profile/following/:username/:rootuser', function(request, response
       .then(function(following) {
         response.json({
           following: following,
+          rootFollowing: null
+        })
+      })
+      .catch(function(err) {
+        console.log('err retrieving user following info from db...', err.message);
+        response.status(500);
+        response.json({
+          error: err.message
+        });
+      });
+  }
+
+});
+
+// ********************************
+//      GET FOLLOWERS INFO
+// ********************************
+app.get('/api/profile/followers/:username/:rootuser', function(request, response) {
+
+  console.log(request.params);
+  var username = request.params.username;
+  var rootuser = request.params.rootuser;
+
+  if (rootuser !== 'null') {
+
+    User.findOne({ _id: username })
+      .then(function(userInfo) {
+        var followers = userInfo.followers;
+        return [ User.find({
+          _id: {
+            $in: followers
+          }
+        }), User.findOne({ _id: rootuser })]
+      })
+      .spread(function(followers, rootInfo) {
+        response.json({
+          followers: followers,
+          rootFollowing: rootInfo.following
+        })
+      })
+      .catch(function(err) {
+        console.log('err retrieving user followers info from db...', err.message);
+        response.status(500);
+        response.json({
+          error: err.message
+        });
+      });
+
+  } else {
+
+    User.findOne({ _id: username })
+      .then(function(userInfo) {
+        var followers = userInfo.followers;
+        return User.find({
+          _id: {
+            $in: followers
+          }
+        })
+      })
+      .then(function(followers) {
+        response.json({
+          followers: followers,
           rootFollowing: null
         })
       })

@@ -83,6 +83,8 @@ img {
 }
 .navbar {
   margin-bottom: 0;
+  position: fixed;
+  width: 100%;
 }
 .navbar-default {
   /*background-color: #628cac;*/
@@ -122,6 +124,7 @@ img {
 }
 .container {
   padding: 0;
+  margin-top: 56px;
 }
 .panel {
   margin-bottom: 0;
@@ -148,7 +151,7 @@ img {
 .container.signForm {
   height: 100%;
   background-color: whitesmoke;
-  margin-top: 2em;
+  margin-top: 5em;
   padding: 1em;
 }
 /*************************************************
@@ -182,7 +185,8 @@ img {
 .worldTweets .editTweets .btn,
 #profile .btn,
 .editProfile .btn,
-.following .btn {
+.following .btn,
+.followers .btn {
   border-radius: 0;
   margin-top: 0;
   padding: .75em 0;
@@ -255,15 +259,18 @@ textarea {
 /*************************************************
                      FOLLOWING
 *************************************************/
-.following .userIcon {
+.following .userIcon,
+.followers .userIcon {
   width: 55px;
   height: 55px;
   display: inline-block;
 }
-.following .userIcon img {
+.following .userIcon img,
+.followers .userIcon img {
   width: 100%;
 }
-.following .panel-body {
+.following .panel-body,
+.followers .panel-body {
   border-bottom: 1px solid lightgrey;
 }
 /*************************************************

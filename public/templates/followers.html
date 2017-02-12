@@ -1,0 +1,21 @@
+<div class="followers container">
+  <button class="btn btn-block">
+    <a ui-sref="profile({ username: currProfileUser })">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </a>
+    <span>Followers</span>
+  </button>
+
+  <div class="">
+    <div ng-repeat="user in followers" class="panel-body">
+      <a class="userIcon" ui-sref="profile({ username: user._id })">
+        <img ng-if="user.avatar" ng-src="upload/{{user.avatar}}" alt="">
+        <img ng-if="!user.avatar" ng-src="images/default_user_avatar.png" alt="">
+      </a>
+      <a ui-sref="profile({ username: user._id })">
+        @{{ user._id }}
+      </a>
+    </div>
+  </div>
+
+</div>
