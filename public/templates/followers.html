@@ -1,18 +1,22 @@
-<div class="followers container">
-  <button class="backBtn btn btn-block">
-    <a ui-sref="profile({ username: currProfileUser })">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </a>
-    <span>Followers</span>
-  </button>
+<div class="followers">
 
-  <div class="">
+  <div class="backBtn btn btn-block">
+    <div>
+      <a ui-sref="profile({ username: currProfileUser })">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      </a>
+      <span>Followers</span>
+    </div>
+  </div>
+
+
+  <div class="container">
     <div ng-repeat="user in followers" class="panel-body">
       <a class="userIcon" ui-sref="profile({ username: user._id })">
         <img ng-if="user.avatar" ng-src="upload/{{user.avatar}}" alt="">
         <img ng-if="!user.avatar" ng-src="images/default_user_avatar.png" alt="">
       </a>
-      <a ui-sref="profile({ username: user._id })">
+      <a class="userName" ui-sref="profile({ username: user._id })">
         @{{ user._id }}
       </a>
       <div class="followingDiv inlineDiv pull-right" ng-show="rootUsername !== user._id">
