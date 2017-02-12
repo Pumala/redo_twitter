@@ -119,9 +119,12 @@ img {
   /*background-color: lightgrey;*/
   background-color: #3c3b3b;
 }
-.btn-light:hover {
+#profile .btn-light:hover {
   background-color: grey;
   color: #fff;
+}
+#profile .btn-light:hover {
+  background-color: #3c3b3b;
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
   background-color: whitesmoke;
@@ -198,6 +201,7 @@ img {
 textarea {
   width: 100%;
   padding: .5em;
+  height: 120px;
 }
 .worldTweets .leftRightMargin,
 #profile .leftRightMargin {
@@ -214,6 +218,10 @@ textarea {
   color: #918080;
   font-size: 2em;
   line-height: 1.5em;
+}
+#profile .sayItForm {
+  max-width: 350px;
+  margin: auto;
 }
 .followingDiv {
   text-align: center;
@@ -333,6 +341,11 @@ textarea {
   #profile .tweetDate {
     margin-top: 1.25em;
   }
+  #profile form.sayItForm {
+    width: 550px;
+    margin: auto;
+    font-size: 1.25em;
+  }
   .worldTweets .retweeter
   #profile .retweeter {
     font-size: 1em;
@@ -412,4 +425,25 @@ textarea {
   .navbar {
     border-radius: 0;
   }
+  .profileData div {
+    width: 25%;
+  }
+  .profileData div:nth-of-type(3) {
+    background-color: #2196F3;
+  }
+  .profileData div:nth-of-type(4) {
+    background-color: #FFC107;
+  }
 }
+
+/*@media screen and (min-width: 768px) {
+  .profileData div {
+    width: 25%;
+  }
+  .profileData div:nth-of-type(3) {
+    background-color: #2196F3;
+  }
+  .profileData div:nth-of-type(4) {
+    background-color: #FFC107;
+  }
+}*/

@@ -654,12 +654,9 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
           });
         });
 
-        // console.log('pics includes?', $scope.allLikes);
-
-        // $scope.allLikes = results.data.likes;
       })
-      .catch(function() {
-
+      .catch(function(err) {
+        console.log('err retrieving user likes info...', err.message);
       });
   };
 
