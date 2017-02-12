@@ -641,6 +641,18 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       .then(function(results) {
         console.log('the results are here...', results.data);
         $scope.allLikes = results.data.likes;
+        $scope.userLikes = results.data.userLikesInfo;
+
+        $scope.userLikes.forEach(function(user) {
+          $scope.allLikes.forEach(function(like) {
+            if (user._id === like.author) {
+              like.avatar = user.avatar;
+            }
+          });
+        });
+
+        // console.log('pics includes?', $scope.allLikes);
+
         // $scope.allLikes = results.data.likes;
       })
       .catch(function() {

@@ -454,16 +454,21 @@ app.get('/api/profile/likes/:username/:rootuser', function(request, response) {
       .then(function(userInfo) {
         var likes = userInfo.likes;
         return [ Tweet.find({
-          _id: {
-            $in: likes
-          }
-        }), User.findOne({ _id: rootuser })]
+            _id: {
+              $in: likes
+            }
+          }), User.findOne({ _id: rootuser }),
+          User.find({ tweets: { $in: likes }}
+        )]
       })
-      .spread(function(likes, rootInfo) {
+      .spread(function(likes, rootInfo, userLikesInfo) {
+        console.log('user likes?', userLikesInfo);
         response.json({
           likes: likes,
-          rootInfo: rootInfo
-        })
+          rootInfo: rootInfo,
+          userLikesInfo: userLikesInfo
+        });
+
       })
       .catch(function(err) {
         console.log('err retrieving user likes info from db...', err.message);
