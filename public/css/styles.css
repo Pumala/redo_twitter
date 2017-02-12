@@ -273,6 +273,14 @@ textarea {
 .followers .panel-body {
   border-bottom: 1px solid lightgrey;
 }
+.following .followingDiv,
+.followers .followingDiv {
+  margin-top: 7px;
+}
+.following .followingDiv button,
+.followers .followingDiv button {
+  padding: .65em .75em;
+}
 /*************************************************
                     MEDIA QUERIES
 *************************************************/

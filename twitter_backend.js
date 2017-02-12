@@ -440,6 +440,68 @@ app.get('/api/profile/followers/:username/:rootuser', function(request, response
 });
 
 // ********************************
+//      GET LIKES
+// ********************************
+app.get('/api/profile/likes/:username/:rootuser', function(request, response) {
+
+  // console.log('i like...', request.params);
+  var username = request.params.username;
+  var rootuser = request.params.rootuser;
+
+  if (rootuser !== 'null') {
+
+    User.findOne({ _id: username })
+      .then(function(userInfo) {
+        var likes = userInfo.likes;
+        return [ Tweet.find({
+          _id: {
+            $in: likes
+          }
+        }), User.findOne({ _id: rootuser })]
+      })
+      .spread(function(likes, rootInfo) {
+        response.json({
+          likes: likes,
+          rootInfo: rootInfo
+        })
+      })
+      .catch(function(err) {
+        console.log('err retrieving user likes info from db...', err.message);
+        response.status(500);
+        response.json({
+          error: err.message
+        });
+      });
+
+  } else {
+
+    User.findOne({ _id: username })
+      .then(function(userInfo) {
+        var likes = userInfo.likes;
+        return User.find({
+          _id: {
+            $in: likes
+          }
+        })
+      })
+      .then(function(likes) {
+        response.json({
+          likes: likes,
+          rootInfo: []
+        })
+      })
+      .catch(function(err) {
+        console.log('err retrieving user likes info from db...', err.message);
+        response.status(500);
+        response.json({
+          error: err.message
+        });
+      });
+  };
+
+});
+
+// ********************************
 //      ADD NEW TWEET TO DB
 // ********************************
 app.post('/api/profile/tweet/new', function(request, response) {
@@ -571,6 +633,7 @@ app.put('/api/tweet/status/update', function(request, response) {
   var tweetId = request.body.tweetId;
   var username = request.body.username;
   var likedStatus = request.body.likedStatus;
+  var mode = request.body.mode;
 
   if (likedStatus) {
     console.log('it is true');
@@ -587,6 +650,7 @@ app.put('/api/tweet/status/update', function(request, response) {
       ])
       .spread(function(updatedTweet, updatedUser) {
         return response.json({
+          mode: mode,
           message: 'success updating user likes!'
         });
       })
@@ -600,14 +664,17 @@ app.put('/api/tweet/status/update', function(request, response) {
             _id: tweetId
           }, {
             $pull: { likes: username }
-          }), User.update({
-            _id: username
-          }, {
-            $pull: { likes: tweetId }
-          })
+          }), User.findOneAndUpdate(
+            { '_id': username },
+            { $pull: { 'likes': tweetId } },
+            { 'new': true }
+          )
       ])
       .spread(function(updatedTweet, updatedUser) {
+        console.log('UPDATing!! user por favor...', updatedUser.likes);
         return response.json({
+          mode: mode,
+          userInfo: updatedUser,
           message: 'success updating user likes!'
         })
       })

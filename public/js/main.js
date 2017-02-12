@@ -178,6 +178,18 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     });
   };
 
+  service.showUserLikes = function(currUser) {
+    var rootUsername = null;
+    if ($rootScope.rootUsername) {
+      rootUsername = $rootScope.rootUsername;
+    }
+    var url = '/api/profile/likes/' + currUser + '/' + rootUsername;
+    return $http({
+      method: 'GET',
+      url: url
+    });
+  };
+
   service.updateTweet = function(tweetInfo) {
     var url = '/api/tweet/edit/update';
     return $http({
@@ -565,10 +577,15 @@ app.controller('EditProfileController', function($cookies, $state, $stateParams,
 
 app.controller('ProfileController', function($cookies, $state, $stateParams, $rootScope, $scope, TwitterFactory) {
   $scope.username = $stateParams.username;
+  $scope.sayingsMode = true;
 
-  $scope.loadProfilePage = function() {
+  $scope.loadProfilePage = function(sayingsMode) {
     TwitterFactory.getUserProfile($scope.username)
       .then(function(returnedInfo) {
+
+        console.log('sayingsMode is what?', sayingsMode);
+        console.log('$scope.sayingsMode is what?', $scope.sayingsMode);
+        // $scope.sayingsMode = true;
         $scope.userInfo = returnedInfo.data.userInfo;
         $scope.tweets = returnedInfo.data.tweets;
         $scope.allRetweets = returnedInfo.data.allRetweets;
@@ -576,7 +593,10 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
         $scope.allTheUsers = returnedInfo.data.allTheUsers;
         console.log('tweeting!', $scope.tweets);
 
-
+        if (!sayingsMode) {
+          console.log('so wrong....');
+          $scope.showLikes($scope.username);
+        }
 
         // if ($scope.userInfo.avatar) {
         //   $scope.updatedTweets = [];
@@ -613,6 +633,24 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
 
   // load profile once user enters controller
   $scope.loadProfilePage();
+
+  // show user likes
+  $scope.showLikes = function(currUser) {
+    $scope.sayingsMode = false;
+    TwitterFactory.showUserLikes(currUser)
+      .then(function(results) {
+        console.log('the results are here...', results.data);
+        $scope.allLikes = results.data.likes;
+        // $scope.allLikes = results.data.likes;
+      })
+      .catch(function() {
+
+      });
+  };
+
+  $scope.showSayings = function() {
+    $scope.sayingsMode = true;
+  }
 
   $scope.postTweet = function() {
     var newTweet = {
@@ -680,20 +718,43 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
     return TwitterFactory.checkIfUserExistsInArr(arr);
   };
 
-  $scope.updateTweetLikedStatus = function(tweetId, author, arr) {
+  $scope.updateTweetLikedStatus = function(tweetId, author, arr, mode) {
+    console.log('mode...', mode);
+    // mode => likes or sayings
     if ($rootScope.rootUsername) {
       var isLiked = TwitterFactory.checkIfUserExistsInArr(arr);
 
       var tweetInfo = {
         tweetId: tweetId,
         username: $rootScope.rootUsername,
-        likedStatus: !isLiked
+        likedStatus: !isLiked,
+        mode: mode
       };
       TwitterFactory.updateLikedTweetStatus(tweetInfo)
-        .then(function() {
-          console.log('are you here??');
-          $scope.loadProfilePage();
-          console.log('YOOO');
+        .then(function(results) {
+          console.log('the likes results...', results);
+          // $scope.allLikes = results.data.userInfo.likes;
+          $scope.loadProfilePage($scope.sayingsMode);
+          // console.log('all the likes??', $scope.allLikes);
+          // var mode = results.data.mode;
+          // $scope.loadProfilePage();
+          // if (results.data.mode) {
+          //   // console.log('red');
+          //   $scope.sayingsMode = false;
+          //   // $scope.loadProfilePage(false);
+          //   $scope.showLikes();
+          //   $scope.userInfo.likes = results.data.rootInfo.likes;
+          // } else {
+          //   $scope.sayingsMode = true;
+          // }
+
+          // $scope.loadProfilePage($scope.sayingsMode);
+
+          // else {
+            // console.log('blue');
+            // $scope.loadProfilePage();
+          // }
+          // console.log('YOOO....', results);
         })
         .catch(function(err) {
           console.log('err updating tweet liked status in profile controller...', err.message);
