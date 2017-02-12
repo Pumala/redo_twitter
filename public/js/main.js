@@ -578,6 +578,7 @@ app.controller('EditProfileController', function($cookies, $state, $stateParams,
 app.controller('ProfileController', function($cookies, $state, $stateParams, $rootScope, $scope, TwitterFactory) {
   $scope.username = $stateParams.username;
   $scope.sayingsMode = true;
+  $scope.whichMode = 'Sayings';
 
   $scope.loadProfilePage = function(sayingsMode) {
     TwitterFactory.getUserProfile($scope.username)
@@ -596,6 +597,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
         if (!sayingsMode) {
           console.log('so wrong....');
           $scope.showLikes($scope.username);
+          $scope.whichMode = 'Likes';
         }
 
         // if ($scope.userInfo.avatar) {
@@ -637,6 +639,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
   // show user likes
   $scope.showLikes = function(currUser) {
     $scope.sayingsMode = false;
+    $scope.whichMode = 'Likes'
     TwitterFactory.showUserLikes(currUser)
       .then(function(results) {
         console.log('the results are here...', results.data);
@@ -662,6 +665,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
 
   $scope.showSayings = function() {
     $scope.sayingsMode = true;
+    $scope.whichMode = 'Sayings';
   }
 
   $scope.postTweet = function() {

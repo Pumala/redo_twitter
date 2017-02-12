@@ -10,7 +10,7 @@
       <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="default user image">
       <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="default user image">
     </div>
-    <img ng-if="!userInfo.avatar" ng-show="rootUsername !== userInfo._id" src="images/default_user_avatar.png" alt="default user image">
+    <!-- <img ng-if="!userInfo.avatar" ng-show="rootUsername !== userInfo._id" src="images/default_user_avatar.png" alt="default user image"> -->
     <a ng-show="rootUsername === userInfo._id" ui-sref="editProfile({ username: userInfo._id })" class="btn btn-success btn-block">Change your avatar</a>
     <p class="muted">Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
   </div>
@@ -27,16 +27,16 @@
 
   <div class="profileData clear">
     <div class="inlineDiv blue">
-      <h3><strong>{{ userInfo.following.length }}</strong> <a ui-sref="following({ username: userInfo._id })">Following</a></h3>
+      <a ui-sref="following({ username: userInfo._id })"><h3><strong>{{ userInfo.following.length }}</strong> Following</h3></a>
     </div>
     <div class="inlineDiv yellow">
-      <h3><strong>{{ userInfo.followers.length }}</strong> <a ui-sref="followers({ username: userInfo._id })">Followers</a></h3>
+      <a ui-sref="followers({ username: userInfo._id })"><h3><strong>{{ userInfo.followers.length }}</strong> Followers</h3></a>
     </div>
-    <div ng-click="showLikes(userInfo._id)" class="inlineDiv yellow">
-      <h3><strong>{{ userInfo.likes.length }}</strong> Likes</h3>
+    <div class="inlineDiv yellow">
+      <h3 ng-click="showLikes(userInfo._id)"><strong>{{ userInfo.likes.length }}</strong> Likes</h3>
     </div>
-    <div ng-click="showSayings()" class="inlineDiv blue">
-      <h3><strong>{{ allTweets.length }}</strong> Sayings</h3>
+    <div class="inlineDiv blue">
+      <h3 ng-click="showSayings()"><strong>{{ allTweets.length }}</strong> Sayings</h3>
     </div>
   </div>
 
@@ -49,14 +49,14 @@
       </form> -->
 
       <!-- <h2 class="text-center grey">{{userInfo._id}}'s sayings</h2> -->
-      <button class="btn btn-light white btn-block">{{userInfo._id}}'s sayings</button>
+      <button class="btn btn-light white whichModeDiv btn-block"><h3>{{userInfo._id}}'s {{ whichMode }}</h3></button>
 
       <div ng-show="!sayingsMode" class="tweets">
         <div ng-repeat="tweet in allLikes | orderBy: 'tweet.date' : reverse" class="panel panel-default">
           <div class="panel-body">
             <img ng-if="tweet.avatar" ng-src="upload/{{ tweet.avatar }}" alt="">
             <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
-            <a class="origAuthor bold">@{{tweet.author}}</a> ·
+            <a ui-sref="profile({ username: tweet.author })" class="origAuthor bold">@{{tweet.author}}</a> ·
             <span class="tweetDate pull-right">{{ tweet.date | date : 'MMM dd, yyyy'}}</span>
             <p>{{tweet.content}}</p>
             <div class="tweetLeft">

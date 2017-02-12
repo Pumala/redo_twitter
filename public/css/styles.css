@@ -119,6 +119,10 @@ img {
   /*background-color: lightgrey;*/
   background-color: #3c3b3b;
 }
+.btn-light:hover {
+  background-color: grey;
+  color: #fff;
+}
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
   background-color: whitesmoke;
 }
@@ -218,15 +222,20 @@ textarea {
   padding: .75em 1em;
 }
 .profileData {
-  margin: 2em 0;
+  margin-top: 2em;
 }
 .profileData h3 {
   font-size: 1.25em;
   color: #fff;
   margin: 1em 0;
+  cursor: pointer;
 }
-.profileData h3 a {
+.profileData a {
   color: #fff;
+}
+.profileData a:hover,
+.profileData a:focus {
+  text-decoration: none;
 }
 .profileData div {
   width: 50%;
@@ -235,6 +244,10 @@ textarea {
 }
 #profile textarea {
   margin-bottom: -.35em;
+}
+.whichModeDiv h3 {
+  margin: .5em 0;
+  font-size: 1.5em;
 }
 .inputFile {
 	width: 0.1px;
