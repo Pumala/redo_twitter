@@ -767,14 +767,39 @@ app.controller('FollowingController', function($timeout, $scope, TwitterFactory,
 app.controller('FollowersController', function($timeout, $scope, TwitterFactory, $rootScope, $state, $stateParams) {
   $scope.currProfileUser = $stateParams.username;
 
-  TwitterFactory.getFollowersUsers($scope.currProfileUser)
-    .then(function(results) {
-      $scope.followers = results.data.followers;
-      $scope.rootFollowing = results.data.rootFollowing;
-      console.log('results...', results.data)
-    })
-    .catch(function(err) {
-      console.log('err retrieving the user followers from followers controller...', err.message );
-    });
+  $scope.loadFollowers = function() {
+    TwitterFactory.getFollowersUsers($scope.currProfileUser)
+      .then(function(results) {
+        $scope.followers = results.data.followers;
+        $scope.rootFollowing = results.data.rootFollowing;
+        console.log('results...', results.data)
+      })
+      .catch(function(err) {
+        console.log('err retrieving the user followers from followers controller...', err.message );
+      });
+  };
+
+  // load page once initially
+  $scope.loadFollowers();
+
+  $scope.updateFollowingStatus = function(username, status) {
+    if (!$rootScope.rootUsername) {
+      $state.go('login');
+    }
+    var followingObj = {
+      currUser: $rootScope.rootUsername,
+      following: username,
+      status: status
+    }
+    console.log('hmm..', followingObj);
+    TwitterFactory.updateFollowingStatus(followingObj)
+      .then(function() {
+        console.log('yoooo');
+        $scope.loadFollowers();
+      })
+      .catch(function(err) {
+        console.log('err updating the user followers status from followers controller...', err.message );
+      });
+  };
 
 });

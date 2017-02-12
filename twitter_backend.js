@@ -363,7 +363,7 @@ app.get('/api/profile/following/:username/:rootuser', function(request, response
       .then(function(following) {
         response.json({
           following: following,
-          rootFollowing: null
+          rootFollowing: []
         })
       })
       .catch(function(err) {
@@ -425,7 +425,7 @@ app.get('/api/profile/followers/:username/:rootuser', function(request, response
       .then(function(followers) {
         response.json({
           followers: followers,
-          rootFollowing: null
+          rootFollowing: []
         })
       })
       .catch(function(err) {
@@ -793,11 +793,14 @@ app.post('/api/profile/files/upload/user/:username', upload.single('file'), func
 // **************************************************************
 app.put('/api/user/following/status/update', function(request, response) {
 
+  console.log('HUHUH!', request.body);
+
   var currUser = request.body.currUser;
   var following = request.body.following;
   var followingStatus = request.body.status;
 
   if (followingStatus) {
+    console.log('inside?');
     // add currUser to following's followers array
     // add following to currUser's following array
     bluebird.all([
