@@ -821,6 +821,10 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
     return TwitterFactory.getRetweetCount(arrObj);
   };
 
+  $scope.getWindowWidth = function() {
+    // console.log('inner width: ', window.innerWidth);
+  };
+
 });
 
 app.controller('FollowingController', function($timeout, $scope, TwitterFactory, $rootScope, $state, $stateParams) {

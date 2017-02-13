@@ -73,7 +73,7 @@ img {
 }
 #profile .avatarDiv,
 .editProfile .avatarDiv {
-  max-width: 200px;
+  max-width: 150px;
   margin: auto;
 }
 .tweets img, .worldTweets img {
@@ -83,6 +83,7 @@ img {
 }
 .navbar {
   margin-bottom: 0;
+  z-index: 9999;
   position: fixed;
   width: 100%;
 }
@@ -213,6 +214,9 @@ textarea {
 /*************************************************
                     PROFILE
 *************************************************/
+#profile.container {
+  padding-top: 1em;
+}
 #profile h1,
 .editProfile h1 {
   color: #918080;
@@ -223,6 +227,9 @@ textarea {
   max-width: 350px;
   margin: auto;
 }
+#profile form.sayItForm .sayItBig {
+  display: none;
+}
 .followingDiv {
   text-align: center;
 }
@@ -231,6 +238,9 @@ textarea {
 }
 .profileData {
   margin-top: 2em;
+}
+#profile textarea .sayItBig {
+  display: none;
 }
 .profileData h3 {
   font-size: 1.25em;
@@ -436,14 +446,55 @@ textarea {
   }
 }
 
-/*@media screen and (min-width: 768px) {
-  .profileData div {
-    width: 25%;
+@media screen and (min-width: 920px) {
+  .rightPanel {
+    width: 675px;
+    position: absolute;
+    left: 230px;
+    top: 1em;
+    right: 0;
   }
-  .profileData div:nth-of-type(3) {
-    background-color: #2196F3;
+  .profileData {
+    margin-top: 0;
   }
-  .profileData div:nth-of-type(4) {
-    background-color: #FFC107;
+  /*.profileHr {
+    border-top: 1em solid #FFC107;
+    width: 100%;
+    top: 44px;
+  }*/
+  #profile.container {
+    width: 970px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    /*margin-top: 0;*/
   }
-}*/
+  #profile form.sayItForm {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+  }
+  #profile form.sayItForm button {
+    display: none;
+  }
+  #profile textarea {
+    width: 610px;
+    margin: 0;
+    float: left;
+  }
+  #profile form.sayItForm .sayItBig {
+    display: inline-block;;
+    background-color: gray;
+    color: #fff;
+    height: 120px;
+    width: 65px;
+    text-align: center;
+  }
+  #profile form.sayItForm .sayItBig span {
+    margin-top: 1.6em;
+    display: block;
+  }
+  #profile .avatarDiv, .editProfile .avatarDiv {
+    max-width: 200px;
+  }
+}

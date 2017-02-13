@@ -1,161 +1,163 @@
+<!-- <hr class="profileHr"> -->
 <div id="profile" class="container">
-  <h1 class="text-center">{{userInfo._id}}'s Profile</h1>
-
-  <div class="avatarDiv">
-    <a ng-show="rootUsername === username" ui-sref="editProfile({ username: userInfo._id })" title="Change your avatar">
-      <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="default user image">
-      <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="default user image">
-    </a>
-    <div ng-show="rootUsername !== username">
-      <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="default user image">
-      <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="default user image">
+  <!-- <h1 class="text-center">{{userInfo._id}}'s Profile</h1> -->
+  <div class="leftPanel">
+    <div class="avatarDiv">
+      <a ng-show="rootUsername === username" ui-sref="editProfile({ username: userInfo._id })" title="Change your avatar">
+        <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="default user image">
+        <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="default user image">
+      </a>
+      <div ng-show="rootUsername !== username">
+        <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="default user image">
+        <img ng-if="userInfo.avatar" ng-src="upload/{{userInfo.avatar}}" alt="default user image">
+      </div>
+      <!-- <img ng-if="!userInfo.avatar" ng-show="rootUsername !== userInfo._id" src="images/default_user_avatar.png" alt="default user image"> -->
+      <a ng-show="rootUsername === userInfo._id" ui-sref="editProfile({ username: userInfo._id })" class="btn btn-success btn-block">Change your avatar</a>
+      <p class="muted">Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
+      <div class="followingDiv" ng-show="rootUsername !== userInfo._id">
+        <button ng-show="userInfo.followers.indexOf(rootUsername) < 0" ng-click="followUser(userInfo._id, false)" class="btn btn-primary">Follow</button>
+        <button ng-show="userInfo.followers.indexOf(rootUsername) > -1" ng-click="followUser(userInfo._id, true)" class="btn btn-primary">Following</button>
+      </div>
     </div>
-    <!-- <img ng-if="!userInfo.avatar" ng-show="rootUsername !== userInfo._id" src="images/default_user_avatar.png" alt="default user image"> -->
-    <a ng-show="rootUsername === userInfo._id" ui-sref="editProfile({ username: userInfo._id })" class="btn btn-success btn-block">Change your avatar</a>
-    <p class="muted">Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
   </div>
 
-  <div class="followingDiv" ng-show="rootUsername !== userInfo._id">
+  <!-- <div class="followingDiv" ng-show="rootUsername !== userInfo._id">
     <button ng-show="userInfo.followers.indexOf(rootUsername) < 0" ng-click="followUser(userInfo._id, false)" class=" btn-primary">Follow</button>
     <button ng-show="userInfo.followers.indexOf(rootUsername) > -1" ng-click="followUser(userInfo._id, true)" class=" btn-primary">Following</button>
-  </div>
+  </div> -->
+  <div class="rightPanel">
+    <form class="sayItForm" ng-show="rootUsername === username" ng-submit="postTweet()">
+      <textarea ng-model="content"></textarea>
+      <button class="btn btn-success btn-block">Say it!</button>
+      <div class="inlineDiv sayItBig"><span>Say<br> it!</span></div>
+    </form>
 
-  <form class="sayItForm" ng-show="rootUsername === username" ng-submit="postTweet()">
-    <textarea ng-model="content"></textarea>
-    <button class="btn btn-success btn-block">Say it!</button>
-  </form>
-
-  <div class="profileData clear">
-    <div class="inlineDiv blue">
-      <a ui-sref="following({ username: userInfo._id })"><h3><strong>{{ userInfo.following.length }}</strong> Following</h3></a>
+    <div class="profileData clear">
+      <div class="inlineDiv blue">
+        <a ui-sref="following({ username: userInfo._id })"><h3><strong>{{ userInfo.following.length }}</strong> Following</h3></a>
+      </div>
+      <div class="inlineDiv yellow">
+        <a ui-sref="followers({ username: userInfo._id })"><h3><strong>{{ userInfo.followers.length }}</strong> Followers</h3></a>
+      </div>
+      <div class="inlineDiv yellow">
+        <h3 ng-click="showLikes(userInfo._id)"><strong>{{ userInfo.likes.length }}</strong> Likes</h3>
+      </div>
+      <div class="inlineDiv blue">
+        <h3 ng-click="showSayings()"><strong>{{ allTweets.length }}</strong> Sayings</h3>
+      </div>
     </div>
-    <div class="inlineDiv yellow">
-      <a ui-sref="followers({ username: userInfo._id })"><h3><strong>{{ userInfo.followers.length }}</strong> Followers</h3></a>
-    </div>
-    <div class="inlineDiv yellow">
-      <h3 ng-click="showLikes(userInfo._id)"><strong>{{ userInfo.likes.length }}</strong> Likes</h3>
-    </div>
-    <div class="inlineDiv blue">
-      <h3 ng-click="showSayings()"><strong>{{ allTweets.length }}</strong> Sayings</h3>
-    </div>
-  </div>
 
-  <div class="">
+    <div class="">
 
-    <div>
-      <!-- <form class="sayItForm" ng-show="rootUsername === username" ng-submit="postTweet()">
-        <textarea ng-model="content" rows="8" cols="80"></textarea>
-        <button class="btn btn-success btn-block">Say it!</button>
-      </form> -->
+      <div>
+        <button class="btn btn-light white whichModeDiv btn-block"><h3>{{userInfo._id}}'s {{ whichMode }}</h3></button>
 
-      <!-- <h2 class="text-center grey">{{userInfo._id}}'s sayings</h2> -->
-      <button class="btn btn-light white whichModeDiv btn-block"><h3>{{userInfo._id}}'s {{ whichMode }}</h3></button>
-
-      <div ng-show="!sayingsMode" class="tweets">
-        <div ng-repeat="tweet in allLikes | orderBy: 'tweet.date' : reverse" class="panel panel-default">
-          <div class="panel-body">
-            <img ng-if="tweet.avatar" ng-src="upload/{{ tweet.avatar }}" alt="">
-            <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
-            <a ui-sref="profile({ username: tweet.author })" class="origAuthor bold">@{{tweet.author}}</a> ·
-            <span class="tweetDate pull-right">{{ tweet.date | date : 'MMM dd, yyyy'}}</span>
-            <p>{{tweet.content}}</p>
-            <div class="tweetLeft">
-              <div class="inlineDiv">
-                <i ng-click="retweetTweet(tweet._id, tweet.retweets, likes)" ng-class=" (tweet.retweeters.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-retweet" aria-hidden="true"></i><span> {{ tweet.retweetIds.length }}</span>
+        <div ng-show="!sayingsMode" class="tweets">
+          <div ng-repeat="tweet in allLikes | orderBy: 'tweet.date' : reverse" class="panel panel-default">
+            <div class="panel-body">
+              <img ng-if="tweet.avatar" ng-src="upload/{{ tweet.avatar }}" alt="">
+              <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
+              <a ui-sref="profile({ username: tweet.author })" class="origAuthor bold">@{{tweet.author}}</a> ·
+              <span class="tweetDate pull-right">{{ tweet.date | date : 'MMM dd, yyyy'}}</span>
+              <p>{{tweet.content}}</p>
+              <div class="tweetLeft">
+                <div class="inlineDiv">
+                  <i ng-click="retweetTweet(tweet._id, tweet.retweets, likes)" ng-class=" (tweet.retweeters.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-retweet" aria-hidden="true"></i><span> {{ tweet.retweetIds.length }}</span>
+                </div>
+                <div class="inlineDiv leftRightMargin">
+                  <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes, 'likes')" ng-class="(tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.likes.length }}</span>
+                </div>
+                <div ng-show="rootUsername === tweet.author" class="inlineDiv">
+                  <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                </div>
               </div>
-              <div class="inlineDiv leftRightMargin">
-                <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes, 'likes')" ng-class="(tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.likes.length }}</span>
-              </div>
-              <div ng-show="rootUsername === tweet.author" class="inlineDiv">
-                <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+              <div ng-show="(rootUsername === tweet.author) && (showBtns)" class="editTweets editTweet">
+                <div ng-show="!editMode">
+                  <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-success btn-block">Edit</button>
+                  <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger btn-block">Delete</button>
+                  <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
+                </div>
+                <div ng-show="editMode">
+                  <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>
+                  <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success btn-block">Save</button>
+                  <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
+                </div>
               </div>
             </div>
-            <div ng-show="(rootUsername === username) && (showBtns)" class="editTweets editTweet">
+          </div>
+        </div>
+
+        <div ng-show="sayingsMode" class="tweets">
+          <div ng-repeat="tweet in allTweets | orderBy: 'tweet.date' : reverse" class="panel panel-default">
+            <div class="panel-body">
               <div ng-show="!editMode">
-                <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-success btn-block">Edit</button>
-                <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger btn-block">Delete</button>
-                <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
-              </div>
-              <div ng-show="editMode">
-                <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>
-                <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success btn-block">Save</button>
-                <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div ng-show="sayingsMode" class="tweets">
-        <div ng-repeat="tweet in allTweets | orderBy: 'tweet.date' : reverse" class="panel panel-default">
-          <div class="panel-body">
-            <div ng-show="!editMode">
-              <div ng-if="tweet.retweeter">
-                <div class="panel-heading retweeter">
-                  <i class="fa fa-retweet retweeted" aria-hidden="true"></i>
+                <div ng-if="tweet.retweeter">
+                  <div class="panel-heading retweeter">
+                    <i class="fa fa-retweet retweeted" aria-hidden="true"></i>
+                    <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
+                    <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
+                    @{{username}} resaid · {{tweet.date | date : 'MMM dd, yyyy'}}
+                  </div>
+                  <img ng-if="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
+                  <img ng-if="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
+                  <a class="origAuthor bold">@{{tweet.tweet.author}}</a> ·
+                  <span class="tweetDate pull-right">{{ tweet.tweet.date | date : 'MMM dd, yyyy'}}</span>
+                  <p>{{tweet.tweet.content}}</p>
+                  <div class="tweetLeft">
+                    <div class="inlineDiv">
+                      <i ng-click="retweetTweet(tweet.tweet._id, tweet.tweet.retweets)" ng-class=" ((tweet.tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : black" class="fa fa-retweet" aria-hidden="true"></i><span> {{ tweet.tweet.retweetIds.length }}</span>
+                    </div>
+                    <div class="inlineDiv leftRightMargin">
+                      <i ng-click="updateTweetLikedStatus(tweet.tweet._id, tweet.tweet.author, tweet.tweet.likes)" ng-class="(tweet.tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.tweet.likes.length }}</span>
+                    </div>
+                    <div ng-show="rootUsername === tweet.tweet.author" class="inlineDiv">
+                      <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                  <div ng-show="(rootUsername === username) && (showBtns)" class="editTweet">
+                    <div ng-show="!editMode" class="editTweets">
+                      <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id, tweet.tweet._id)" class="btn btn-danger btn-block">Delete</button>
+                      <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+                <div ng-if="!tweet.retweeter">
+                  <img ng-if="tweet.avatar" ng-src="upload/{{ tweet.avatar }}" alt="">
                   <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
-                  <img ng-if="tweet.avatar" ng-src="upload/{{tweet.avatar}}" alt="">
-                  @{{username}} resaid · {{tweet.date | date : 'MMM dd, yyyy'}}
-                </div>
-                <img ng-if="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
-                <img ng-if="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
-                <a class="origAuthor bold">@{{tweet.tweet.author}}</a> ·
-                <span class="tweetDate pull-right">{{ tweet.tweet.date | date : 'MMM dd, yyyy'}}</span>
-                <p>{{tweet.tweet.content}}</p>
-                <div class="tweetLeft">
-                  <div class="inlineDiv">
-                    <i ng-click="retweetTweet(tweet.tweet._id, tweet.tweet.retweets)" ng-class=" ((tweet.tweet.retweeters.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : black" class="fa fa-retweet" aria-hidden="true"></i><span> {{ tweet.tweet.retweetIds.length }}</span>
+                  <a class="origAuthor bold">@{{tweet.author}}</a> ·
+                  <span class="tweetDate pull-right">{{ tweet.date | date : 'MMM dd, yyyy'}}</span>
+                  <p>{{tweet.content}}</p>
+                  <div class="tweetLeft">
+                    <div class="inlineDiv">
+                      <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class=" (tweet.retweeters.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-retweet" aria-hidden="true"></i><span> {{ tweet.retweetIds.length }}</span>
+                    </div>
+                    <div class="inlineDiv leftRightMargin">
+                      <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" ng-class="(tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.likes.length }}</span>
+                    </div>
+                    <div ng-show="rootUsername === tweet.author" class="inlineDiv">
+                      <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    </div>
                   </div>
-                  <div class="inlineDiv leftRightMargin">
-                    <i ng-click="updateTweetLikedStatus(tweet.tweet._id, tweet.tweet.author, tweet.tweet.likes)" ng-class="(tweet.tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.tweet.likes.length }}</span>
-                  </div>
-                  <div ng-show="rootUsername === tweet.tweet.author" class="inlineDiv">
-                    <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                  </div>
-                </div>
-                <div ng-show="(rootUsername === username) && (showBtns)" class="editTweet">
-                  <div ng-show="!editMode" class="editTweets">
-                    <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id, tweet.tweet._id)" class="btn btn-danger btn-block">Delete</button>
-                    <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
-                  </div>
-                </div>
-              </div>
-              <div ng-if="!tweet.retweeter">
-                <img ng-if="tweet.avatar" ng-src="upload/{{ tweet.avatar }}" alt="">
-                <img ng-if="!tweet.avatar" src="images/default_user_avatar.png" alt="">
-                <a class="origAuthor bold">@{{tweet.author}}</a> ·
-                <span class="tweetDate pull-right">{{ tweet.date | date : 'MMM dd, yyyy'}}</span>
-                <p>{{tweet.content}}</p>
-                <div class="tweetLeft">
-                  <div class="inlineDiv">
-                    <i ng-click="retweetTweet(tweet._id, tweet.retweets)" ng-class=" (tweet.retweeters.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-retweet" aria-hidden="true"></i><span> {{ tweet.retweetIds.length }}</span>
-                  </div>
-                  <div class="inlineDiv leftRightMargin">
-                    <i ng-click="updateTweetLikedStatus(tweet._id, tweet.author, tweet.likes)" ng-class="(tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.likes.length }}</span>
-                  </div>
-                  <div ng-show="rootUsername === tweet.author" class="inlineDiv">
-                    <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                  </div>
-                </div>
-                <div ng-show="(rootUsername === username) && (showBtns)" class="editTweets editTweet">
-                  <div ng-show="!editMode">
-                    <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-success btn-block">Edit</button>
-                    <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger btn-block">Delete</button>
-                    <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
-                  </div>
-                  <div ng-show="editMode">
-                    <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>
-                    <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success btn-block">Save</button>
-                    <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
+                  <div ng-show="(rootUsername === username) && (showBtns)" class="editTweets editTweet">
+                    <div ng-show="!editMode">
+                      <button ng-show="!tweet.retweeter" ng-click="editMode = true; originalContent = tweet.content" class="btn btn-success btn-block">Edit</button>
+                      <button ng-show="!tweet.retweeter" ng-click="deleteTweet(tweet._id)" class="btn btn-danger btn-block">Delete</button>
+                      <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
+                    </div>
+                    <div ng-show="editMode">
+                      <textarea ng-model="tweet.content" rows="8" cols="80"></textarea>
+                      <button ng-click="saveTweet(tweet._id, tweet.content)" class="btn btn-success btn-block">Save</button>
+                      <button ng-click="editMode = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
 
     </div>
-
   </div>
 </div>
