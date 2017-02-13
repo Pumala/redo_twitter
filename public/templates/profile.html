@@ -13,7 +13,7 @@
       </div>
       <!-- <img ng-if="!userInfo.avatar" ng-show="rootUsername !== userInfo._id" src="images/default_user_avatar.png" alt="default user image"> -->
       <a ng-show="rootUsername === userInfo._id" ui-sref="editProfile({ username: userInfo._id })" class="btn btn-success btn-block">Change your avatar</a>
-      <p class="muted">Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
+      <p class="muted">@{{userInfo._id}}<br>Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
       <div class="followingDiv" ng-show="rootUsername !== userInfo._id">
         <button ng-show="userInfo.followers.indexOf(rootUsername) < 0" ng-click="followUser(userInfo._id, false)" class="btn btn-primary">Follow</button>
         <button ng-show="userInfo.followers.indexOf(rootUsername) > -1" ng-click="followUser(userInfo._id, true)" class="btn btn-primary">Following</button>
@@ -29,7 +29,7 @@
     <form class="sayItForm" ng-show="rootUsername === username" ng-submit="postTweet()">
       <textarea ng-model="content"></textarea>
       <button class="btn btn-success btn-block">Say it!</button>
-      <div class="inlineDiv sayItBig"><span>Say<br> it!</span></div>
+      <button class="inlineDiv sayItBig"><span>Say<br> it!</span></button>
     </form>
 
     <div class="profileData clear">

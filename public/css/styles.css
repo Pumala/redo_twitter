@@ -107,25 +107,38 @@ img {
   /*background-color: #2196F3;*/
   background-color: #506088;
 }
+button {
+  outline: none;
+}
 .btn-primary:hover {
   background-color: #1583da;
 }
 .btn-success {
   background-color: #2196F3;
+  transition: .3s;
+}
+.btn-success:hover {
+  background-color: lightgrey;
+  border-color: #000;
+  transition: .3s;
+  color: #000;
 }
 .btn-default {
   background-color: #FFC107;
 }
 .btn-light {
   /*background-color: lightgrey;*/
-  background-color: #3c3b3b;
+  /*background-color: #3c3b3b;*/
+  background-color: #9498a3;
+  cursor: default;
 }
 #profile .btn-light:hover {
   background-color: grey;
   color: #fff;
 }
 #profile .btn-light:hover {
-  background-color: #3c3b3b;
+  /*background-color: #3c3b3b;*/
+  background-color: #9498a3;
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
   background-color: whitesmoke;
@@ -233,7 +246,7 @@ textarea {
 .followingDiv {
   text-align: center;
 }
-.followingDiv button {
+#profile .followingDiv button {
   padding: .75em 1em;
 }
 .profileData {
@@ -484,14 +497,19 @@ textarea {
   }
   #profile form.sayItForm .sayItBig {
     display: inline-block;;
-    background-color: gray;
+    background-color: #506088;
     color: #fff;
     height: 120px;
     width: 65px;
     text-align: center;
+    border: none;
+    transition: .3s;
+  }
+  #profile form.sayItForm .sayItBig:hover {
+    background-color: grey;
+    transition: .3s;
   }
   #profile form.sayItForm .sayItBig span {
-    margin-top: 1.6em;
     display: block;
   }
   #profile .avatarDiv, .editProfile .avatarDiv {
