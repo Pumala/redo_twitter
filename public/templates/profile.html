@@ -108,11 +108,11 @@
                     <div class="inlineDiv leftRightMargin">
                       <i ng-click="updateTweetLikedStatus(tweet.tweet._id, tweet.tweet.author, tweet.tweet.likes)" ng-class="(tweet.tweet.likes.indexOf(rootUsername) > -1) ? 'black' : 'grey'" class="fa fa-heart" aria-hidden="true"></i><span> {{ tweet.tweet.likes.length }}</span>
                     </div>
-                    <div ng-show="rootUsername === tweet.tweet.author" class="inlineDiv">
+                    <div ng-show="rootUsername === tweet.retweeter" class="inlineDiv">
                       <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
                     </div>
                   </div>
-                  <div ng-show="(rootUsername === username) && (showBtns)" class="editTweet">
+                  <div ng-show="(rootUsername === tweet.retweeter) && (showBtns)" class="editTweet">
                     <div ng-show="!editMode" class="editTweets">
                       <button ng-show="tweet.retweeter" ng-click="deleteRetweet(tweet._id, tweet.tweet._id)" class="btn btn-danger btn-block">Delete</button>
                       <button ng-click="showBtns = false; tweet.content = originalContent" class="btn btn-default btn-block">Cancel</button>
