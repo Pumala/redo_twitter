@@ -13,7 +13,7 @@
         <span class="white">Step 1: </span>
         <!-- <input class="inputFile" type="file" nv-file-select="" uploader="uploader"> -->
         <input type="file" name="file" id="file" nv-file-select="" ng-model="fileChosen" onchange="angular.element(this).scope().updateFileChosen(this)" uploader="uploader" class="inputFile" />
-        <label for="file" ng-model="fileChosen"><span class="white">{{ fileChosen }}</span></label>
+        <label for="file" ng-model="fileChosen"><span class="chooseFile white">{{ fileChosen }}</span></label>
       </button>
       <!-- <label class="fileLabel" for="file">Choose a file</label> -->
       <button class="upload btn btn-primary btn-block" ng-disabled="!uploader.getNotUploadedItems().length" ng-click="uploader.uploadAll()">

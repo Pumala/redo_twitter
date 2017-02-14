@@ -129,8 +129,11 @@ button {
 .btn-light {
   /*background-color: lightgrey;*/
   /*background-color: #3c3b3b;*/
-  background-color: #9498a3;
+  background-color: #a6aab3;
   cursor: default;
+}
+.editProfile form .chooseFile {
+  cursor: pointer;
 }
 #profile .btn-light:hover {
   background-color: grey;
@@ -138,7 +141,7 @@ button {
 }
 #profile .btn-light:hover {
   /*background-color: #3c3b3b;*/
-  background-color: #9498a3;
+  background-color: #a6aab3;
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
   background-color: whitesmoke;
@@ -379,9 +382,6 @@ textarea {
   #profile.container {
     padding: 1em;
   }
-  #profile .avatarDiv {
-    margin: 0;
-  }
   .editProfile {
     width: 600px;
   }
@@ -436,6 +436,50 @@ textarea {
 }
 
 @media screen and (min-width: 768px) {
+  #profile.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #profile .leftPanel {
+    width: 25%;
+    float: left;
+  }
+  #profile .rightPanel {
+    width: 75%;
+    float: left;
+  }
+  #profile .avatarDiv {
+    max-width: 90%;
+    width: 100%;
+    margin: 0;
+  }
+  #profile form.sayItForm {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+  }
+  #profile textarea {
+    width: 91%;
+    margin: 0;
+    float: left;
+  }
+  #profile form.sayItForm button {
+    display: none;
+  }
+  #profile form.sayItForm .sayItBig {
+    display: inline-block;;
+    background-color: #506088;
+    color: #fff;
+    height: 120px;
+    width: 9%;
+    text-align: center;
+    border: none;
+    transition: .3s;
+  }
+  .profileData {
+    margin-top: 0;
+  }
   .following .backBtn,
   .followers .backBtn,
   .container {
@@ -461,22 +505,22 @@ textarea {
 
 @media screen and (min-width: 920px) {
   .rightPanel {
-    width: 675px;
+    /*width: 675px;
     position: absolute;
     left: 230px;
     top: 1em;
-    right: 0;
+    right: 0;*/
   }
-  .profileData {
+  /*.profileData {
     margin-top: 0;
-  }
+  }*/
   /*.profileHr {
     border-top: 1em solid #FFC107;
     width: 100%;
     top: 44px;
   }*/
   #profile.container {
-    width: 970px;
+    width: 920px;
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -487,23 +531,23 @@ textarea {
     width: 100%;
     margin: 0;
   }
-  #profile form.sayItForm button {
+  /*#profile form.sayItForm button {
     display: none;
-  }
+  }*/
   #profile textarea {
-    width: 610px;
+    /*width: 610px;*/
     margin: 0;
     float: left;
   }
   #profile form.sayItForm .sayItBig {
-    display: inline-block;;
+    /*display: inline-block;;
     background-color: #506088;
-    color: #fff;
-    height: 120px;
-    width: 65px;
-    text-align: center;
+    color: #fff;*/
+    /*height: 120px;*/
+    width: 60.24px;
+    /*text-align: center;
     border: none;
-    transition: .3s;
+    transition: .3s;*/
   }
   #profile form.sayItForm .sayItBig:hover {
     background-color: grey;

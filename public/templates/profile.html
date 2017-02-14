@@ -21,10 +21,6 @@
     </div>
   </div>
 
-  <!-- <div class="followingDiv" ng-show="rootUsername !== userInfo._id">
-    <button ng-show="userInfo.followers.indexOf(rootUsername) < 0" ng-click="followUser(userInfo._id, false)" class=" btn-primary">Follow</button>
-    <button ng-show="userInfo.followers.indexOf(rootUsername) > -1" ng-click="followUser(userInfo._id, true)" class=" btn-primary">Following</button>
-  </div> -->
   <div class="rightPanel">
     <form class="sayItForm" ng-show="rootUsername === username" ng-submit="postTweet()">
       <textarea ng-model="content"></textarea>
