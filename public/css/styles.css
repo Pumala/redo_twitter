@@ -442,17 +442,22 @@ textarea {
     margin-right: auto;
   }
   #profile .leftPanel {
-    width: 25%;
-    float: left;
+    /*width: 25%;
+    float: left;*/
   }
   #profile .rightPanel {
     width: 75%;
-    float: left;
+    /*float: left;*/
+    left: 25%;
+    position: absolute;
+    padding: 0 1em;
   }
   #profile .avatarDiv {
-    max-width: 90%;
-    width: 100%;
-    margin: 0;
+    width: 23%;
+    position: fixed;
+    max-width: 100%;
+    /*width: 100%;
+    margin: 0;*/
   }
   #profile form.sayItForm {
     max-width: 100%;
@@ -539,16 +544,6 @@ textarea {
     margin: 0;
     float: left;
   }
-  #profile form.sayItForm .sayItBig {
-    /*display: inline-block;;
-    background-color: #506088;
-    color: #fff;*/
-    /*height: 120px;*/
-    width: 60.24px;
-    /*text-align: center;
-    border: none;
-    transition: .3s;*/
-  }
   #profile form.sayItForm .sayItBig:hover {
     background-color: grey;
     transition: .3s;
@@ -557,6 +552,6 @@ textarea {
     display: block;
   }
   #profile .avatarDiv, .editProfile .avatarDiv {
-    max-width: 200px;
+    max-width: 212px;
   }
 }
