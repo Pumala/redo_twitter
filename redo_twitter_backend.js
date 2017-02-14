@@ -856,6 +856,10 @@ app.post('/api/profile/files/upload/user/:username', upload.single('file'), func
     })
     .catch(function(err) {
       console.log('err saving new file...', err.message);
+      response.status(500);
+      response.json({
+        error: err.message
+      });
     });
 
 });
