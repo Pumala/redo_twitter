@@ -7,6 +7,9 @@ body {
 html, body {
   height: 100%;
 }
+a:hover, a:focus {
+  text-decoration: none;
+}
 .clear::before, .clear::after {
   content: "";
   display: table;
@@ -236,7 +239,7 @@ textarea {
 #profile h1,
 .editProfile h1 {
   color: #918080;
-  font-size: 2em;
+  font-size: 1.5em;
   line-height: 1.5em;
 }
 #profile .sayItForm {
@@ -266,10 +269,6 @@ textarea {
 }
 .profileData a {
   color: #fff;
-}
-.profileData a:hover,
-.profileData a:focus {
-  text-decoration: none;
 }
 .profileData div {
   width: 50%;
@@ -306,6 +305,10 @@ textarea {
 /*************************************************
                      FOLLOWING
 *************************************************/
+.following .container,
+.followers .container {
+  margin-top: 0;
+}
 .following .userIcon,
 .followers .userIcon {
   width: 50px;
@@ -484,6 +487,10 @@ textarea {
   }
   .profileData {
     margin-top: 0;
+  }
+  #profile h1,
+  .editProfile h1 {
+    font-size: 2em;
   }
   .following .backBtn,
   .followers .backBtn,
