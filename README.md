@@ -22,8 +22,10 @@ Carolyn Lam
 
 ### History
 
-Project started: 1/19/2016
+Project started: 1/19/2017
 
-Project functionality completion: 1/24/2016
+Project functionality completion: 1/24/2017
 
-Project design started: TBD
+Project design started: 2/9/2017
+
+Project design completion: 2/13/2017
