@@ -27,7 +27,7 @@
             <div class="inlineDiv leftRightMargin">
               <i ng-click="likeTweet(tweet.tweet._id, tweet.tweet.likes)" ng-class=" ((tweet.tweet.likes.indexOf(rootUsername) < 0) || !rootUsername) ? 'grey' : 'black'" class="fa fa-heart" aria-hidden="true"></i><span> {{tweet.tweet.likes.length}}</span>
             </div>
-            <div ng-show="rootUsername === tweet.tweet.author" class="inlineDiv">
+            <div ng-show="rootUsername === tweet.retweeter" class="inlineDiv">
               <i ng-click="showBtns = true" class="fa fa-ellipsis-h" aria-hidden="true"></i>
             </div>
           </div>
