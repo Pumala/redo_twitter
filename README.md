@@ -29,3 +29,5 @@ Project functionality completion: 1/24/2017
 Project design started: 2/9/2017
 
 Project design completion: 2/13/2017
+
+Project deployed: 2/14/2017
