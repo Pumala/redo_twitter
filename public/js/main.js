@@ -594,7 +594,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
         $scope.allTheUsers = returnedInfo.data.allTheUsers;
         console.log('tweeting!', $scope.tweets);
 
-        if (!sayingsMode) {
+        if (!$scope.sayingsMode) {
           console.log('so wrong....');
           $scope.showLikes($scope.username);
           $scope.whichMode = 'Likes';
