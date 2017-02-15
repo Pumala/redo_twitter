@@ -98,7 +98,7 @@
                   </div>
                   <img ng-if="!tweet.tweet.avatar" src="images/default_user_avatar.png" alt="">
                   <img ng-if="tweet.tweet.avatar" ng-src="upload/{{tweet.tweet.avatar}}" alt="">
-                  <a class="origAuthor bold">@{{tweet.tweet.author}}</a> ·
+                  <a ui-sref="profile({ username: tweet.tweet.author })" class="origAuthor bold">@{{tweet.tweet.author}}</a> ·
                   <span class="tweetDate pull-right">{{ tweet.tweet.date | date : 'MMM dd, yyyy'}}</span>
                   <p>{{tweet.tweet.content}}</p>
                   <div class="tweetLeft">
