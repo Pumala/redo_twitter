@@ -506,7 +506,7 @@ app.controller('FileController', function($timeout, $scope, TwitterFactory, $roo
   $scope.fileChosen = 'Choose a file';
   console.log($scope.fileChosen);
   var uploader = $scope.uploader = new FileUploader({
-    url: '/api/profile/files/upload/user/' + $rootScope.rootUsername
+    url: '/api/upload/' + $rootScope.rootUsername
   });
 
   $scope.updateFileChosen = function() {

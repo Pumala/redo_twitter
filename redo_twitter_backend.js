@@ -262,6 +262,40 @@ app.put('/api/logout', function(request, response) {
 
 });
 
+// **************************************************************
+//                        FILE UPLOAD API
+// **************************************************************
+app.post('/api/upload/:username', upload.single('file'), function(request, response) {
+
+  console.log('upload me!');
+  var username = request.params.username;
+
+  var file = request.file;
+
+  var newFile = new File(file);
+
+  newFile.save()
+    .then(function(newFile) {
+      console.log('new file made..', newFile);
+      // var fileId = newFile._id;
+
+      return response.json({
+        originalname: newFile.originalname,
+        filename: newFile.filename,
+        fileId: newFile._id
+      });
+
+    })
+    .catch(function(err) {
+      console.log('err saving new file...', err.message);
+      response.status(500);
+      response.json({
+        error: err.message
+      });
+    });
+
+});
+
 // ********************************
 //      GET USER PROFILE INFO
 // ********************************
@@ -828,40 +862,6 @@ app.get('/api/profile/edit/user/:username', function(request, response) {
     .catch(function(err) {
       console.log('err retrieving user info to edit profile...', err.message);
     });
-});
-
-// **************************************************************
-//                        FILE UPLOAD API
-// **************************************************************
-app.post('/api/profile/files/upload/user/:username', upload.single('file'), function(request, response) {
-
-  console.log('upload me!');
-  var username = request.params.username;
-
-  var file = request.file;
-
-  var newFile = new File(file);
-
-  newFile.save()
-    .then(function(newFile) {
-      console.log('new file made..', newFile);
-      // var fileId = newFile._id;
-
-      return response.json({
-        originalname: newFile.originalname,
-        filename: newFile.filename,
-        fileId: newFile._id
-      });
-
-    })
-    .catch(function(err) {
-      console.log('err saving new file...', err.message);
-      response.status(500);
-      response.json({
-        error: err.message
-      });
-    });
-
 });
 
 // **************************************************************
