@@ -516,6 +516,8 @@ app.controller('FileController', function($timeout, $scope, TwitterFactory, $roo
   };
 
   uploader.onSuccessItem = function(fileItem, response, status, headers) {
+    console.log('on success..... are you?');
+    console.log('the response is waiting...', response);
     $scope.$emit('profileEditMode', response);
   };
 });
