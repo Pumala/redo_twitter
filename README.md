@@ -6,7 +6,9 @@ create a twitter clone app, utilizing the Mean Stack, where users can post tweet
 
 ### Live Demo:
 
-[Music Collaboration App] (www.saywhatnow.life)
+[SayWhatNow] (www.saywhatnow.life)
+
+** Currently uploading files works on localhost, but not in the live demo (process of resolving this issue)
 
 ### Credits
 
