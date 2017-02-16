@@ -279,6 +279,7 @@ app.post('/api/upload/:username', upload.single('file'), function(request, respo
       console.log('new file made..', newFile);
       // var fileId = newFile._id;
 
+      response.status(200);
       return response.json({
         originalname: newFile.originalname,
         filename: newFile.filename,
