@@ -503,6 +503,27 @@ app.controller('SignUpController', function($cookies, $rootScope, $state, $scope
 
 
 app.controller('FileController', function($timeout, $scope, TwitterFactory, $rootScope, $state, FileUploader) {
+  // $scope.fileChosen = 'Choose a file';
+  // console.log($scope.fileChosen);
+  // var uploader = $scope.uploader = new FileUploader({
+  //   url: '/api/upload/' + $rootScope.rootUsername
+  // });
+  //
+  // $scope.updateFileChosen = function() {
+  //   $scope.fileChosen = 'File has been chosen';
+  // }
+  // uploader.onCompleteAll = function(file) {
+  // };
+  //
+  // uploader.onSuccessItem = function(fileItem, response, status, headers) {
+  //   console.log('on success..... are you?');
+  //   console.log('the response is waiting...', response);
+  //   $scope.$emit('profileEditMode', response);
+  // };
+});
+
+app.controller('EditProfileController', function($cookies, $state, $stateParams, FileUploader, $rootScope, $scope, TwitterFactory) {
+
   $scope.fileChosen = 'Choose a file';
   console.log($scope.fileChosen);
   var uploader = $scope.uploader = new FileUploader({
@@ -512,25 +533,26 @@ app.controller('FileController', function($timeout, $scope, TwitterFactory, $roo
   $scope.updateFileChosen = function() {
     $scope.fileChosen = 'File has been chosen';
   }
-  uploader.onCompleteAll = function(file) {
-  };
+  // uploader.onCompleteAll = function(file) {
+  // };
 
   uploader.onSuccessItem = function(fileItem, response, status, headers) {
-    console.log('on success..... are you?');
-    console.log('the response is waiting...', response);
-    $scope.$emit('profileEditMode', response);
-  };
-});
-
-app.controller('EditProfileController', function($cookies, $state, $stateParams, $rootScope, $scope, TwitterFactory) {
-
-  $scope.$on('profileEditMode', function(event, file) {
-    // save the original file in case user chooses to cancel changes
+    // console.log('on success..... are you?');
+    // console.log('the response is waiting...', response);
+    // $scope.$emit('profileEditMode', response);
     $scope.origFile = $scope.userInfo.avatar;
-    $scope.tempFileInfo = file;
-    $scope.userInfo.avatar = file.filename;
+    $scope.tempFileInfo = response;
+    $scope.userInfo.avatar = response.filename;
     console.log($scope.userInfo.avatar);
-  });
+  };
+
+  // $scope.$on('profileEditMode', function(event, file) {
+  //   // save the original file in case user chooses to cancel changes
+  //   $scope.origFile = $scope.userInfo.avatar;
+  //   $scope.tempFileInfo = file;
+  //   $scope.userInfo.avatar = file.filename;
+  //   console.log($scope.userInfo.avatar);
+  // });
 
   $scope.deleteTempFile = function() {
     if ($scope.tempFileInfo) {
