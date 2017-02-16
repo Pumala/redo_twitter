@@ -1,8 +1,16 @@
-# Twitter Clone
+# SayWhatNow (Twitter Clone)
 
 ### Objective:
 
 create a twitter clone app, utilizing the Mean Stack, where users can post tweets, retweet tweets, like tweets, follow/ unfollow users, and upload avatars
+
+### Live Demo:
+
+[Music Collaboration App] (www.saywhatnow.life)
+
+### Credits
+
+Carolyn Lam
 
 ### Technologies used in the Front-end:
 
@@ -16,9 +24,6 @@ create a twitter clone app, utilizing the Mean Stack, where users can post tweet
 * Express
 * NodeJS
 * MongoDB
-
-### Credits
-Carolyn Lam
 
 ### History
 
