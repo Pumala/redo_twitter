@@ -8,7 +8,7 @@ create a twitter clone app, utilizing the Mean Stack, where users can post tweet
 
 [SayWhatNow] (http://www.saywhatnow.life/)
 
-** Currently uploading files works on localhost, but not in the live demo (process of resolving this issue)
+** Currently uploading files works on localhost, but not in the live demo (process of resolving this server issue)
 
 ### Credits
 
@@ -26,6 +26,15 @@ Carolyn Lam
 * Express
 * NodeJS
 * MongoDB
+
+### Screenshots
+
+##### Home
+  ![home](public/images/say_what_now_home.png)
+
+##### Profile
+
+  ![home](public/images/say_what_now_profile.png)
 
 ### History
 

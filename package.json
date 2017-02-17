@@ -4,6 +4,7 @@
   "description": "",
   "main": "twitter_backend.js",
   "scripts": {
+    "start": "node redo_twitter_backend.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Carolyn Lam",

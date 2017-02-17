@@ -39,7 +39,9 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // NEW DB
-mongoose.connect('mongodb://localhost/redo_twitter_db');
+var mongoUrl = process.env.MONGODBHOST ? 'mongodb://' + process
+.env.MONGODBHOST + '/redo_twitter_db' : 'mongodb://localhost/redo_twitter_db';
+mongoose.connect(mongoUrl);
 
 // ********************************
 //              SCHEMAS
