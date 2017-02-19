@@ -317,8 +317,6 @@ app.get('/api/profile/:username', function(request, response) {
       ];
     })
     .spread(function(allTweets, allRetweets, userInfo) {
-      console.log('tweets:', allTweets);
-      console.log('REtweets:', allRetweets);
 
       var origTweets = allRetweets.map(function(retweet) {
         return retweet.tweet;
