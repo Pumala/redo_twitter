@@ -56,6 +56,18 @@ Carolyn Lam
 
   ![home](public/images/delete_tweets_api.png)
 
+###### Front-end Examples:
+
+  ![home](public/images/world_timeline_edit_tweet.png)
+
+  The above code snippet example is from the world timeline page. Line 53 shows an ellipsis from fontawesome.io. This ellipsis only appears if the user logged in is the author of the tweet. Upon clicking it, we then assign the variable 'showBtns' the value of true (a boolean). Then on line 57, this div shows when it meets these two conditions: 1) the logged in user is the author of the tweet and 2) showBtns's value is true. When met, there are 2 child divs. One div shows only if the value of editMode is false, while the other div shows when the value of editMode is true. At this point, editMode is not set, so the default value is false.
+
+  The child div that only shows when editMode is false is rendered on the page. Inside this div, there are 3 child nodes: 1) edit button, 2) delete button, and 3) cancel button. If the user clicks the edit button, we update the value of editMode to true and assign the value of the tweet to a variable called originalContent. So, what is happening here is that, now that value of editMode has changed to a value of true, the parent div, along with its child nodes, no longer show. And instead, the other div with an ng-show of editMode set to true shows on the page. Also, we assign the tweet's content to originalContent to store the original tweet's content in case later on, if the user decides to cancel any edits, we can reassign the original content back to the tweet.
+
+  Had the user not clicked on the edit button, and instead clicked on the delete button, the tweet would have been deleted. And had it been the cancel button, the value of showBtns would have been updated to false, which means, its parent div, along with its siblings nodes, no longer appear on the page.
+
+  However, had the user clicked on the edit button, the other div with an ng-show of 'editMode' set to true renders on the page (line 63). Inside this div are 3 other nodes: 1) textarea with an ng-model of 'tweet.content' (the tweet's content), 2) save button, and 3) cancel button. At this point, the user can modify the textarea by adding or deleting from it. If the user clicks the save button, the tweet's content (whether modified or not) is sent to the back-end to be updated. If the user clicks on the cancel button, the value of 'editMode' is updated to false, 'showBtns' is assigned the value of false, and 'tweet.content' is assigned the value of 'originalContent'. What is happening here is that we revert to the default settings, where 'showBtns' and 'editMode' have a value of false because we are no longer editing or showing any buttons. Also, we have returned the tweet's original content back to itself.
+
 ### History
 
 Project started: 1/19/2017
