@@ -36,11 +36,9 @@ Carolyn Lam
 
   ![home](public/images/say_what_now_profile.png)
 
-### Code Snippets (Back-end)
+###  Challenges:
 
-  Challenges:
-
-  Example 1 (Designing a MongoDB DB)
+###### Example 1 (MongoDB Schema Design)
 
   Initially, I started with 2 schemas, Tweet and User. Later on when adding more functionality, I added a File schema for the main purpose of giving users the ability to upload files to be used as their avatars. Lastly, I added a Retweet schema. When designing it, there were several questions I asked myself, such as 'What do I want to accomplish?'. Even better, was being more specific with what I wanted to achieve, and asking myself, 'How does it connect to other schemas?'. The latter would prove to be extremely helpful.
 
@@ -48,6 +46,9 @@ Carolyn Lam
 
   One of my other end goals, associated with the retweet functionality, was the ability to show both the tweet and the retweeter's avatars on the page. The easier approach it seemed was to give them each a property that would store the filename. However, I decided not to use that approach because this value was already a value stored in the User schema and I didn't want to waste space for a value we already had. I ended up instead making queries for the avatars and then linking them up with the correct tweet or retweet user.
 
+###### Example 2 (Server Issue: Encountering 502 and 503 Proxy Errors when uploading files)
+
+  This is by far proving to be the biggest challenge and is currently still in the process of being resolved. To address this issue, I have modified the config file by adding several directives related to the proxy. I have also consulted the help of another developer. Hopefully, I will solve this server issue soon and then share my findings.
 
 ### History
 
