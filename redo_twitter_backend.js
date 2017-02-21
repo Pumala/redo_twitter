@@ -479,7 +479,7 @@ app.get('/api/profile/followers/:username/:rootuser', function(request, response
 // ********************************
 app.get('/api/profile/likes/:username/:rootuser', function(request, response) {
 
-  // console.log('i like...', request.params);
+  console.log('i like...???', request.params);
   var username = request.params.username;
   var rootuser = request.params.rootuser;
 
@@ -518,16 +518,20 @@ app.get('/api/profile/likes/:username/:rootuser', function(request, response) {
     User.findOne({ _id: username })
       .then(function(userInfo) {
         var likes = userInfo.likes;
-        return User.find({
+        return [ Tweet.find({
           _id: {
-            $in: likes
-          }
-        })
+              $in: likes
+            }
+          }), User.find({ tweets: { $in: likes }})
+        ]
       })
-      .then(function(likes) {
+      .spread(function(likes, userLikesInfo) {
+        console.log('likes?', likes);
+        console.log('user likes info: ', userLikesInfo);
         response.json({
           likes: likes,
-          rootInfo: []
+          rootInfo: [],
+          userLikesInfo: userLikesInfo
         })
       })
       .catch(function(err) {
