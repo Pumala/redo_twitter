@@ -874,6 +874,7 @@ app.get('/api/profile/edit/user/:username', function(request, response) {
 // **************************************************************
 app.put('/api/user/following/status/update', function(request, response) {
 
+  console.log('inside??? following???');
   console.log('HUHUH!', request.body);
 
   var currUser = request.body.currUser;
@@ -881,7 +882,7 @@ app.put('/api/user/following/status/update', function(request, response) {
   var followingStatus = request.body.status;
 
   if (followingStatus) {
-    console.log('inside?');
+    // console.log('inside??? following???');
     // add currUser to following's followers array
     // add following to currUser's following array
     bluebird.all([

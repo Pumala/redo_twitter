@@ -3,7 +3,7 @@
   <!-- <h1>World Timeline</h1> -->
 
   <div class="worldTweets">
-    <div class="panel panel-default" ng-repeat="tweet in allTweets">
+    <div class="panel panel-default" ng-repeat="tweet in allTweets | orderBy: '-date':reverse">
       <div class="panel-body">
         <div ng-show="tweet.retweeter">
             <div class="retweeter">

@@ -49,7 +49,7 @@
         <button class="btn btn-light white whichModeDiv btn-block"><h3>{{userInfo._id}}'s {{ whichMode }}</h3></button>
 
         <div ng-show="!sayingsMode" class="tweets">
-          <div ng-repeat="tweet in allLikes | orderBy: 'tweet.date' : reverse" class="panel panel-default">
+          <div ng-repeat="tweet in allLikes | orderBy: '-date':reverse" class="panel panel-default">
             <div class="panel-body">
               <div ng-hide="editMode">
                 <img ng-if="tweet.avatar" ng-src="upload/{{ tweet.avatar }}" alt="">
@@ -86,7 +86,7 @@
         </div>
 
         <div ng-show="sayingsMode" class="tweets">
-          <div ng-repeat="tweet in allTweets | orderBy: 'tweet.date' : reverse" class="panel panel-default">
+          <div ng-repeat="tweet in allTweets | orderBy: '-date': reverse" class="panel panel-default">
             <div class="panel-body">
               <div ng-show="!editMode">
                 <div ng-if="tweet.retweeter">
