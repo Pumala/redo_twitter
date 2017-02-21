@@ -50,6 +50,12 @@ Carolyn Lam
 
   This is by far proving to be the biggest challenge and is currently still in the process of being resolved. To address this issue, I have modified the config file by adding several directives related to the proxy. I have also consulted the help of another developer. Hopefully, I will solve this server issue soon and then share my findings.
 
+###  Code Snippets
+
+###### Back-end Examples:
+
+  ![home](public/images/delete_tweets_api.png)
+
 ### History
 
 Project started: 1/19/2017
