@@ -395,8 +395,14 @@ textarea {
   .editProfile {
     width: 600px;
   }
+  .editProfile .msgDiv {
+    margin-top: -2.175em;
+  }
+  .editProfile .errorMsg {
+    display: inline-block;
+  }
   .editProfile .avatarDiv {
-    margin: 4em auto;
+    margin: 4em auto 5em auto;
   }
   .container.signForm {
     width: 600px;

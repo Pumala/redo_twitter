@@ -7,8 +7,11 @@
     <img ng-if="!userInfo.avatar" src="images/default_user_avatar.png" alt="">
   </div>
 
-  <form ng-controller="FileController">
+  <div class="text-center" ng-class="{msgDiv: errorMsg}">
     <p ng-if="errorMsg" class="text-center errorMsg">{{ errorMsg }}</p>
+  </div>
+
+  <form ng-controller="FileController">
     <div class="">
       <button type="button" class="btn btn-light btn-block">
         <span class="white">Step 1: </span>
