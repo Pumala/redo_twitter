@@ -77,7 +77,7 @@ img {
 #profile .avatarDiv,
 .editProfile .avatarDiv {
   max-width: 150px;
-  margin: auto;
+  margin: 2.5em auto;
 }
 .tweets img, .worldTweets img {
   border-radius: 50%;
@@ -302,6 +302,13 @@ textarea {
 .inputfile + .fileLabel:hover {
     background-color: red;
 }
+/*************************************************
+                    EDIT PROFILE
+*************************************************/
+.editProfile .errorMsg {
+  color: red;
+}
+
 /*************************************************
                      FOLLOWING
 *************************************************/

@@ -8,6 +8,7 @@
   </div>
 
   <form ng-controller="FileController">
+    <p ng-if="errorMsg" class="text-center errorMsg">{{ errorMsg }}</p>
     <div class="">
       <button type="button" class="btn btn-light btn-block">
         <span class="white">Step 1: </span>

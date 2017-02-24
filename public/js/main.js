@@ -522,9 +522,10 @@ app.controller('FileController', function($timeout, $scope, TwitterFactory, $roo
   // };
 });
 
-app.controller('EditProfileController', function($cookies, $state, $stateParams, FileUploader, $rootScope, $scope, TwitterFactory) {
-
+app.controller('EditProfileController', function($cookies, $state, $timeout, $stateParams, FileUploader, $rootScope, $scope, TwitterFactory) {
+  $scope.errorMsg = null;
   $scope.fileChosen = 'Choose a file';
+
   console.log($scope.fileChosen);
   var uploader = $scope.uploader = new FileUploader({
     url: '/api/upload/' + $rootScope.rootUsername
@@ -569,18 +570,32 @@ app.controller('EditProfileController', function($cookies, $state, $stateParams,
   };
 
   $scope.saveProfileEdits = function() {
-    var editProfileObj = {
-      username: $rootScope.rootUsername,
-      filename: $scope.tempFileInfo.filename,
-      origFilename: $scope.origFile
-    };
-    TwitterFactory.saveProfileEdits(editProfileObj)
-      .then(function() {
-        $state.go('profile', { username: $rootScope.rootUsername });
-      })
-      .catch(function(err) {
-        console.log('err saving profile edits...', err.message);
-      });
+    if ($scope.tempFileInfo) {
+      var editProfileObj = {
+        username: $rootScope.rootUsername,
+        filename: $scope.tempFileInfo.filename,
+        origFilename: $scope.origFile
+      };
+      TwitterFactory.saveProfileEdits(editProfileObj)
+        .then(function() {
+          $state.go('profile', { username: $rootScope.rootUsername });
+        })
+        .catch(function(err) {
+          console.log('err saving profile edits...', err.message);
+        });
+    } else {
+      if ($scope.fileChosen === 'File has been chosen') {
+        $scope.errorMsg = "Please proceed to step 2 before saving.";
+        $timeout(function() {
+          $scope.errorMsg = null;
+        }, 3500);
+      } else {
+        $scope.errorMsg = "Please proceed to step 1 and choose a file.";
+        $timeout(function() {
+          $scope.errorMsg = null;
+        }, 3500);
+      }
+    }
   };
 
   $scope.loadEditProfilePage = function() {
