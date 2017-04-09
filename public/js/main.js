@@ -593,7 +593,7 @@ app.controller('EditProfileController', function($cookies, $state, $timeout, $st
         $scope.errorMsg = "Please proceed to step 1 and choose a file.";
         $timeout(function() {
           $scope.errorMsg = null;
-        }, 3500);ng-
+        }, 3500);
       }
     }
   };
