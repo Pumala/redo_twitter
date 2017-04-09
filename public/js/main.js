@@ -64,7 +64,7 @@ app.run(function($rootScope, $cookies, $http, $state) {
   }
 
   $rootScope.rootLogout = function() {
-    console.log('logging out');
+    // console.log('logging out');
     var url = '/api/logout';
     return $http({
       method: 'PUT',
@@ -91,7 +91,7 @@ app.factory('TwitterFactory', function($http, $rootScope) {
   var service = {};
 
   service.login = function(loginInfo) {
-    console.log('huh?', loginInfo);
+    // console.log('huh?', loginInfo);
     var url = '/api/login';
 
     return $http({
@@ -209,7 +209,7 @@ app.factory('TwitterFactory', function($http, $rootScope) {
   };
 
   service.checkIfUserExistsInArr = function(arr) {
-    console.log('arr?', arr);
+    // console.log('arr?', arr);
     if (arr.indexOf($rootScope.rootUsername) > -1) {
       return true;
     } else {
@@ -221,7 +221,7 @@ app.factory('TwitterFactory', function($http, $rootScope) {
     var found = arrObj.filter(function(user) {
       return user._id === $rootScope.rootUsername;
     });
-    console.log('what did i find?', found);
+    // console.log('what did i find?', found);
     if (found.length > 0) {
       return true;
     } else {
@@ -264,9 +264,9 @@ app.factory('TwitterFactory', function($http, $rootScope) {
   };
 
   service.returnAllTweets = function(allRetweets, origTweets, tweets) {
-    console.log('retweets:', allRetweets);
-    console.log('originals:', origTweets);
-    console.log('just tweets', tweets);
+    // console.log('retweets:', allRetweets);
+    // console.log('originals:', origTweets);
+    // console.log('just tweets', tweets);
     allRetweets.forEach(function(retweet, index) {
       origTweets.forEach(function(origTweet) {
         if (retweet.tweet && origTweet._id) {
@@ -319,9 +319,9 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
         $scope.tweets = returnedInfo.data.tweets;
         $scope.allTheUsers = returnedInfo.data.allNames;
 
-        console.log('returning:', returnedInfo);
+        // console.log('returning:', returnedInfo);
         $scope.allTweets = TwitterFactory.returnAllTweets($scope.retweets, $scope.origTweets, $scope.tweets);
-        console.log('everything!!', $scope.allTweets);
+        // console.log('everything!!', $scope.allTweets);
 
         $scope.allTweets.forEach(function(tweet) {
           $scope.allTheUsers.forEach(function(user) {
@@ -336,7 +336,7 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
           });
         });
 
-        console.log('updated alll...', $scope.allTweets);
+        // console.log('updated alll...', $scope.allTweets);
 
       })
       .catch(function(err) {
@@ -437,7 +437,7 @@ app.controller('WorldTimelineController', function($rootScope, $state, $scope, T
         username: $rootScope.rootUsername
         // alreadyRetweeted: alreadyRetweeted
       };
-      console.log('tweet info cluck:', tweetInfo);
+      // console.log('tweet info cluck:', tweetInfo);
       TwitterFactory.retweetTweet(tweetInfo)
         .then(function() {
           $scope.loadWorldTimelinePage();
@@ -465,7 +465,7 @@ app.controller('LoginController', function($rootScope, $state, $scope, $cookies,
     };
     TwitterFactory.login(loginInfo)
       .then(function(returnedInfo) {
-        console.log('returned:', returnedInfo);
+        // console.log('returned:', returnedInfo);
         if (returnedInfo.data.message) {
           $cookies.putObject('cookieData', returnedInfo.data.userInfo);
           $rootScope.rootUsername = returnedInfo.data.userInfo._id;
@@ -526,7 +526,7 @@ app.controller('EditProfileController', function($cookies, $state, $timeout, $st
   $scope.errorMsg = null;
   $scope.fileChosen = 'Choose a file';
 
-  console.log($scope.fileChosen);
+  // console.log($scope.fileChosen);
   var uploader = $scope.uploader = new FileUploader({
     url: '/api/upload/' + $rootScope.rootUsername
   });
@@ -559,7 +559,7 @@ app.controller('EditProfileController', function($cookies, $state, $timeout, $st
     if ($scope.tempFileInfo) {
       TwitterFactory.deleteTempFile($scope.tempFileInfo.fileId)
       .then(function() {
-        // $state.go('profile', { username: $rootScope.rootUsername });
+        //
       })
       .catch(function(err) {
         console.log('err deleting temp file...', err.message);
@@ -593,7 +593,7 @@ app.controller('EditProfileController', function($cookies, $state, $timeout, $st
         $scope.errorMsg = "Please proceed to step 1 and choose a file.";
         $timeout(function() {
           $scope.errorMsg = null;
-        }, 3500);
+        }, 3500);ng-
       }
     }
   };
@@ -601,7 +601,7 @@ app.controller('EditProfileController', function($cookies, $state, $timeout, $st
   $scope.loadEditProfilePage = function() {
     TwitterFactory.getUserInfo()
       .then(function(results) {
-        console.log('1, 2, 3, 4', results.data.userInfo);
+        // console.log('1, 2, 3, 4', results.data.userInfo);
         $scope.userInfo = results.data.userInfo;
       })
       .catch(function(err) {
@@ -623,18 +623,18 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
     TwitterFactory.getUserProfile($scope.username)
       .then(function(returnedInfo) {
 
-        console.log('sayingsMode is what?', sayingsMode);
-        console.log('$scope.sayingsMode is what?', $scope.sayingsMode);
+        // console.log('sayingsMode is what?', sayingsMode);
+        // console.log('$scope.sayingsMode is what?', $scope.sayingsMode);
         // $scope.sayingsMode = true;
         $scope.userInfo = returnedInfo.data.userInfo;
         $scope.tweets = returnedInfo.data.tweets;
         $scope.allRetweets = returnedInfo.data.allRetweets;
         $scope.origTweets = returnedInfo.data.origTweets;
         $scope.allTheUsers = returnedInfo.data.allTheUsers;
-        console.log('tweeting!', $scope.tweets);
+        // console.log('tweeting!', $scope.tweets);
 
         if (!$scope.sayingsMode) {
-          console.log('so wrong....');
+          // console.log('so wrong....');
           $scope.showLikes($scope.username);
           $scope.whichMode = 'Likes';
         }
@@ -649,7 +649,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
         // }
 
         $scope.allTweets = TwitterFactory.returnAllTweets($scope.allRetweets, $scope.origTweets, $scope.tweets);
-        console.log('all them tweets:', $scope.allTweets);
+        // console.log('all them tweets:', $scope.allTweets);
 
         $scope.allTweets.forEach(function(tweet) {
           $scope.allTheUsers.forEach(function(user) {
@@ -664,7 +664,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
           });
         });
 
-        console.log('updated alll...', $scope.allTweets);
+        // console.log('updated alll...', $scope.allTweets);
 
       })
       .catch(function(err) {
@@ -681,7 +681,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
     $scope.whichMode = 'Likes'
     TwitterFactory.showUserLikes(currUser)
       .then(function(results) {
-        console.log('the results are here...', results.data);
+        // console.log('the results are here...', results.data);
         $scope.allLikes = results.data.likes;
         $scope.userLikes = results.data.userLikesInfo;
 
@@ -711,8 +711,8 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
     };
     TwitterFactory.addNewTweet(newTweet)
       .then(function(message) {
-        console.log('i returned');
-        console.log(message.data.message);
+        // console.log('i returned');
+        // console.log(message.data.message);
         $scope.loadProfilePage();
         $scope.content = "";
       })
@@ -728,7 +728,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
     };
     TwitterFactory.removeTweet(tweetInfo)
       .then(function(message) {
-        console.log(message.data.message);
+        // console.log(message.data.message);
         $scope.loadProfilePage();
       })
       .catch(function(err) {
@@ -756,7 +756,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       tweetId: tweetId,
       content: content
     };
-    console.log('tweet info:', tweetInfo);
+    // console.log('tweet info:', tweetInfo);
     TwitterFactory.updateTweet(tweetInfo)
       .then(function() {
         $scope.loadProfilePage();
@@ -771,7 +771,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
   };
 
   $scope.updateTweetLikedStatus = function(tweetId, author, arr, mode) {
-    console.log('mode...', mode);
+    // console.log('mode...', mode);
     // mode => likes or sayings
     if ($rootScope.rootUsername) {
       var isLiked = TwitterFactory.checkIfUserExistsInArr(arr);
@@ -784,7 +784,7 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
       };
       TwitterFactory.updateLikedTweetStatus(tweetInfo)
         .then(function(results) {
-          console.log('the likes results...', results);
+          // console.log('the likes results...', results);
           // $scope.allLikes = results.data.userInfo.likes;
           $scope.loadProfilePage($scope.sayingsMode);
           // console.log('all the likes??', $scope.allLikes);
@@ -860,10 +860,6 @@ app.controller('ProfileController', function($cookies, $state, $stateParams, $ro
     return TwitterFactory.getRetweetCount(arrObj);
   };
 
-  $scope.getWindowWidth = function() {
-    // console.log('inner width: ', window.innerWidth);
-  };
-
 });
 
 app.controller('FollowingController', function($timeout, $scope, TwitterFactory, $rootScope, $state, $stateParams) {
@@ -893,7 +889,7 @@ app.controller('FollowingController', function($timeout, $scope, TwitterFactory,
       following: username,
       status: status
     }
-    console.log('hmm..', followingObj);
+    // console.log('hmm..', followingObj);
     TwitterFactory.updateFollowingStatus(followingObj)
       .then(function() {
         $scope.loadFollowing();
@@ -913,7 +909,7 @@ app.controller('FollowersController', function($timeout, $scope, TwitterFactory,
       .then(function(results) {
         $scope.followers = results.data.followers;
         $scope.rootFollowing = results.data.rootFollowing;
-        console.log('results...', results.data)
+        // console.log('results...', results.data)
       })
       .catch(function(err) {
         console.log('err retrieving the user followers from followers controller...', err.message );
@@ -932,7 +928,7 @@ app.controller('FollowersController', function($timeout, $scope, TwitterFactory,
       following: username,
       status: status
     }
-    console.log('hmm..', followingObj);
+    // console.log('hmm..', followingObj);
     TwitterFactory.updateFollowingStatus(followingObj)
       .then(function() {
         $scope.loadFollowers();

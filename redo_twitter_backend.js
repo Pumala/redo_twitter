@@ -97,8 +97,8 @@ app.get('/api/worldtimeline', function(request, response) {
   console.log('in the world timelines api');
 
   bluebird.all([
-      Retweet.find().limit(10),
-      Tweet.find().limit(10)
+      Retweet.find().limit(15),
+      Tweet.find().limit(15)
     ])
     .spread(function(retweets, tweets) {
       console.log('retweets:', retweets);
@@ -939,7 +939,7 @@ app.put('/api/user/following/status/update', function(request, response) {
 });
 
 // **************************************************************
-//                    UPDATE FOLLOWING STATUS
+//      DELETE TEMP USER AVATAR FILE WHEN USER CANCELS
 // **************************************************************
 app.delete('/api/profile/edit/delete/file/:fileid', function(request, response) {
   var fileId = request.params.fileId;
