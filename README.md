@@ -6,9 +6,7 @@ create a twitter clone app, utilizing the Mean Stack, where users can post tweet
 
 ### Live Demo:
 
-[SayWhatNow] (http://www.saywhatnow.life/)
-
-** Currently uploading files works on localhost, but not in the live demo (process of resolving this server issue)
+[SayWhatNow](http://www.saywhatnow.life/)
 
 ### Credits
 
@@ -49,6 +47,10 @@ Carolyn Lam
 ###### Example 2 (Server Issue: Encountering 502 and 503 Proxy Errors when uploading files)
 
   This is by far proving to be the biggest challenge and is currently still in the process of being resolved. To address this issue, I have modified the config file by adding several directives related to the proxy. I have also consulted the help of another developer. Hopefully, I will solve this server issue soon and then share my findings.
+
+  Update on Findings
+
+  * I want to say... maybe 1.5 months ago.. Time has really flown. Well, I ended up going to back to DC and getting help from my instructor Toby. It turned out to be a far bigger issue than I had imagined. After much debugging, Toby realized that there was a bug with Multer and that pm2 wasn't working. He suggested finding an alternative to pm2 and we decided on using forever instead. Amazingly, it now works. Uploading files is now a breeze. Thank you Toby!
 
 ###  Code Snippets
 
