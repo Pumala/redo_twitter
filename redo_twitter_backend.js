@@ -97,8 +97,8 @@ app.get('/api/worldtimeline', function(request, response) {
   console.log('in the world timelines api');
 
   bluebird.all([
-      Retweet.find().limit(15).sort({ _id: -1}),
-      Tweet.find().limit(15).sort({ _id: -1})
+      Retweet.find().sort({ _id: -1}).limit(15),
+      Tweet.find().sort({ _id: -1}).limit(15)
     ])
     .spread(function(retweets, tweets) {
       console.log('retweets:', retweets);
