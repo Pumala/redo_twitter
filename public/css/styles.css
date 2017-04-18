@@ -256,7 +256,9 @@ textarea {
   text-align: center;
 }
 #profile .followingDiv button {
-  padding: .75em 1em;
+  /*padding: .75em 1em;*/
+  height: 45px;
+  width: 75px;
 }
 .profileData {
   margin-top: 2em;

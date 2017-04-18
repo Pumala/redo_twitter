@@ -15,8 +15,10 @@
       <a ng-show="rootUsername === userInfo._id" ui-sref="editProfile({ username: userInfo._id })" class="btn btn-success btn-block">Change your avatar</a>
       <p class="muted">@{{userInfo._id}}<br>Joined {{ userInfo.joined | date : "MMM dd, yyyy" }}</p>
       <div class="followingDiv" ng-show="rootUsername !== userInfo._id">
+        <!-- <button ng-show="userInfo.followers.indexOf(rootUsername) < 0" ng-click="followUser(userInfo._id, false)" class="btn btn-primary">Follow</button>
+        <button ng-show="userInfo.followers.indexOf(rootUsername) > -1" ng-click="followUser(userInfo._id, true)" class="btn btn-primary">Following</button> -->
         <button ng-show="userInfo.followers.indexOf(rootUsername) < 0" ng-click="followUser(userInfo._id, false)" class="btn btn-primary">Follow</button>
-        <button ng-show="userInfo.followers.indexOf(rootUsername) > -1" ng-click="followUser(userInfo._id, true)" class="btn btn-primary">Following</button>
+        <button ng-show="userInfo.followers.indexOf(rootUsername) > -1" ng-init="following='following'" ng-mouseover="following = 'unfollow'" ng-mouseleave="following = 'following'" ng-click="followUser(userInfo._id, true)" class="btn btn-primary">{{following}}</button>
       </div>
     </div>
   </div>
